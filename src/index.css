@@ -1,0 +1,59 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=ZCOOL+XiaoWei&display=swap');
+
+@theme {
+  --font-sans: "Noto Sans TC", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "ZCOOL XiaoWei", serif;
+}
+
+:root {
+  --morandi-blue: #94A7AE;
+  --morandi-ocean: #5E7D8E;
+  --morandi-sand: #F2EFE9;
+  --morandi-sand-dark: #D9D2C5;
+  --morandi-pink: #C8A9A2;
+  --morandi-dark: #7A868A;
+  --text-main: #4A5559;
+  --text-muted: #8E9BA0;
+}
+
+body {
+  background-color: #E8EDF0;
+  color: var(--text-main);
+  -webkit-tap-highlight-color: transparent;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-serif);
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.glass-card {
+  background: white;
+  border-radius: 28px;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.02);
+}
+
+/* Custom utility classes for Morandi colors */
+.bg-morandi-blue { background-color: var(--morandi-blue); }
+.bg-morandi-sand { background-color: var(--morandi-sand); }
+.bg-morandi-pink { background-color: var(--morandi-pink); }
+.text-morandi-blue { color: var(--morandi-blue); }
+.text-morandi-dark { color: var(--morandi-dark); }
+.text-morandi-pink { color: var(--morandi-pink); }
+.border-morandi-sand { border-color: var(--morandi-sand); }
+.border-morandi-pink { border-color: var(--morandi-pink); }
+
+.vertical-text {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+}
