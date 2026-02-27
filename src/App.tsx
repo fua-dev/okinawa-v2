@@ -123,24 +123,24 @@ export default function App() {
   }, []);
 
   return (
-    <div className="max-w-[480px] mx-auto min-h-screen bg-morandi-sand relative pb-36 font-sans">
+    <div className="max-w-[480px] mx-auto min-h-screen bg-morandi-sand relative pb-36 font-sans overflow-x-hidden">
       <header className="pt-10 pb-6 relative px-8 overflow-hidden">
         <div className="absolute top-0 right-0 w-32 h-32 bg-morandi-blue/5 rounded-full -mr-16 -mt-16 blur-3xl" />
         <div className="relative z-10">
           <div className="flex justify-between items-end mb-4">
             <div className="space-y-1">
-              <p className="text-[10px] tracking-[0.5em] text-morandi-ocean font-bold uppercase">Summer 2026</p>
+              <p className="text-xs tracking-[0.5em] text-morandi-ocean font-bold uppercase">Summer 2026</p>
               <h1 className="font-serif text-5xl font-black tracking-tighter text-text-main leading-none">
                 沖繩之旅
               </h1>
             </div>
-            <button onClick={() => setShowDeclaration(true)} className="w-12 h-12 rounded-2xl bg-white shadow-sm flex items-center justify-center text-morandi-blue active:scale-95 transition-all border border-morandi-blue/10">
-              <Users size={22} />
+            <button onClick={() => setShowDeclaration(true)} className="w-14 h-14 rounded-2xl bg-white shadow-sm flex items-center justify-center text-morandi-blue active:scale-95 transition-all border border-morandi-blue/10">
+              <Users size={26} />
             </button>
           </div>
           <div className="flex items-center gap-4">
             <div className="h-px flex-1 bg-gradient-to-r from-morandi-blue/40 to-transparent" />
-            <span className="text-[10px] font-serif italic text-morandi-dark tracking-widest">Family Adventure</span>
+            <span className="text-xs font-serif italic text-morandi-dark tracking-widest">Family Adventure</span>
             <div className="h-px w-8 bg-morandi-pink/40" />
           </div>
         </div>
@@ -153,12 +153,12 @@ export default function App() {
               <button onClick={() => setShowDeclaration(false)} className="absolute top-6 right-6 text-gray-200"><X size={24} /></button>
               <div className="w-16 h-16 bg-morandi-sand rounded-full flex items-center justify-center mx-auto mb-6 text-morandi-blue"><Users size={32} /></div>
               <h3 className="font-serif text-2xl font-bold text-text-main mb-6">家族旅遊宣言</h3>
-              <div className="space-y-4 text-sm text-text-main leading-relaxed">
+              <div className="space-y-4 text-base text-text-main leading-relaxed">
                 <p>「累了就休息，肚子餓了就吃飯，想上廁所馬上說。」</p>
                 <p>「每天一張合照：留下 7 人的沖繩記憶。」</p>
                 <p>「四大三小，平安出門，快樂回家。」</p>
               </div>
-              <button onClick={() => setShowDeclaration(false)} className="mt-10 w-full py-4 bg-morandi-blue text-white rounded-2xl font-bold tracking-widest">出發！</button>
+              <button onClick={() => setShowDeclaration(false)} className="mt-10 w-full py-4 bg-morandi-blue text-white rounded-2xl font-bold tracking-widest text-lg">出發！</button>
             </motion.div>
           </div>
         )}
@@ -198,7 +198,7 @@ function NavButton({ active, onClick, icon, label }: any) {
       )}
       <div className="relative z-10 flex flex-col items-center gap-1">
         {icon}
-        <span className="text-[10px] font-bold tracking-widest">{label}</span>
+        <span className="text-xs font-bold tracking-widest">{label}</span>
       </div>
     </button>
   );
@@ -235,8 +235,8 @@ function ScheduleTab({ currentDay, setCurrentDay, setSelectedItem, weatherForeca
       <div className="flex justify-between px-2 py-1 gap-2 hide-scrollbar overflow-x-auto">
         {ITINERARY_DATA.map(d => (
           <button key={d.day} onClick={() => setCurrentDay(d.day)} className="flex flex-col items-center min-w-[60px]">
-            <span className={`text-[10px] font-bold tracking-widest font-serif ${currentDay === d.day ? 'text-morandi-ocean' : 'text-gray-300'}`}>{d.week}</span>
-            <span className={`font-serif text-2xl mt-1 ${currentDay === d.day ? 'font-bold text-text-main' : 'text-gray-300'}`}>{d.date.split('-')[2]}</span>
+            <span className={`text-xs font-bold tracking-widest font-serif ${currentDay === d.day ? 'text-morandi-ocean' : 'text-gray-300'}`}>{d.week}</span>
+            <span className={`font-serif text-3xl mt-1 ${currentDay === d.day ? 'font-bold text-text-main' : 'text-gray-300'}`}>{d.date.split('-')[2]}</span>
             {currentDay === d.day && <div className="w-1.5 h-1.5 rounded-full bg-morandi-pink mt-1.5" />}
           </button>
         ))}
@@ -273,13 +273,13 @@ function ScheduleTab({ currentDay, setCurrentDay, setSelectedItem, weatherForeca
               }}
               className="flex flex-col items-center gap-1 snap-start min-w-fit active:scale-95 transition-all group"
             >
-              <span className="text-[11px] font-bold text-gray-400 group-hover:text-morandi-blue transition-colors">
+              <span className="text-xs font-bold text-gray-400 group-hover:text-morandi-blue transition-colors">
                 {i === 0 ? "現在" : w.time}
               </span>
               <div className="flex items-center justify-center py-1 group-hover:scale-110 transition-transform">
                 {getWeatherIcon(w.condition)}
               </div>
-              <span className="text-sm font-bold text-text-main group-hover:text-morandi-blue transition-colors">{w.temp}°</span>
+              <span className="text-base font-bold text-text-main group-hover:text-morandi-blue transition-colors">{w.temp}°</span>
             </button>
           ))}
         </div>
@@ -306,7 +306,7 @@ function ScheduleTab({ currentDay, setCurrentDay, setSelectedItem, weatherForeca
 
                   {/* Time Column */}
                   <div className="w-14 text-right pt-0.5 relative z-10">
-                    <span className="text-base font-serif font-bold text-text-main group-active:text-morandi-ocean transition-colors">
+                    <span className="text-lg font-serif font-bold text-text-main group-active:text-morandi-ocean transition-colors">
                       {item.time}
                     </span>
                   </div>
@@ -316,11 +316,11 @@ function ScheduleTab({ currentDay, setCurrentDay, setSelectedItem, weatherForeca
 
                   {/* Content Column */}
                   <div className="flex-1 min-w-0 space-y-1.5 relative z-10">
-                    <h4 className="font-serif font-bold text-text-main text-base group-active:text-morandi-ocean transition-colors truncate">
+                    <h4 className="font-serif font-bold text-text-main text-lg group-active:text-morandi-ocean transition-colors truncate">
                       {item.title}
                     </h4>
                     
-                    <p className="text-xs text-text-muted leading-relaxed line-clamp-1">
+                    <p className="text-sm text-text-muted leading-relaxed line-clamp-1">
                       {item.detail}
                     </p>
                   </div>
@@ -332,20 +332,20 @@ function ScheduleTab({ currentDay, setCurrentDay, setSelectedItem, weatherForeca
 
         {backupItems.length > 0 && (
           <div className="mt-12 space-y-4">
-            <h4 className="text-xs font-bold text-morandi-dark px-2 uppercase tracking-widest font-serif flex items-center gap-2">
+            <h4 className="text-sm font-bold text-morandi-dark px-2 uppercase tracking-widest font-serif flex items-center gap-2">
               <div className="w-1.5 h-1.5 rounded-full bg-morandi-pink" /> 備案行程
             </h4>
             {backupItems.map((item: any) => (
               <div 
                 key={item.id}
                 onClick={() => setSelectedItem(item)}
-                className="glass-card p-5 border border-morandi-blue/20 bg-white/80 shadow-sm active:scale-[0.98] transition-all cursor-pointer"
+                className="glass-card p-6 border border-morandi-blue/20 bg-white/80 shadow-sm active:scale-[0.98] transition-all cursor-pointer"
               >
                 <div className="flex justify-between items-start mb-2">
-                  <h5 className="font-serif font-bold text-text-main text-lg">{item.title}</h5>
-                  <span className="text-[10px] font-bold bg-morandi-sand px-2 py-0.5 rounded-full text-morandi-blue uppercase">Backup</span>
+                  <h5 className="font-serif font-bold text-text-main text-xl">{item.title}</h5>
+                  <span className="text-xs font-bold bg-morandi-sand px-2 py-0.5 rounded-full text-morandi-blue uppercase">Backup</span>
                 </div>
-                <p className="text-xs text-text-muted leading-relaxed">{item.detail}</p>
+                <p className="text-sm text-text-muted leading-relaxed">{item.detail}</p>
               </div>
             ))}
           </div>
@@ -451,17 +451,17 @@ function BudgetTab({ expenses, setExpenses, rate }: any) {
 
         <div className="space-y-4">
           <div className="bg-white/60 p-5 rounded-[24px] border border-morandi-sand shadow-inner">
-            <label className="text-[10px] text-morandi-dark block mb-2 tracking-widest uppercase font-bold font-serif">即時換算 (1 JPY ≈ {rate.toFixed(4)} TWD)</label>
+            <label className="text-xs text-morandi-dark block mb-2 tracking-widest uppercase font-bold font-serif">即時換算 (1 JPY ≈ {rate.toFixed(4)} TWD)</label>
             <div className="flex items-center gap-2">
-              <span className="text-lg font-mono text-morandi-blue">¥</span>
+              <span className="text-xl font-mono text-morandi-blue">¥</span>
               <input 
                 value={calcInput}
                 onChange={(e) => setCalcInput(e.target.value)}
                 placeholder="輸入算式 (如 1500+200)..." 
-                className="w-full bg-transparent text-xl font-mono outline-none text-text-main"
+                className="w-full bg-transparent text-2xl font-mono outline-none text-text-main"
               />
             </div>
-            <div className="text-right text-xs mt-2 text-morandi-dark font-medium bg-morandi-sand/50 inline-block px-3 py-1 rounded-full float-right">
+            <div className="text-right text-sm mt-2 text-morandi-dark font-medium bg-morandi-sand/50 inline-block px-4 py-1.5 rounded-full float-right">
               ≈ $ {Math.round(calcResult * rate).toLocaleString()} TWD
             </div>
             <div className="clear-both" />
@@ -472,7 +472,7 @@ function BudgetTab({ expenses, setExpenses, rate }: any) {
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="項目名稱" 
-              className="w-full p-4 bg-morandi-sand/50 rounded-2xl outline-none text-sm border border-transparent focus:border-morandi-blue/30 transition-all"
+              className="w-full p-5 bg-morandi-sand/50 rounded-2xl outline-none text-base border border-transparent focus:border-morandi-blue/30 transition-all"
             />
             <div className="flex gap-3">
               <input 
@@ -480,13 +480,13 @@ function BudgetTab({ expenses, setExpenses, rate }: any) {
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
                 placeholder="金額 (JPY)" 
-                className="flex-1 p-4 bg-morandi-sand/50 rounded-2xl outline-none text-sm border border-transparent focus:border-morandi-blue/30 transition-all font-mono"
+                className="flex-1 p-5 bg-morandi-sand/50 rounded-2xl outline-none text-base border border-transparent focus:border-morandi-blue/30 transition-all font-mono"
               />
               <button 
                 onClick={addExpense}
-                className="px-8 bg-morandi-blue text-white rounded-2xl text-sm font-bold tracking-widest shadow-lg shadow-morandi-blue/20 active:scale-95 transition-all flex items-center justify-center"
+                className="px-10 bg-morandi-blue text-white rounded-2xl text-base font-bold tracking-widest shadow-lg shadow-morandi-blue/20 active:scale-95 transition-all flex items-center justify-center"
               >
-                <Plus size={18} />
+                <Plus size={24} />
               </button>
             </div>
           </div>
@@ -496,42 +496,42 @@ function BudgetTab({ expenses, setExpenses, rate }: any) {
       <div className="glass-card p-6 space-y-6">
         <div className="grid grid-cols-2 gap-4">
           <div className="bg-morandi-sand/80 p-5 rounded-[24px] border border-white/50">
-            <p className="text-[10px] text-morandi-dark mb-1 uppercase tracking-widest font-bold font-serif">Total JPY</p>
+            <p className="text-xs text-morandi-dark mb-1 uppercase tracking-widest font-bold font-serif">Total JPY</p>
             <p className="text-2xl font-mono font-bold text-text-main">¥{totalJPY.toLocaleString()}</p>
           </div>
           <div className="bg-morandi-pink/10 p-5 rounded-[24px] border border-morandi-pink/10">
-            <p className="text-[10px] text-morandi-pink mb-1 uppercase tracking-widest font-bold font-serif">Total TWD</p>
+            <p className="text-xs text-morandi-pink mb-1 uppercase tracking-widest font-bold font-serif">Total TWD</p>
             <p className="text-2xl font-mono font-bold text-morandi-pink">${totalTWD.toLocaleString()}</p>
           </div>
         </div>
 
         <div className="space-y-0.5">
           <div className="flex items-center justify-between px-2 mb-3">
-            <h4 className="text-xs font-bold text-morandi-dark uppercase tracking-widest font-serif">支出明細</h4>
-            <span className="text-[10px] text-text-muted">{expenses.length} 筆紀錄</span>
+            <h4 className="text-sm font-bold text-morandi-dark uppercase tracking-widest font-serif">支出明細</h4>
+            <span className="text-xs text-text-muted">{expenses.length} 筆紀錄</span>
           </div>
           
-          <div className="bg-[#FFF9E5] rounded-2xl p-4 shadow-sm border border-[#F0E6C0] relative">
+          <div className="bg-[#FFF9E5] rounded-2xl p-5 shadow-sm border border-[#F0E6C0] relative">
             {expenses.length === 0 ? (
-              <p className="text-center py-8 text-sm text-[#B0A680] italic">尚無支出紀錄</p>
+              <p className="text-center py-10 text-base text-[#B0A680] italic">尚無支出紀錄</p>
             ) : (
               <div className="space-y-0">
                 {expenses.map((ex: any, idx: number) => (
                   <div 
                     key={ex.id} 
-                    className={`flex items-center justify-between py-2.5 ${idx !== expenses.length - 1 ? 'border-b border-[#F0E6C0]/60' : ''}`}
+                    className={`flex items-center justify-between py-3.5 ${idx !== expenses.length - 1 ? 'border-b border-[#F0E6C0]/60' : ''}`}
                   >
                     <div className="flex-1 min-w-0 pr-4">
-                      <h5 className="text-sm font-bold text-[#5D5740] truncate leading-tight">{ex.title}</h5>
-                      <p className="text-[10px] text-[#A09980] font-mono leading-tight">{ex.time}</p>
+                      <h5 className="text-base font-bold text-[#5D5740] truncate leading-tight">{ex.title}</h5>
+                      <p className="text-xs text-[#A09980] font-mono leading-tight mt-1">{ex.time}</p>
                     </div>
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-4">
                       <div className="text-right">
-                        <p className="font-mono text-sm font-bold text-[#5D5740] leading-tight">¥{ex.amount.toLocaleString()}</p>
-                        <p className="text-[9px] text-[#A09980] leading-tight">≈ ${Math.round(ex.amount * rate)}</p>
+                        <p className="font-mono text-base font-bold text-[#5D5740] leading-tight">¥{ex.amount.toLocaleString()}</p>
+                        <p className="text-[10px] text-[#A09980] leading-tight mt-0.5">≈ ${Math.round(ex.amount * rate)}</p>
                       </div>
-                      <button onClick={() => removeExpense(ex.id)} className="text-[#D0C9B0] hover:text-morandi-pink transition-colors p-1">
-                        <Trash2 size={14} />
+                      <button onClick={() => removeExpense(ex.id)} className="text-[#D0C9B0] hover:text-morandi-pink transition-colors p-1.5">
+                        <Trash2 size={18} />
                       </button>
                     </div>
                   </div>
@@ -622,29 +622,29 @@ function ShoppingTab({ memo, setMemo }: any) {
           </h3>
         </div>
         <div className="glass-card p-6 space-y-4">
-          <div className="space-y-2">
+          <div className="space-y-3">
             {predefined.map(item => (
-              <div key={item.id} className="flex items-center justify-between group">
-                <button onClick={() => togglePrep(item.id)} className="flex items-center gap-3 flex-1 text-left">
-                  {item.done ? <CheckCircle2 size={20} className="text-morandi-blue" /> : <Circle size={20} className="text-gray-200" />}
-                  <span className={`text-sm ${item.done ? 'text-gray-300 line-through' : 'text-text-main font-medium'}`}>{item.text}</span>
+              <div key={item.id} className="flex items-center justify-between group py-1">
+                <button onClick={() => togglePrep(item.id)} className="flex items-center gap-4 flex-1 text-left">
+                  {item.done ? <CheckCircle2 size={24} className="text-morandi-blue" /> : <Circle size={24} className="text-gray-200" />}
+                  <span className={`text-base ${item.done ? 'text-gray-300 line-through' : 'text-text-main font-medium'}`}>{item.text}</span>
                 </button>
                 <button onClick={() => removePrep(item.id)} className="p-2 text-gray-300 hover:text-morandi-pink opacity-0 group-hover:opacity-100 transition-opacity">
-                  <Trash2 size={16} />
+                  <Trash2 size={20} />
                 </button>
               </div>
             ))}
           </div>
-          <div className="flex gap-2 pt-2 border-t border-morandi-sand/30">
+          <div className="flex gap-3 pt-4 border-t border-morandi-sand/30">
             <input 
               value={prepInput}
               onChange={(e) => setPrepInput(e.target.value)}
               placeholder="新增準備項目..."
-              className="flex-1 bg-morandi-sand/50 p-3 rounded-xl text-sm outline-none border border-transparent focus:border-morandi-blue/30"
+              className="flex-1 bg-morandi-sand/50 p-4 rounded-xl text-base outline-none border border-transparent focus:border-morandi-blue/30"
               onKeyPress={(e) => e.key === 'Enter' && addPrep()}
             />
-            <button onClick={addPrep} className="p-3 bg-morandi-blue text-white rounded-xl active:scale-90 transition-all">
-              <Plus size={20} />
+            <button onClick={addPrep} className="p-4 bg-morandi-blue text-white rounded-xl active:scale-90 transition-all">
+              <Plus size={24} />
             </button>
           </div>
         </div>
@@ -665,22 +665,22 @@ function ShoppingTab({ memo, setMemo }: any) {
         {/* 新增購物項目表單 */}
         <div className="glass-card p-6 space-y-4">
           <div className="flex gap-4">
-            <label className="w-20 h-20 bg-morandi-sand/50 rounded-2xl border-2 border-dashed border-morandi-blue/20 flex flex-col items-center justify-center cursor-pointer hover:bg-morandi-sand transition-colors relative overflow-hidden">
+            <label className="w-24 h-24 bg-morandi-sand/50 rounded-2xl border-2 border-dashed border-morandi-blue/20 flex flex-col items-center justify-center cursor-pointer hover:bg-morandi-sand transition-colors relative overflow-hidden shrink-0">
               {shopForm.photo ? (
                 <img src={shopForm.photo} className="w-full h-full object-cover" />
               ) : (
                 <>
-                  <Upload size={20} className="text-morandi-blue/40" />
-                  <span className="text-[10px] text-morandi-blue/40 mt-1">照片</span>
+                  <Upload size={24} className="text-morandi-blue/40" />
+                  <span className="text-xs text-morandi-blue/40 mt-1">照片</span>
                 </>
               )}
               <input type="file" accept="image/*" className="hidden" onChange={handlePhotoUpload} />
             </label>
-            <div className="flex-1 space-y-2">
+            <div className="flex-1 space-y-3">
               <select 
                 value={shopForm.category}
                 onChange={(e) => setShopForm({...shopForm, category: e.target.value})}
-                className="w-full bg-morandi-sand/50 p-2 rounded-lg text-xs outline-none border border-transparent focus:border-morandi-blue/30"
+                className="w-full bg-morandi-sand/50 p-3 rounded-lg text-sm outline-none border border-transparent focus:border-morandi-blue/30"
               >
                 {categories.map(c => <option key={c} value={c}>{c}</option>)}
               </select>
@@ -688,11 +688,11 @@ function ShoppingTab({ memo, setMemo }: any) {
                 value={shopForm.note}
                 onChange={(e) => setShopForm({...shopForm, note: e.target.value})}
                 placeholder="輸入商品名稱或備註..."
-                className="w-full bg-morandi-sand/50 p-2 rounded-lg text-xs outline-none border border-transparent focus:border-morandi-blue/30 resize-none h-12"
+                className="w-full bg-morandi-sand/50 p-3 rounded-lg text-sm outline-none border border-transparent focus:border-morandi-blue/30 resize-none h-16"
               />
             </div>
           </div>
-          <button onClick={addShopItem} className="w-full py-3 bg-morandi-pink text-white rounded-xl font-bold text-sm shadow-lg shadow-morandi-pink/20 active:scale-95 transition-all">
+          <button onClick={addShopItem} className="w-full py-4 bg-morandi-pink text-white rounded-xl font-bold text-base shadow-lg shadow-morandi-pink/20 active:scale-95 transition-all">
             加入清單
           </button>
         </div>
@@ -703,40 +703,40 @@ function ShoppingTab({ memo, setMemo }: any) {
             const items = shoppingItems.filter(i => i.category === cat);
             if (items.length === 0) return null;
             return (
-              <div key={cat} className="space-y-3">
-                <h4 className="text-xs font-bold text-morandi-dark px-2 uppercase tracking-widest flex items-center gap-2">
+              <div key={cat} className="space-y-4">
+                <h4 className="text-sm font-bold text-morandi-dark px-2 uppercase tracking-widest flex items-center gap-2">
                   <div className="w-1.5 h-1.5 rounded-full bg-morandi-pink" /> {cat}
                 </h4>
                 
-                <div className={viewMode === 'grid' ? "grid grid-cols-2 gap-4" : "space-y-3"}>
+                <div className={viewMode === 'grid' ? "grid grid-cols-2 gap-4" : "space-y-4"}>
                   {items.map((item, idx) => {
                     const globalIdx = shoppingItems.findIndex(si => si.id === item.id);
                     return (
-                      <div key={item.id} className={`glass-card overflow-hidden group relative ${viewMode === 'list' ? 'flex items-center p-2 gap-3' : 'flex flex-col'}`}>
-                        <div className={`${viewMode === 'list' ? 'w-12 h-12 rounded-lg' : 'aspect-square w-full'} bg-morandi-sand relative overflow-hidden`}>
+                      <div key={item.id} className={`glass-card overflow-hidden group relative ${viewMode === 'list' ? 'flex items-center p-3 gap-4' : 'flex flex-col'}`}>
+                        <div className={`${viewMode === 'list' ? 'w-16 h-16 rounded-lg' : 'aspect-square w-full'} bg-morandi-sand relative overflow-hidden shrink-0`}>
                           {item.photo ? (
                             <img src={item.photo} className="w-full h-full object-cover" />
                           ) : (
-                            <div className="w-full h-full flex items-center justify-center text-gray-300"><ImageIcon size={viewMode === 'list' ? 16 : 24} /></div>
+                            <div className="w-full h-full flex items-center justify-center text-gray-300"><ImageIcon size={viewMode === 'list' ? 20 : 32} /></div>
                           )}
-                          <button onClick={() => toggleShopItem(item.id)} className="absolute top-1 left-1 z-10">
-                            {item.done ? <CheckCircle2 size={16} className="text-white drop-shadow-md fill-morandi-blue" /> : <Circle size={16} className="text-white drop-shadow-md" />}
+                          <button onClick={() => toggleShopItem(item.id)} className="absolute top-2 left-2 z-10">
+                            {item.done ? <CheckCircle2 size={20} className="text-white drop-shadow-md fill-morandi-blue" /> : <Circle size={20} className="text-white drop-shadow-md" />}
                           </button>
                         </div>
                         
-                        <div className={`p-2 flex-1 min-w-0 ${item.done ? 'opacity-40' : ''}`}>
-                          <p className="text-xs font-bold text-text-main truncate">{item.note || '未命名商品'}</p>
+                        <div className={`p-3 flex-1 min-w-0 ${item.done ? 'opacity-40' : ''}`}>
+                          <p className="text-sm font-bold text-text-main leading-snug break-words">{item.note || '未命名商品'}</p>
                         </div>
 
                         {/* 操作按鈕 */}
-                        <div className="absolute top-1 right-1 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <div className="absolute top-2 right-2 flex gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
                           {viewMode === 'grid' && (
                             <>
-                              <button onClick={() => moveItem(globalIdx, 'up')} className="p-1 bg-white/90 rounded text-morandi-blue shadow-sm"><ChevronLeft size={12} /></button>
-                              <button onClick={() => moveItem(globalIdx, 'down')} className="p-1 bg-white/90 rounded text-morandi-blue shadow-sm"><ChevronRightIcon size={12} /></button>
+                              <button onClick={() => moveItem(globalIdx, 'up')} className="p-1.5 bg-white/90 rounded text-morandi-blue shadow-sm"><ChevronLeft size={14} /></button>
+                              <button onClick={() => moveItem(globalIdx, 'down')} className="p-1.5 bg-white/90 rounded text-morandi-blue shadow-sm"><ChevronRightIcon size={14} /></button>
                             </>
                           )}
-                          <button onClick={() => removeShopItem(item.id)} className="p-1 bg-white/90 rounded text-morandi-pink shadow-sm"><Trash2 size={12} /></button>
+                          <button onClick={() => removeShopItem(item.id)} className="p-1.5 bg-white/90 rounded text-morandi-pink shadow-sm"><Trash2 size={14} /></button>
                         </div>
                       </div>
                     );
@@ -760,7 +760,7 @@ function ShoppingTab({ memo, setMemo }: any) {
             value={memo}
             onChange={(e) => setMemo(e.target.value)}
             placeholder="輸入個人筆記、連結或重要資訊..."
-            className="w-full min-h-[150px] bg-morandi-sand/30 p-4 rounded-2xl text-sm outline-none resize-none text-text-main leading-relaxed border border-transparent focus:border-morandi-blue/20"
+            className="w-full min-h-[180px] bg-morandi-sand/30 p-5 rounded-2xl text-base outline-none resize-none text-text-main leading-relaxed border border-transparent focus:border-morandi-blue/20"
           />
         </div>
       </section>
@@ -774,6 +774,7 @@ function InfoTab() {
     return saved ? JSON.parse(saved) : [];
   });
   const [resInput, setResInput] = useState({ label: '', code: '' });
+  const [openSection, setOpenSection] = useState<string | null>('emergency');
 
   useEffect(() => { localStorage.setItem('okinawa_reservations', JSON.stringify(reservations)); }, [reservations]);
 
@@ -785,9 +786,14 @@ function InfoTab() {
 
   const removeRes = (id: string) => setReservations(reservations.filter(r => r.id !== id));
 
+  const toggleSection = (id: string) => {
+    setOpenSection(openSection === id ? null : id);
+  };
+
   return (
-    <div className="space-y-8 pb-10">
-      <div className="glass-card overflow-hidden h-[240px] relative shadow-sm">
+    <div className="space-y-6 pb-10">
+      {/* 1. Google Map - Top */}
+      <div className="glass-card overflow-hidden h-[280px] relative shadow-md border border-morandi-blue/20">
         <iframe 
           src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d114515.65485459317!2d127.6186847432049!3d26.24174363381014!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x34e5697141879401%3A0x10dba9a8008405e!2z5rKW57iE!5e0!3m2!1szh-TW!2stw!4v1715600000000!5m2!1szh-TW!2stw" 
           width="100%" 
@@ -799,161 +805,260 @@ function InfoTab() {
         ></iframe>
       </div>
 
-      <div className="space-y-4">
-        <div className="glass-card overflow-hidden border border-morandi-sand bg-white shadow-sm">
-          <div className="p-5 border-b border-morandi-sand bg-morandi-sand/10">
-            <h3 className="font-serif text-base font-bold text-text-main flex items-center gap-2">
-              <Smartphone size={18} className="text-morandi-blue" /> 緊急聯絡資訊
-            </h3>
-          </div>
-          <div className="grid grid-cols-2">
-            <div className="p-4 border-r border-b border-morandi-sand flex flex-col items-center justify-center gap-1">
-              <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">警察局</span>
-              <span className="text-2xl font-mono font-bold text-[#8B4545]">110</span>
-            </div>
-            <div className="p-4 border-b border-morandi-sand flex flex-col items-center justify-center gap-1">
-              <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">救護/火警</span>
-              <span className="text-2xl font-mono font-bold text-[#8B4545]">119</span>
-            </div>
-            <div className="col-span-2 p-5 border-b border-morandi-sand">
-              <div className="flex justify-between items-center mb-2">
-                <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">訪日外國人醫療 & 急救熱線</span>
-                <span className="text-[9px] font-bold bg-morandi-sand text-morandi-blue px-2 py-0.5 rounded-full">24H 中文</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <p className="text-2xl font-mono font-bold text-[#8B4545] tracking-tight">+81-50-3816-2787</p>
-                <button onClick={() => window.open('tel:+815038162787')} className="w-10 h-10 bg-morandi-sand text-morandi-blue rounded-xl flex items-center justify-center active:scale-90 transition-all">
-                  <PhoneCall size={18} />
-                </button>
-              </div>
-            </div>
-            <div className="col-span-2 p-5">
-              <div className="flex justify-between items-center mb-1">
-                <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">外交部駐日辦事處那霸分處</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <div className="space-y-0.5">
-                  <p className="text-[11px] font-bold text-text-main">急難救助專線</p>
-                  <p className="text-lg font-mono font-bold text-[#8B4545]">090-1942-1100</p>
-                </div>
-                <button onClick={() => window.open('tel:09019421100')} className="w-10 h-10 bg-morandi-sand text-morandi-blue rounded-xl flex items-center justify-center active:scale-90 transition-all">
-                  <PhoneCall size={18} />
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="glass-card p-6 space-y-5 bg-white border border-morandi-sand shadow-sm">
-          <h3 className="font-serif text-base font-bold text-text-main flex items-center gap-2">
-            <Ticket size={18} className="text-morandi-pink" /> 預約代號
-          </h3>
-          <div className="flex gap-2">
-            <input 
-              value={resInput.label}
-              onChange={(e) => setResInput({...resInput, label: e.target.value})}
-              placeholder="項目 (如: 星宇)"
-              className="flex-1 bg-morandi-sand/30 p-2.5 rounded-xl text-xs outline-none border border-transparent focus:border-morandi-pink/20"
-            />
-            <input 
-              value={resInput.code}
-              onChange={(e) => setResInput({...resInput, code: e.target.value})}
-              placeholder="代號"
-              className="flex-1 bg-morandi-sand/30 p-2.5 rounded-xl text-xs outline-none border border-transparent focus:border-morandi-pink/20 font-mono"
-            />
-            <button onClick={addRes} className="p-2.5 bg-morandi-pink text-white rounded-xl active:scale-90 transition-all">
-              <Plus size={18} />
-            </button>
-          </div>
-          <div className="grid grid-cols-2 gap-3">
-            {reservations.map(res => (
-              <div key={res.id} className="bg-morandi-sand/20 p-3 rounded-2xl border border-morandi-sand/50 relative group">
-                <p className="text-[10px] text-gray-400 mb-1 truncate pr-4">{res.label}</p>
-                <p className="text-sm font-bold font-mono text-text-main">{res.code}</p>
-                <button onClick={() => removeRes(res.id)} className="absolute top-2 right-2 text-gray-300 hover:text-morandi-pink opacity-0 group-hover:opacity-100 transition-opacity">
-                  <X size={12} />
-                </button>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Visit Japan Web Ticket Style - Smaller */}
+      {/* 2. Visit Japan Web - Second */}
       <div className="relative group cursor-pointer" onClick={() => window.open('https://www.vjw.digital.go.jp/')}>
         <div className="absolute -inset-1 bg-gradient-to-r from-morandi-blue to-morandi-ocean rounded-[24px] blur opacity-10 group-hover:opacity-30 transition duration-1000" />
         <div className="relative flex bg-white rounded-[20px] overflow-hidden border border-morandi-blue/10 shadow-md">
-          <div className="w-20 bg-morandi-blue p-4 flex flex-col items-center justify-center text-white gap-1 border-r-2 border-dashed border-white/30 relative">
+          <div className="w-24 bg-morandi-blue p-5 flex flex-col items-center justify-center text-white gap-2 border-r-2 border-dashed border-white/30 relative">
             <div className="absolute -top-2 -right-2 w-4 h-4 bg-morandi-sand rounded-full" />
             <div className="absolute -bottom-2 -right-2 w-4 h-4 bg-morandi-sand rounded-full" />
-            <Smartphone size={20} />
-            <span className="text-[8px] font-bold tracking-tighter uppercase vertical-text">Entry</span>
+            <Smartphone size={24} />
+            <span className="text-[10px] font-bold tracking-tighter uppercase vertical-text">Entry</span>
           </div>
-          <div className="flex-1 p-4 space-y-1">
+          <div className="flex-1 p-5 space-y-2">
             <div className="flex justify-between items-center">
-              <span className="text-[9px] font-bold text-morandi-blue uppercase tracking-widest">VJW Official</span>
-              <ExternalLink size={12} className="text-morandi-blue/40" />
+              <span className="text-xs font-bold text-morandi-blue uppercase tracking-widest">VJW Official</span>
+              <ExternalLink size={14} className="text-morandi-blue/40" />
             </div>
-            <h3 className="font-serif text-lg font-bold text-text-main">Visit Japan Web</h3>
-            <p className="text-[10px] text-text-muted leading-tight">請提前完成填寫並截圖通關 QR Code。</p>
+            <h3 className="font-serif text-xl font-bold text-text-main">Visit Japan Web</h3>
+            <p className="text-xs text-text-muted leading-tight">請提前完成填寫並截圖通關 QR Code。</p>
           </div>
         </div>
       </div>
 
-      <div className="glass-card p-6 space-y-5 border border-morandi-sand bg-white shadow-sm">
-        <h3 className="font-serif text-xl font-bold text-text-main flex items-center gap-2">
-          <div className="w-8 h-8 bg-morandi-pink/10 rounded-lg flex items-center justify-center text-morandi-pink">
-            <AlertTriangle size={18} />
+      {/* 3. Accordion Sections */}
+      <div className="space-y-3">
+        {/* 緊急聯絡資訊 */}
+        <CollapsibleSection 
+          id="emergency" 
+          title="緊急聯絡資訊" 
+          icon={<PhoneCall size={20} />} 
+          isOpen={openSection === 'emergency'} 
+          onToggle={() => toggleSection('emergency')}
+          color="morandi-blue"
+        >
+          <div className="grid grid-cols-2 border border-morandi-sand rounded-2xl overflow-hidden">
+            <div className="p-5 border-r border-b border-morandi-sand flex flex-col items-center justify-center gap-1">
+              <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">警察局</span>
+              <span className="text-3xl font-mono font-bold text-[#8B4545]">110</span>
+            </div>
+            <div className="p-5 border-b border-morandi-sand flex flex-col items-center justify-center gap-1">
+              <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">救護/火警</span>
+              <span className="text-3xl font-mono font-bold text-[#8B4545]">119</span>
+            </div>
+            <div className="col-span-2 p-6 border-b border-morandi-sand">
+              <div className="flex justify-between items-center mb-3">
+                <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">訪日外國人醫療 & 急救熱線</span>
+                <span className="text-[10px] font-bold bg-morandi-sand text-morandi-blue px-2 py-0.5 rounded-full">24H 中文</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <p className="text-2xl font-mono font-bold text-[#8B4545] tracking-tight">+81-50-3816-2787</p>
+                <button onClick={() => window.open('tel:+815038162787')} className="w-12 h-12 bg-morandi-sand text-morandi-blue rounded-xl flex items-center justify-center active:scale-90 transition-all">
+                  <PhoneCall size={20} />
+                </button>
+              </div>
+            </div>
+            <div className="col-span-2 p-6">
+              <div className="flex justify-between items-center mb-2">
+                <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">外交部駐日辦事處那霸分處</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <div className="space-y-1">
+                  <p className="text-sm font-bold text-text-main">急難救助專線</p>
+                  <p className="text-xl font-mono font-bold text-[#8B4545]">090-1942-1100</p>
+                </div>
+                <button onClick={() => window.open('tel:09019421100')} className="w-12 h-12 bg-morandi-sand text-morandi-blue rounded-xl flex items-center justify-center active:scale-90 transition-all">
+                  <PhoneCall size={20} />
+                </button>
+              </div>
+            </div>
           </div>
-          旅遊禁忌與注意事項
-        </h3>
-        <ul className="space-y-4 text-sm text-text-main leading-relaxed px-2">
-          <li className="flex gap-3">
-            <span className="text-morandi-pink font-bold">01</span>
-            <p><span className="font-bold">出入境違禁品：</span>嚴禁攜帶肉類製品、新鮮蔬果。</p>
-          </li>
-          <li className="flex gap-3">
-            <span className="text-morandi-pink font-bold">02</span>
-            <p><span className="font-bold">自駕規則：</span>沖繩速限較嚴格，切勿違規停車。</p>
-          </li>
-        </ul>
-      </div>
+        </CollapsibleSection>
 
-      <div className="glass-card p-6 space-y-5 border border-morandi-sand bg-white shadow-sm">
-        <h3 className="font-serif text-xl font-bold text-text-main flex items-center gap-2">
-          <div className="w-8 h-8 bg-morandi-blue/10 rounded-lg flex items-center justify-center text-morandi-blue">
-            <Smartphone size={18} />
+        {/* 預約代號 */}
+        <CollapsibleSection 
+          id="reservations" 
+          title="預約代號" 
+          icon={<Ticket size={20} />} 
+          isOpen={openSection === 'reservations'} 
+          onToggle={() => toggleSection('reservations')}
+          color="morandi-pink"
+        >
+          <div className="space-y-5">
+            <div className="flex gap-2">
+              <input 
+                value={resInput.label}
+                onChange={(e) => setResInput({...resInput, label: e.target.value})}
+                placeholder="項目 (如: 星宇)"
+                className="flex-1 bg-morandi-sand/30 p-3 rounded-xl text-sm outline-none border border-transparent focus:border-morandi-pink/20"
+              />
+              <input 
+                value={resInput.code}
+                onChange={(e) => setResInput({...resInput, code: e.target.value})}
+                placeholder="代號"
+                className="flex-1 bg-morandi-sand/30 p-3 rounded-xl text-sm outline-none border border-transparent focus:border-morandi-pink/20 font-mono"
+              />
+              <button onClick={addRes} className="p-3 bg-morandi-pink text-white rounded-xl active:scale-90 transition-all">
+                <Plus size={20} />
+              </button>
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              {reservations.map(res => (
+                <div key={res.id} className="bg-morandi-sand/20 p-4 rounded-2xl border border-morandi-sand/50 relative group">
+                  <p className="text-xs text-gray-400 mb-1 truncate pr-5">{res.label}</p>
+                  <p className="text-base font-bold font-mono text-text-main">{res.code}</p>
+                  <button onClick={() => removeRes(res.id)} className="absolute top-3 right-3 text-gray-300 hover:text-morandi-pink opacity-0 group-hover:opacity-100 transition-opacity">
+                    <X size={14} />
+                  </button>
+                </div>
+              ))}
+            </div>
           </div>
-          單軌列車 (Yui Rail)
-        </h3>
-        <div className="overflow-x-auto rounded-xl border border-morandi-sand">
-          <img 
-            src="https://lh3.googleusercontent.com/d/1vnkzussydV7yR_d5nXTRV8wDW5HMirBQ" 
-            className="min-w-[500px]" 
-            referrerPolicy="no-referrer"
-            alt="Yui Rail Map"
-          />
-        </div>
-        <p className="text-xs text-text-main leading-relaxed">
-          • 可使用現金、Suica, ICOCA。<br />
-          • 6歲以下兒童免票。<br />
-          • 飯店位於 11 歌町站。
-        </p>
-      </div>
+        </CollapsibleSection>
 
-      <div className="glass-card p-6 space-y-5 border border-morandi-sand bg-white shadow-sm">
-        <h3 className="font-serif text-xl font-bold text-text-main flex items-center gap-2">
-          <div className="w-8 h-8 bg-morandi-blue/10 rounded-lg flex items-center justify-center text-morandi-blue">
-            <Ticket size={18} />
+        {/* 旅遊禁忌與注意事項 */}
+        <CollapsibleSection 
+          id="taboos" 
+          title="旅遊禁忌與注意事項" 
+          icon={<AlertTriangle size={20} />} 
+          isOpen={openSection === 'taboos'} 
+          onToggle={() => toggleSection('taboos')}
+          color="morandi-pink"
+        >
+          <ul className="space-y-5 text-base text-text-main leading-relaxed px-2">
+            <li className="flex gap-4">
+              <span className="text-morandi-pink font-bold text-lg">01</span>
+              <p><span className="font-bold">出入境違禁品：</span>嚴禁攜帶肉類製品、新鮮蔬果。包含肉鬆、含肉泡麵等。</p>
+            </li>
+            <li className="flex gap-4">
+              <span className="text-morandi-pink font-bold text-lg">02</span>
+              <p><span className="font-bold">自駕規則：</span>沖繩速限較嚴格（一般道路 40-50km/h），切勿違規停車，罰金極高。</p>
+            </li>
+            <li className="flex gap-4">
+              <span className="text-morandi-pink font-bold text-lg">03</span>
+              <p><span className="font-bold">禮儀：</span>室內請輕聲細語，拍照前請先確認是否允許。垃圾請分類處理。</p>
+            </li>
+          </ul>
+        </CollapsibleSection>
+
+        {/* 單軌列車 (Yui Rail) */}
+        <CollapsibleSection 
+          id="yuirail" 
+          title="單軌列車 (Yui Rail)" 
+          icon={<Car size={20} />} 
+          isOpen={openSection === 'yuirail'} 
+          onToggle={() => toggleSection('yuirail')}
+          color="morandi-blue"
+        >
+          <div className="space-y-4">
+            <div className="overflow-x-auto rounded-xl border border-morandi-sand bg-white">
+              <img 
+                src="https://lh3.googleusercontent.com/d/1vnkzussydV7yR_d5nXTRV8wDW5HMirBQ" 
+                className="min-w-[600px] w-full" 
+                referrerPolicy="no-referrer"
+                alt="Yui Rail Map"
+              />
+            </div>
+            <div className="bg-morandi-sand/30 p-5 rounded-2xl space-y-2 text-sm leading-relaxed">
+              <p>• 可使用現金、Suica, ICOCA 等交通卡。</p>
+              <p>• 6歲以下兒童免票，6-12歲半價。</p>
+              <p>• 飯店位於 <span className="font-bold text-morandi-ocean">11 歌町站 (Omoromachi)</span>。</p>
+            </div>
           </div>
-          沖繩 FUNPASS
-        </h3>
-        <div className="flex items-center justify-between">
-          <p className="text-xs text-text-main flex-1">一票玩遍沖繩熱門景點！</p>
-          <a href="https://okinawa.funpass.app/" target="_blank" rel="noreferrer" className="w-10 h-10 bg-morandi-blue text-white rounded-xl flex items-center justify-center"><ExternalLink size={18} /></a>
-        </div>
+        </CollapsibleSection>
+
+        {/* 沖繩 FUNPASS */}
+        <CollapsibleSection 
+          id="funpass" 
+          title="沖繩 FUNPASS" 
+          icon={<Ticket size={20} />} 
+          isOpen={openSection === 'funpass'} 
+          onToggle={() => toggleSection('funpass')}
+          color="morandi-blue"
+        >
+          <div className="flex items-center justify-between bg-morandi-sand/20 p-5 rounded-2xl border border-morandi-sand/50">
+            <div className="space-y-1">
+              <p className="text-base font-bold text-text-main">一票玩遍沖繩熱門景點！</p>
+              <p className="text-xs text-text-muted">包含水族館、植物園等 7 大景點。</p>
+            </div>
+            <a href="https://okinawa.funpass.app/" target="_blank" rel="noreferrer" className="w-12 h-12 bg-morandi-blue text-white rounded-xl flex items-center justify-center shadow-md active:scale-90 transition-all">
+              <ExternalLink size={20} />
+            </a>
+          </div>
+        </CollapsibleSection>
+
+        {/* 購物折價券 */}
+        <CollapsibleSection 
+          id="coupons" 
+          title="購物折價券" 
+          icon={<Wallet size={20} />} 
+          isOpen={openSection === 'coupons'} 
+          onToggle={() => toggleSection('coupons')}
+          color="morandi-pink"
+        >
+          <div className="grid grid-cols-1 gap-4">
+            <CouponItem name="Bic Camera" discount="10% + 7% OFF" url="https://www.biccamera.com.t.tj.hp.transer.com/service/logistics/tax-free/index.html" />
+            <CouponItem name="Don Quijote (唐吉訶德)" discount="10% + 5% OFF" url="https://www.donki.com/en/service/coupon.php" />
+            <CouponItem name="松本清 (Matsukiyo)" discount="10% + 3-7% OFF" url="https://www.matsukiyo.co.jp/service/taxfree" />
+            <p className="text-xs text-center text-text-muted mt-2 italic">點擊開啟官方優惠券頁面，結帳時出示即可。</p>
+          </div>
+        </CollapsibleSection>
       </div>
     </div>
+  );
+}
+
+function CollapsibleSection({ id, title, icon, children, isOpen, onToggle, color }: any) {
+  return (
+    <div className="glass-card overflow-hidden border border-morandi-sand bg-white shadow-sm">
+      <button 
+        onClick={onToggle}
+        className={`w-full p-5 flex items-center justify-between transition-colors ${isOpen ? 'bg-morandi-sand/10' : 'hover:bg-gray-50'}`}
+      >
+        <div className="flex items-center gap-3">
+          <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${color === 'morandi-blue' ? 'bg-morandi-blue/10 text-morandi-blue' : 'bg-morandi-pink/10 text-morandi-pink'}`}>
+            {icon}
+          </div>
+          <h3 className="font-serif text-lg font-bold text-text-main">{title}</h3>
+        </div>
+        <motion.div
+          animate={{ rotate: isOpen ? 180 : 0 }}
+          transition={{ duration: 0.3 }}
+          className="text-gray-300"
+        >
+          <ChevronRight size={20} className="rotate-90" />
+        </motion.div>
+      </button>
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <div className="p-6 pt-2 border-t border-morandi-sand/30">
+              {children}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
+function CouponItem({ name, discount, url }: any) {
+  return (
+    <button 
+      onClick={() => window.open(url)}
+      className="flex items-center justify-between p-4 bg-morandi-sand/20 rounded-2xl border border-morandi-sand/50 hover:bg-morandi-sand/40 transition-all group"
+    >
+      <div className="text-left">
+        <p className="text-sm font-bold text-text-main">{name}</p>
+        <p className="text-xs text-morandi-pink font-bold mt-0.5">{discount}</p>
+      </div>
+      <ExternalLink size={16} className="text-morandi-blue opacity-40 group-hover:opacity-100 transition-opacity" />
+    </button>
   );
 }
 
