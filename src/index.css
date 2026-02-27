@@ -8,19 +8,19 @@
 }
 
 :root {
-  --morandi-blue: #94A7AE;
-  --morandi-ocean: #5E7D8E;
-  --morandi-sand: #F2EFE9;
-  --morandi-sand-dark: #D9D2C5;
-  --morandi-pink: #C8A9A2;
-  --morandi-dark: #7A868A;
-  --text-main: #4A5559;
-  --text-muted: #8E9BA0;
+  --morandi-bg: #F0F4F7;
+  --morandi-card: #F8FAFB;
+  --morandi-primary: #849BB3;
+  --morandi-primary-light: #A3B5C7;
+  --morandi-text: #4A5568;
+  --morandi-text-muted: #718096;
+  --morandi-accent: #BCCCDC;
+  --morandi-shadow: rgba(132, 155, 179, 0.1);
 }
 
 body {
-  background-color: #E8EDF0;
-  color: var(--text-main);
+  background-color: var(--morandi-bg);
+  color: var(--morandi-text);
   -webkit-tap-highlight-color: transparent;
   overflow-x: hidden;
   width: 100%;
@@ -29,6 +29,7 @@ body {
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-serif) !important;
+  color: var(--morandi-text);
 }
 
 .hide-scrollbar::-webkit-scrollbar {
@@ -41,21 +42,20 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .glass-card {
-  background: white;
-  border-radius: 28px;
-  border: 1px solid rgba(255, 255, 255, 0.8);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.02);
+  background: var(--morandi-card);
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 0 10px 30px var(--morandi-shadow);
 }
 
-/* Custom utility classes for Morandi colors */
-.bg-morandi-blue { background-color: var(--morandi-blue); }
-.bg-morandi-sand { background-color: var(--morandi-sand); }
-.bg-morandi-pink { background-color: var(--morandi-pink); }
-.text-morandi-blue { color: var(--morandi-blue); }
-.text-morandi-dark { color: var(--morandi-dark); }
-.text-morandi-pink { color: var(--morandi-pink); }
-.border-morandi-sand { border-color: var(--morandi-sand); }
-.border-morandi-pink { border-color: var(--morandi-pink); }
+/* Custom utility classes for Morandi Blue Palette */
+.bg-morandi-primary { background-color: var(--morandi-primary); }
+.bg-morandi-bg { background-color: var(--morandi-bg); }
+.bg-morandi-card { background-color: var(--morandi-card); }
+.text-morandi-primary { color: var(--morandi-primary); }
+.text-morandi-text { color: var(--morandi-text); }
+.text-morandi-muted { color: var(--morandi-text-muted); }
+.border-morandi-primary { border-color: var(--morandi-primary); }
 
 .vertical-text {
   writing-mode: vertical-rl;
