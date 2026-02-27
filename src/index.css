@@ -1,9 +1,9 @@
 @import "tailwindcss";
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=ZCOOL+XiaoWei&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;700&family=Noto+Serif+TC:wght@700&display=swap');
 
 @theme {
-  --font-sans: "Noto Sans TC", ui-sans-serif, system-ui, sans-serif;
-  --font-serif: "ZCOOL XiaoWei", serif;
+  --font-sans: "Noto Serif TC", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Noto Serif TC", serif;
 }
 
 :root {
