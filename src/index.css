@@ -4,6 +4,7 @@
 @theme {
   --font-sans: "Noto Serif TC", serif;
   --font-serif: "Noto Serif TC", serif;
+  --font-mono: "Noto Serif TC", serif;
 }
 
 :root {
@@ -58,4 +59,9 @@ h1, h2, h3, h4, h5, h6 {
 .vertical-text {
   writing-mode: vertical-rl;
   text-orientation: mixed;
+}
+
+/* Force Noto Serif TC globally */
+*, body, h1, h2, h3, h4, h5, h6, p, span, div, button, input, select, textarea, a, li, label {
+  font-family: "Noto Serif TC", serif !important;
 }
