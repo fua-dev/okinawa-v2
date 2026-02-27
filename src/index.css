@@ -1,10 +1,10 @@
 @import "tailwindcss";
-@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&family=Noto+Serif+TC:wght@400;700&display=swap');
 
 @theme {
-  --font-sans: "Noto Serif TC", serif;
+  --font-sans: "Noto Sans TC", sans-serif;
   --font-serif: "Noto Serif TC", serif;
-  --font-mono: "Noto Serif TC", serif;
+  --font-mono: "Noto Sans TC", sans-serif;
 }
 
 :root {
@@ -24,10 +24,11 @@ body {
   -webkit-tap-highlight-color: transparent;
   overflow-x: hidden;
   width: 100%;
+  font-family: var(--font-sans);
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-serif);
+  font-family: var(--font-serif) !important;
 }
 
 .hide-scrollbar::-webkit-scrollbar {
@@ -59,9 +60,4 @@ h1, h2, h3, h4, h5, h6 {
 .vertical-text {
   writing-mode: vertical-rl;
   text-orientation: mixed;
-}
-
-/* Force Noto Serif TC globally */
-*, body, h1, h2, h3, h4, h5, h6, p, span, div, button, input, select, textarea, a, li, label {
-  font-family: "Noto Serif TC", serif !important;
 }

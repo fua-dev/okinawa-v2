@@ -14,6 +14,14 @@ import {
   PhoneCall
 } from 'lucide-react';
 
+const fontStyleSerif = {
+  fontFamily: "'Noto Serif TC', serif",
+};
+
+const fontStyleSans = {
+  fontFamily: "'Noto Sans TC', sans-serif",
+};
+
 // --- Data ---
 const ITINERARY_DATA = [
   { 
@@ -123,14 +131,19 @@ export default function App() {
   }, []);
 
   return (
-    <div className="max-w-[480px] mx-auto min-h-screen bg-morandi-sand relative pb-36 font-sans overflow-x-hidden">
+    <div style={fontStyleSans} className="max-w-[480px] mx-auto min-h-screen bg-morandi-sand relative pb-36 overflow-x-hidden">
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&family=Noto+Serif+TC:wght@400;700&display=swap');
+        body { font-family: 'Noto Sans TC', sans-serif; }
+        h1, h2, h3, h4, h5, h6, .font-serif { font-family: 'Noto Serif TC', serif !important; }
+      `}</style>
       <header className="pt-10 pb-6 relative px-8 overflow-hidden">
         <div className="absolute top-0 right-0 w-32 h-32 bg-morandi-blue/5 rounded-full -mr-16 -mt-16 blur-3xl" />
         <div className="relative z-10">
           <div className="flex justify-between items-end mb-4">
             <div className="space-y-1">
               <p className="text-xs tracking-[0.5em] text-morandi-ocean font-bold uppercase">Summer 2026</p>
-              <h1 className="font-serif text-5xl font-black tracking-tighter text-text-main leading-none">
+              <h1 style={fontStyleSerif} className="text-5xl font-black tracking-tighter text-text-main leading-none">
                 沖繩之旅
               </h1>
             </div>
@@ -140,7 +153,7 @@ export default function App() {
           </div>
           <div className="flex items-center gap-4">
             <div className="h-px flex-1 bg-gradient-to-r from-morandi-blue/40 to-transparent" />
-            <span className="text-xs font-serif italic text-morandi-dark tracking-widest">Family Adventure</span>
+            <span className="text-xs italic text-morandi-dark tracking-widest">Family Adventure</span>
             <div className="h-px w-8 bg-morandi-pink/40" />
           </div>
         </div>
@@ -152,7 +165,7 @@ export default function App() {
             <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.9 }} className="w-full max-w-[360px] bg-white rounded-[40px] p-10 shadow-2xl relative text-center">
               <button onClick={() => setShowDeclaration(false)} className="absolute top-6 right-6 text-gray-200"><X size={24} /></button>
               <div className="w-16 h-16 bg-morandi-sand rounded-full flex items-center justify-center mx-auto mb-6 text-morandi-blue"><Users size={32} /></div>
-              <h3 className="font-serif text-2xl font-bold text-text-main mb-6">家族旅遊宣言</h3>
+              <h3 className="text-2xl font-bold text-text-main mb-6">家族旅遊宣言</h3>
               <div className="space-y-4 text-base text-text-main leading-relaxed">
                 <p>「累了就休息，肚子餓了就吃飯，想上廁所馬上說。」</p>
                 <p>「每天一張合照：留下 7 人的沖繩記憶。」</p>
@@ -209,11 +222,11 @@ function ScheduleTab({ currentDay, setCurrentDay, setSelectedItem, weatherForeca
 
   const getWeatherIcon = (condition: string) => {
     switch (condition) {
-      case 'sun': return <Sun size={20} className="text-amber-400" />;
-      case 'cloud-sun': return <CloudSun size={20} className="text-morandi-blue" />;
-      case 'cloud': return <Cloud size={20} className="text-gray-400" />;
-      case 'rain': return <CloudRain size={20} className="text-blue-400" />;
-      default: return <Sun size={20} className="text-amber-400" />;
+      case 'sun': return <Sun size={28} className="text-amber-400" />;
+      case 'cloud-sun': return <CloudSun size={28} className="text-morandi-blue" />;
+      case 'cloud': return <Cloud size={28} className="text-gray-400" />;
+      case 'rain': return <CloudRain size={28} className="text-blue-400" />;
+      default: return <Sun size={28} className="text-amber-400" />;
     }
   };
 
@@ -235,8 +248,8 @@ function ScheduleTab({ currentDay, setCurrentDay, setSelectedItem, weatherForeca
       <div className="flex justify-between px-2 py-1 gap-2 hide-scrollbar overflow-x-auto">
         {ITINERARY_DATA.map(d => (
           <button key={d.day} onClick={() => setCurrentDay(d.day)} className="flex flex-col items-center min-w-[60px]">
-            <span className={`text-xs font-bold tracking-widest font-serif ${currentDay === d.day ? 'text-morandi-ocean' : 'text-gray-300'}`}>{d.week}</span>
-            <span className={`font-serif text-3xl mt-1 ${currentDay === d.day ? 'font-bold text-text-main' : 'text-gray-300'}`}>{d.date.split('-')[2]}</span>
+            <span className={`text-xs font-bold tracking-widest ${currentDay === d.day ? 'text-morandi-ocean' : 'text-gray-300'}`}>{d.week}</span>
+            <span className={`text-3xl mt-1 ${currentDay === d.day ? 'font-bold text-text-main' : 'text-gray-300'}`}>{d.date.split('-')[2]}</span>
             {currentDay === d.day && <div className="w-1.5 h-1.5 rounded-full bg-morandi-pink mt-1.5" />}
           </button>
         ))}
@@ -244,9 +257,9 @@ function ScheduleTab({ currentDay, setCurrentDay, setSelectedItem, weatherForeca
 
       <div className="h-px bg-gray-200/40 mx-2" />
 
-      <div className="py-1">
-        <div className="flex overflow-x-auto gap-8 px-4 py-2 hide-scrollbar snap-x">
-          {weatherForecast.map((w: any, i: number) => (
+      <div className="py-2">
+        <div className="flex overflow-x-auto justify-between px-4 py-3 hide-scrollbar snap-x">
+          {weatherForecast.slice(0, 6).map((w: any, i: number) => (
             <button 
               key={i} 
               onClick={() => {
@@ -271,15 +284,15 @@ function ScheduleTab({ currentDay, setCurrentDay, setSelectedItem, weatherForeca
                   }
                 }
               }}
-              className="flex flex-col items-center gap-1 snap-start min-w-fit active:scale-95 transition-all group"
+              className="flex flex-col items-center gap-2 snap-start active:scale-95 transition-all group"
             >
-              <span className="text-xs font-bold text-gray-400 group-hover:text-morandi-blue transition-colors">
+              <span className="text-sm font-bold text-gray-400 group-hover:text-morandi-blue transition-colors">
                 {i === 0 ? "現在" : w.time}
               </span>
               <div className="flex items-center justify-center py-1 group-hover:scale-110 transition-transform">
                 {getWeatherIcon(w.condition)}
               </div>
-              <span className="text-base font-bold text-text-main group-hover:text-morandi-blue transition-colors">{w.temp}°</span>
+              <span className="text-lg font-bold text-text-main group-hover:text-morandi-blue transition-colors">{w.temp}°</span>
             </button>
           ))}
         </div>
@@ -306,7 +319,7 @@ function ScheduleTab({ currentDay, setCurrentDay, setSelectedItem, weatherForeca
 
                   {/* Time Column */}
                   <div className="w-14 text-right pt-0.5 relative z-10">
-                    <span className="text-lg font-serif font-bold text-text-main group-active:text-morandi-ocean transition-colors">
+                    <span className="text-lg font-bold text-text-main group-active:text-morandi-ocean transition-colors">
                       {item.time}
                     </span>
                   </div>
@@ -316,7 +329,7 @@ function ScheduleTab({ currentDay, setCurrentDay, setSelectedItem, weatherForeca
 
                   {/* Content Column */}
                   <div className="flex-1 min-w-0 space-y-1.5 relative z-10">
-                    <h4 className="font-serif font-bold text-text-main text-lg group-active:text-morandi-ocean transition-colors truncate">
+                    <h4 className="font-bold text-text-main text-lg group-active:text-morandi-ocean transition-colors truncate">
                       {item.title}
                     </h4>
                     
@@ -332,7 +345,7 @@ function ScheduleTab({ currentDay, setCurrentDay, setSelectedItem, weatherForeca
 
         {backupItems.length > 0 && (
           <div className="mt-12 space-y-4">
-            <h4 className="text-sm font-bold text-morandi-dark px-2 uppercase tracking-widest font-serif flex items-center gap-2">
+            <h4 className="text-sm font-bold text-morandi-dark px-2 uppercase tracking-widest flex items-center gap-2">
               <div className="w-1.5 h-1.5 rounded-full bg-morandi-pink" /> 備案行程
             </h4>
             {backupItems.map((item: any) => (
@@ -342,7 +355,7 @@ function ScheduleTab({ currentDay, setCurrentDay, setSelectedItem, weatherForeca
                 className="glass-card p-6 border border-morandi-blue/20 bg-white/80 shadow-sm active:scale-[0.98] transition-all cursor-pointer"
               >
                 <div className="flex justify-between items-start mb-2">
-                  <h5 className="font-serif font-bold text-text-main text-xl">{item.title}</h5>
+                  <h5 className="font-bold text-text-main text-xl">{item.title}</h5>
                   <span className="text-xs font-bold bg-morandi-sand px-2 py-0.5 rounded-full text-morandi-blue uppercase">Backup</span>
                 </div>
                 <p className="text-sm text-text-muted leading-relaxed">{item.detail}</p>
@@ -372,7 +385,7 @@ function GuideModal({ item, onClose }: any) {
         </button>
         <div className="text-center mb-8">
           <span className="px-3 py-1 bg-morandi-sand text-morandi-blue text-[10px] font-bold uppercase rounded-full">{item.type}</span>
-          <h2 className="font-serif text-3xl font-bold mt-4 text-text-main">{item.title}</h2>
+          <h2 className="text-3xl font-bold mt-4 text-text-main">{item.title}</h2>
         </div>
         <div className="space-y-6">
           <div className="bg-morandi-sand/50 p-6 rounded-[32px] space-y-4 text-sm">
@@ -446,22 +459,26 @@ function BudgetTab({ expenses, setExpenses, rate }: any) {
           <div className="w-10 h-10 bg-morandi-blue/10 rounded-xl flex items-center justify-center text-morandi-blue">
             <Wallet size={20} />
           </div>
-          <h3 className="font-serif text-2xl font-bold text-text-main">旅行帳本</h3>
+          <h3 className="text-2xl font-bold text-text-main">旅行帳本</h3>
         </div>
 
         <div className="space-y-4">
-          <div className="bg-white/60 p-5 rounded-[24px] border border-morandi-sand shadow-inner">
-            <label className="text-xs text-morandi-dark block mb-2 tracking-widest uppercase font-bold font-serif">即時換算 (1 JPY ≈ {rate.toFixed(4)} TWD)</label>
+          <div className="bg-white/60 p-4 rounded-[20px] border border-morandi-sand shadow-inner">
+            <div className="flex flex-col gap-0.5 mb-1.5">
+              <label className="text-[10px] text-morandi-dark tracking-widest uppercase font-bold">即時換算 (1 JPY ≈ {rate.toFixed(4)} TWD)</label>
+              <p className="text-[9px] text-text-muted leading-tight">輸入算式 (如 1500+200*3...)</p>
+            </div>
             <div className="flex items-center gap-2">
-              <span className="text-xl font-mono text-morandi-blue">¥</span>
+              <span className="text-lg font-mono text-morandi-blue">¥</span>
               <input 
                 value={calcInput}
                 onChange={(e) => setCalcInput(e.target.value)}
-                placeholder="輸入算式 (如 1500+200)..." 
-                className="w-full bg-transparent text-2xl font-mono outline-none text-text-main"
+                placeholder="0" 
+                inputMode="decimal"
+                className="w-full bg-transparent text-xl font-mono outline-none text-text-main"
               />
             </div>
-            <div className="text-right text-sm mt-2 text-morandi-dark font-medium bg-morandi-sand/50 inline-block px-4 py-1.5 rounded-full float-right">
+            <div className="text-right text-xs mt-1 text-morandi-dark font-medium bg-morandi-sand/50 inline-block px-3 py-1 rounded-full float-right">
               ≈ $ {Math.round(calcResult * rate).toLocaleString()} TWD
             </div>
             <div className="clear-both" />
@@ -469,24 +486,27 @@ function BudgetTab({ expenses, setExpenses, rate }: any) {
 
           <div className="flex flex-col gap-3">
             <input 
+              style={fontStyleSerif}
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="項目名稱" 
-              className="w-full p-5 bg-morandi-sand/50 rounded-2xl outline-none text-base border border-transparent focus:border-morandi-blue/30 transition-all"
+              className="w-full p-4 bg-morandi-sand/50 rounded-2xl outline-none text-base border border-transparent focus:border-morandi-blue/30 transition-all"
             />
             <div className="flex gap-3">
               <input 
+                style={fontStyleSerif}
                 type="number"
+                inputMode="decimal"
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
                 placeholder="金額 (JPY)" 
-                className="flex-1 p-5 bg-morandi-sand/50 rounded-2xl outline-none text-base border border-transparent focus:border-morandi-blue/30 transition-all font-mono"
+                className="flex-1 p-4 bg-morandi-sand/50 rounded-2xl outline-none text-lg border border-transparent focus:border-morandi-blue/30 transition-all font-mono"
               />
               <button 
                 onClick={addExpense}
-                className="px-10 bg-morandi-blue text-white rounded-2xl text-base font-bold tracking-widest shadow-lg shadow-morandi-blue/20 active:scale-95 transition-all flex items-center justify-center"
+                className="w-14 h-14 bg-morandi-blue text-white rounded-2xl text-base font-bold shadow-lg shadow-morandi-blue/20 active:scale-95 transition-all flex items-center justify-center shrink-0"
               >
-                <Plus size={24} />
+                <Plus size={20} />
               </button>
             </div>
           </div>
@@ -495,19 +515,19 @@ function BudgetTab({ expenses, setExpenses, rate }: any) {
 
       <div className="glass-card p-6 space-y-6">
         <div className="grid grid-cols-2 gap-4">
-          <div className="bg-morandi-sand/80 p-5 rounded-[24px] border border-white/50">
-            <p className="text-xs text-morandi-dark mb-1 uppercase tracking-widest font-bold font-serif">Total JPY</p>
+          <div className="bg-morandi-blue/5 p-5 rounded-[24px] border border-morandi-blue/20 shadow-sm">
+            <p className="text-[10px] text-morandi-blue mb-1 uppercase tracking-[0.2em] font-black">Total JPY</p>
             <p className="text-2xl font-mono font-bold text-text-main">¥{totalJPY.toLocaleString()}</p>
           </div>
-          <div className="bg-morandi-pink/10 p-5 rounded-[24px] border border-morandi-pink/10">
-            <p className="text-xs text-morandi-pink mb-1 uppercase tracking-widest font-bold font-serif">Total TWD</p>
+          <div className="bg-morandi-pink/5 p-5 rounded-[24px] border border-morandi-pink/20 shadow-sm">
+            <p className="text-[10px] text-morandi-pink mb-1 uppercase tracking-[0.2em] font-black">Total TWD</p>
             <p className="text-2xl font-mono font-bold text-morandi-pink">${totalTWD.toLocaleString()}</p>
           </div>
         </div>
 
         <div className="space-y-0.5">
           <div className="flex items-center justify-between px-2 mb-3">
-            <h4 className="text-sm font-bold text-morandi-dark uppercase tracking-widest font-serif">支出明細</h4>
+            <h4 className="text-sm font-bold text-morandi-dark uppercase tracking-widest">支出明細</h4>
             <span className="text-xs text-text-muted">{expenses.length} 筆紀錄</span>
           </div>
           
@@ -581,7 +601,36 @@ function ShoppingTab({ memo, setMemo }: any) {
     const file = e.target.files[0];
     if (file) {
       const reader = new FileReader();
-      reader.onloadend = () => setShopForm({ ...shopForm, photo: reader.result as string });
+      reader.onloadend = () => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          const MAX_WIDTH = 400;
+          const MAX_HEIGHT = 400;
+          let width = img.width;
+          let height = img.height;
+
+          if (width > height) {
+            if (width > MAX_WIDTH) {
+              height *= MAX_WIDTH / width;
+              width = MAX_WIDTH;
+            }
+          } else {
+            if (height > MAX_HEIGHT) {
+              width *= MAX_HEIGHT / height;
+              height = MAX_HEIGHT;
+            }
+          }
+
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx?.drawImage(img, 0, 0, width, height);
+          const compressedBase64 = canvas.toDataURL('image/jpeg', 0.7);
+          setShopForm({ ...shopForm, photo: compressedBase64 });
+        };
+        img.src = reader.result as string;
+      };
       reader.readAsDataURL(file);
     }
   };
@@ -617,7 +666,7 @@ function ShoppingTab({ memo, setMemo }: any) {
       {/* 行前準備 */}
       <section className="space-y-4">
         <div className="flex justify-between items-center px-2">
-          <h3 className="font-serif text-xl font-bold text-text-main flex items-center gap-2">
+          <h3 className="text-xl font-bold text-text-main flex items-center gap-2">
             <ListCheck size={20} className="text-morandi-blue" /> 行前準備
           </h3>
         </div>
@@ -629,7 +678,7 @@ function ShoppingTab({ memo, setMemo }: any) {
                   {item.done ? <CheckCircle2 size={24} className="text-morandi-blue" /> : <Circle size={24} className="text-gray-200" />}
                   <span className={`text-base ${item.done ? 'text-gray-300 line-through' : 'text-text-main font-medium'}`}>{item.text}</span>
                 </button>
-                <button onClick={() => removePrep(item.id)} className="p-2 text-gray-300 hover:text-morandi-pink opacity-0 group-hover:opacity-100 transition-opacity">
+                <button onClick={() => removePrep(item.id)} className="p-2 text-gray-300 hover:text-morandi-pink opacity-40 active:opacity-100 transition-opacity">
                   <Trash2 size={20} />
                 </button>
               </div>
@@ -643,8 +692,8 @@ function ShoppingTab({ memo, setMemo }: any) {
               className="flex-1 bg-morandi-sand/50 p-4 rounded-xl text-base outline-none border border-transparent focus:border-morandi-blue/30"
               onKeyPress={(e) => e.key === 'Enter' && addPrep()}
             />
-            <button onClick={addPrep} className="p-4 bg-morandi-blue text-white rounded-xl active:scale-90 transition-all">
-              <Plus size={24} />
+            <button onClick={addPrep} className="w-14 h-14 bg-morandi-blue text-white rounded-xl active:scale-90 transition-all flex items-center justify-center shrink-0">
+              <Plus size={20} />
             </button>
           </div>
         </div>
@@ -653,7 +702,7 @@ function ShoppingTab({ memo, setMemo }: any) {
       {/* 購物清單 */}
       <section className="space-y-4">
         <div className="flex justify-between items-center px-2">
-          <h3 className="font-serif text-xl font-bold text-text-main flex items-center gap-2">
+          <h3 className="text-xl font-bold text-text-main flex items-center gap-2">
             <ImageIcon size={20} className="text-morandi-pink" /> 購物清單
           </h3>
           <div className="flex bg-white/50 rounded-lg p-1 border border-white">
@@ -729,7 +778,7 @@ function ShoppingTab({ memo, setMemo }: any) {
                         </div>
 
                         {/* 操作按鈕 */}
-                        <div className="absolute top-2 right-2 flex gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <div className="absolute top-2 right-2 flex gap-1.5 opacity-40 active:opacity-100 transition-opacity">
                           {viewMode === 'grid' && (
                             <>
                               <button onClick={() => moveItem(globalIdx, 'up')} className="p-1.5 bg-white/90 rounded text-morandi-blue shadow-sm"><ChevronLeft size={14} /></button>
@@ -751,7 +800,7 @@ function ShoppingTab({ memo, setMemo }: any) {
       {/* 個人備忘錄 */}
       <section className="space-y-4">
         <div className="flex justify-between items-center px-2">
-          <h3 className="font-serif text-xl font-bold text-text-main flex items-center gap-2">
+          <h3 className="text-xl font-bold text-text-main flex items-center gap-2">
             <Smartphone size={20} className="text-morandi-blue" /> 個人備忘錄
           </h3>
         </div>
@@ -820,7 +869,7 @@ function InfoTab() {
               <span className="text-xs font-bold text-morandi-blue uppercase tracking-widest">VJW Official</span>
               <ExternalLink size={14} className="text-morandi-blue/40" />
             </div>
-            <h3 className="font-serif text-xl font-bold text-text-main">Visit Japan Web</h3>
+            <h3 className="text-xl font-bold text-text-main">Visit Japan Web</h3>
             <p className="text-xs text-text-muted leading-tight">請提前完成填寫並截圖通關 QR Code。</p>
           </div>
         </div>
@@ -839,20 +888,20 @@ function InfoTab() {
         >
           <div className="grid grid-cols-2 border border-morandi-sand rounded-2xl overflow-hidden">
             <div className="p-5 border-r border-b border-morandi-sand flex flex-col items-center justify-center gap-1">
-              <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">警察局</span>
-              <span className="text-3xl font-mono font-bold text-[#8B4545]">110</span>
+              <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">警察局</span>
+              <span style={fontStyleSerif} className="text-4xl font-bold text-[#8B4545]">110</span>
             </div>
             <div className="p-5 border-b border-morandi-sand flex flex-col items-center justify-center gap-1">
-              <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">救護/火警</span>
-              <span className="text-3xl font-mono font-bold text-[#8B4545]">119</span>
+              <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">救護/火警</span>
+              <span style={fontStyleSerif} className="text-4xl font-bold text-[#8B4545]">119</span>
             </div>
             <div className="col-span-2 p-6 border-b border-morandi-sand">
               <div className="flex justify-between items-center mb-3">
-                <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">訪日外國人醫療 & 急救熱線</span>
-                <span className="text-[10px] font-bold bg-morandi-sand text-morandi-blue px-2 py-0.5 rounded-full">24H 中文</span>
+                <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">訪日外國人醫療 & 急救熱線</span>
+                <span className="text-[9px] font-bold bg-morandi-sand text-morandi-blue px-2 py-0.5 rounded-full">24H 中文</span>
               </div>
               <div className="flex items-center justify-between">
-                <p className="text-2xl font-mono font-bold text-[#8B4545] tracking-tight">+81-50-3816-2787</p>
+                <p style={fontStyleSerif} className="text-2xl font-bold text-[#8B4545] tracking-tight">+81-50-3816-2787</p>
                 <button onClick={() => window.open('tel:+815038162787')} className="w-12 h-12 bg-morandi-sand text-morandi-blue rounded-xl flex items-center justify-center active:scale-90 transition-all">
                   <PhoneCall size={20} />
                 </button>
@@ -860,12 +909,12 @@ function InfoTab() {
             </div>
             <div className="col-span-2 p-6">
               <div className="flex justify-between items-center mb-2">
-                <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">外交部駐日辦事處那霸分處</span>
+                <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">外交部駐日辦事處那霸分處</span>
               </div>
               <div className="flex items-center justify-between">
                 <div className="space-y-1">
-                  <p className="text-sm font-bold text-text-main">急難救助專線</p>
-                  <p className="text-xl font-mono font-bold text-[#8B4545]">090-1942-1100</p>
+                  <p className="text-xs font-bold text-text-main">急難救助專線</p>
+                  <p style={fontStyleSerif} className="text-2xl font-bold text-[#8B4545]">090-1942-1100</p>
                 </div>
                 <button onClick={() => window.open('tel:09019421100')} className="w-12 h-12 bg-morandi-sand text-morandi-blue rounded-xl flex items-center justify-center active:scale-90 transition-all">
                   <PhoneCall size={20} />
@@ -1019,7 +1068,7 @@ function CollapsibleSection({ id, title, icon, children, isOpen, onToggle, color
           <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${color === 'morandi-blue' ? 'bg-morandi-blue/10 text-morandi-blue' : 'bg-morandi-pink/10 text-morandi-pink'}`}>
             {icon}
           </div>
-          <h3 className="font-serif text-lg font-bold text-text-main">{title}</h3>
+          <h3 className="text-lg font-bold text-text-main">{title}</h3>
         </div>
         <motion.div
           animate={{ rotate: isOpen ? 180 : 0 }}
