@@ -20,6 +20,7 @@
 
 body {
   background-color: var(--morandi-bg);
+  background-image: url("data:image/svg+xml,%3Csvg width='100' height='40' viewBox='0 0 100 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 30 Q 12.5 20 25 30 T 50 30 T 75 30 T 100 30' fill='none' stroke='white' stroke-width='0.5' stroke-opacity='0.15'/%3E%3Cpath d='M-25 35 Q -12.5 25 0 35 T 25 35 T 50 35 T 75 35 T 100 35' fill='none' stroke='white' stroke-width='0.5' stroke-opacity='0.1'/%3E%3C/svg%3E");
   color: var(--morandi-text);
   -webkit-tap-highlight-color: transparent;
   overflow-x: hidden;
@@ -30,6 +31,7 @@ body {
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-serif) !important;
   color: var(--morandi-text);
+  letter-spacing: -0.02em;
 }
 
 .hide-scrollbar::-webkit-scrollbar {
@@ -42,10 +44,12 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .glass-card {
-  background: var(--morandi-card);
-  border-radius: 24px;
-  border: 1px solid rgba(255, 255, 255, 0.6);
-  box-shadow: 0 10px 30px var(--morandi-shadow);
+  background: rgba(248, 250, 251, 0.85);
+  backdrop-filter: blur(10px);
+  border-radius: 32px;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 15px 35px var(--morandi-shadow);
+  padding: 2rem;
 }
 
 /* Custom utility classes for Morandi Blue Palette */
