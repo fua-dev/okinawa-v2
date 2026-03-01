@@ -695,76 +695,76 @@ function GuideModal({ item, onClose }: any) {
           </button>
         </div>
 
-        <div className="px-8 pb-12 space-y-8">
-          <div className="bg-morandi-sand/50 p-8 rounded-[32px] space-y-6 text-lg">
-            <div className="flex items-center gap-4"><MapPin size={20} className="text-morandi-blue" /><span>{item.address || "詳見地圖"}</span></div>
-            <div className="flex items-center gap-4"><Clock size={20} className="text-morandi-blue" /><span>{item.time}</span></div>
+        <div className="px-5 pb-12 space-y-8">
+          <div className="bg-morandi-sand/50 p-6 rounded-[32px] space-y-6 text-xl">
+            <div className="flex items-center gap-4"><MapPin size={22} className="text-morandi-blue" /><span>{item.address || "詳見地圖"}</span></div>
+            <div className="flex items-center gap-4"><Clock size={22} className="text-morandi-blue" /><span>{item.time}</span></div>
           </div>
 
           <div className="bg-white border border-morandi-sand rounded-[32px] shadow-sm overflow-hidden">
             {/* Hotel Official Site at the very top if it exists */}
             {item.hotelDetails && (
-              <div className="p-8 pb-0">
+              <div className="p-5 pb-0">
                 <button 
                   onClick={() => window.open(item.hotelDetails.officialSite)}
-                  className="w-full py-4 px-6 bg-morandi-primary/5 border border-morandi-primary/10 rounded-2xl flex items-center justify-between group"
+                  className="w-full py-4 px-5 bg-morandi-primary/5 border border-morandi-primary/10 rounded-2xl flex items-center justify-between group"
                 >
                   <div className="flex items-center gap-4 text-morandi-primary">
-                    <ExternalLink size={20} />
-                    <span className="text-lg font-bold">飯店官網</span>
+                    <ExternalLink size={22} />
+                    <span className="text-xl font-bold">飯店官網</span>
                   </div>
-                  <ChevronRight size={18} className="opacity-40 group-hover:translate-x-1 transition-transform" />
+                  <ChevronRight size={20} className="opacity-40 group-hover:translate-x-1 transition-transform" />
                 </button>
               </div>
             )}
 
-            <div className="p-8 text-lg leading-loose text-text-main whitespace-pre-wrap">
+            <div className="p-5 text-xl leading-relaxed text-text-main whitespace-pre-wrap">
               {item.content}
             </div>
 
             {item.hotelDetails?.breakfastRemarks && (
-              <div className="px-8 pb-8 space-y-3">
+              <div className="px-5 pb-5 space-y-3">
                 <div className="flex items-center gap-3 text-morandi-primary">
-                  <Info size={18} />
-                  <span className="text-sm font-bold uppercase tracking-widest">備註</span>
+                  <Info size={20} />
+                  <span className="text-base font-bold uppercase tracking-widest">備註</span>
                 </div>
-                <div className="text-base leading-relaxed text-text-main bg-morandi-primary/5 p-4 rounded-xl border border-morandi-primary/10">
+                <div className="text-lg leading-relaxed text-text-main bg-morandi-primary/5 p-4 rounded-xl border border-morandi-primary/10">
                   {item.hotelDetails.breakfastRemarks}
                 </div>
               </div>
             )}
             
             {item.officialSite && (
-              <div className="px-8 pb-8">
+              <div className="px-5 pb-5">
                 <button 
                   onClick={() => window.open(item.officialSite)}
-                  className="w-full py-4 px-6 bg-morandi-primary/5 border border-morandi-primary/10 rounded-2xl flex items-center justify-between group"
+                  className="w-full py-4 px-5 bg-morandi-primary/5 border border-morandi-primary/10 rounded-2xl flex items-center justify-between group"
                 >
                   <div className="flex items-center gap-4 text-morandi-primary">
-                    <ExternalLink size={20} />
-                    <span className="text-lg font-bold">國際通介紹</span>
+                    <ExternalLink size={22} />
+                    <span className="text-xl font-bold">國際通介紹</span>
                   </div>
-                  <ChevronRight size={18} className="opacity-40 group-hover:translate-x-1 transition-transform" />
+                  <ChevronRight size={20} className="opacity-40 group-hover:translate-x-1 transition-transform" />
                 </button>
               </div>
             )}
             
             {item.otsInfo && (
               <>
-                <div className="px-8">
+                <div className="px-5">
                   <hr className="border-morandi-sand/30" />
                 </div>
-                <div className="p-8 pt-6 space-y-6">
+                <div className="p-5 pt-6 space-y-6">
                   <div className="flex items-center gap-3">
-                    <h3 style={fontStyleSerif} className="text-xl font-bold text-morandi-text">{item.otsInfo.title}</h3>
+                    <h3 style={fontStyleSerif} className="text-2xl font-bold text-morandi-text">{item.otsInfo.title}</h3>
                     <button 
                       onClick={() => window.open(item.otsInfo.link)}
                       className="text-morandi-primary hover:text-morandi-primary-light transition-colors p-1"
                     >
-                      <ExternalLink size={18} />
+                      <ExternalLink size={20} />
                     </button>
                   </div>
-                  <div className="rounded-none overflow-hidden border-y border-morandi-sand/20 -mx-8">
+                  <div className="rounded-none overflow-hidden border-y border-morandi-sand/20 -mx-5">
                     <img 
                       src={item.otsInfo.mapImage} 
                       alt="OTS Map" 
@@ -772,7 +772,7 @@ function GuideModal({ item, onClose }: any) {
                       referrerPolicy="no-referrer" 
                     />
                   </div>
-                  <div style={fontStyleSerif} className="text-base leading-loose text-text-main py-4">
+                  <div style={fontStyleSerif} className="text-lg leading-relaxed text-text-main py-4">
                     {item.otsInfo.guide}
                   </div>
                 </div>
@@ -781,27 +781,27 @@ function GuideModal({ item, onClose }: any) {
 
             {item.hotelDetails && (
               <>
-                <div className="px-8">
+                <div className="px-5">
                   <hr className="border-morandi-sand/30" />
                 </div>
-                <div className="p-8 pt-6 space-y-8">
+                <div className="p-5 pt-6 space-y-8">
                   {/* Routes */}
                   <div className="space-y-6">
-                    <h3 style={fontStyleSerif} className="text-base font-bold text-morandi-text-muted uppercase tracking-widest flex items-center gap-3">
-                      <Navigation size={18} /> 路線導覽
+                    <h3 style={fontStyleSerif} className="text-lg font-bold text-morandi-text-muted uppercase tracking-widest flex items-center gap-3">
+                      <Navigation size={20} /> 路線導覽
                     </h3>
                     <div className="space-y-4">
                       {item.hotelDetails.routes.map((route: any, idx: number) => (
-                        <div key={idx} className="flex items-center justify-between gap-6 bg-morandi-sand/20 p-6 rounded-[24px]">
+                        <div key={idx} className="flex items-center justify-between gap-6 bg-morandi-sand/20 p-5 rounded-[24px]">
                           <div className="flex-1 min-w-0">
-                            <p className="text-base font-bold text-morandi-text mb-2">{route.label}</p>
-                            <p className="text-sm text-morandi-text-muted leading-relaxed">{route.desc}</p>
+                            <p className="text-xl font-bold text-morandi-text mb-2">{route.label}</p>
+                            <p className="text-lg text-morandi-text-muted leading-relaxed">{route.desc}</p>
                           </div>
                           <button 
                             onClick={() => window.open(route.url)}
-                            className="flex items-center gap-2 px-4 py-2 bg-white border border-morandi-primary/20 rounded-xl text-xs font-bold text-morandi-primary shadow-sm active:scale-95 transition-all shrink-0"
+                            className="flex items-center gap-2 px-4 py-2 bg-white border border-morandi-primary/20 rounded-xl text-sm font-bold text-morandi-primary shadow-sm active:scale-95 transition-all shrink-0"
                           >
-                            <MapPin size={14} /> 路線
+                            <MapPin size={16} /> 路線
                           </button>
                         </div>
                       ))}
@@ -815,26 +815,26 @@ function GuideModal({ item, onClose }: any) {
                   {/* Shopping */}
                   <div className="space-y-6">
                     <div className="flex items-center justify-between">
-                      <h3 style={fontStyleSerif} className="text-base font-bold text-morandi-text uppercase tracking-widest flex items-center gap-3">
-                        <Utensils size={18} className="text-morandi-primary" /> {item.hotelDetails.shopping.name}
+                      <h3 style={fontStyleSerif} className="text-lg font-bold text-morandi-text uppercase tracking-widest flex items-center gap-3">
+                        <Utensils size={20} className="text-morandi-primary" /> {item.hotelDetails.shopping.name}
                       </h3>
                       <button 
                         onClick={() => window.open(item.hotelDetails.shopping.url)}
-                        className="flex items-center gap-2 px-4 py-2 bg-morandi-primary text-white rounded-xl text-xs font-bold shadow-sm active:scale-95 transition-all"
+                        className="flex items-center gap-2 px-4 py-2 bg-morandi-primary text-white rounded-xl text-sm font-bold shadow-sm active:scale-95 transition-all"
                       >
-                        <ExternalLink size={14} /> 官網
+                        <ExternalLink size={16} /> 官網
                       </button>
                     </div>
-                    <div className="bg-morandi-sand/20 p-6 rounded-[24px] space-y-4">
-                      <div className="flex items-center gap-3 text-sm text-morandi-text-muted">
-                        <Clock size={16} />
+                    <div className="bg-morandi-sand/20 p-5 rounded-[24px] space-y-4">
+                      <div className="flex items-center gap-3 text-base text-morandi-text-muted">
+                        <Clock size={18} />
                         <span>營業時間：{item.hotelDetails.shopping.hours}</span>
                       </div>
                       <div className="space-y-3">
                         {item.hotelDetails.shopping.floors.map((floor: string, idx: number) => (
                           <div key={idx} className="flex gap-3">
                             <div className="w-1.5 h-1.5 rounded-full bg-morandi-primary mt-2 shrink-0" />
-                            <p className="text-base text-morandi-text leading-relaxed">{floor}</p>
+                            <p className="text-lg text-morandi-text leading-relaxed">{floor}</p>
                           </div>
                         ))}
                       </div>
@@ -846,25 +846,25 @@ function GuideModal({ item, onClose }: any) {
 
             {item.top10 && (
               <>
-                <div className="px-8">
+                <div className="px-5">
                   <hr className="border-morandi-sand/30" />
                 </div>
-                <div className="p-8 pt-6 space-y-6">
-                  <h3 style={fontStyleSerif} className="text-base font-bold text-morandi-text uppercase tracking-widest flex items-center gap-3">
-                    <Star size={18} className="text-morandi-primary" /> {item.top10.title}
+                <div className="p-5 pt-6 space-y-6">
+                  <h3 style={fontStyleSerif} className="text-lg font-bold text-morandi-text uppercase tracking-widest flex items-center gap-3">
+                    <Star size={20} className="text-morandi-primary" /> {item.top10.title}
                   </h3>
                   <div className="space-y-4">
                     {item.top10.items.map((t: any, idx: number) => (
-                      <div key={idx} className="flex items-center justify-between gap-6 bg-morandi-sand/20 p-6 rounded-[24px]">
+                      <div key={idx} className="flex items-center justify-between gap-6 bg-morandi-sand/20 p-5 rounded-[24px]">
                         <div className="flex-1 min-w-0">
-                          <p className="text-base font-bold text-morandi-text mb-2">{t.name}</p>
-                          <p className="text-sm text-morandi-text-muted leading-relaxed">{t.desc}</p>
+                          <p className="text-lg font-bold text-morandi-text mb-2">{t.name}</p>
+                          <p className="text-base text-morandi-text-muted leading-relaxed">{t.desc}</p>
                         </div>
                         <button 
                           onClick={() => window.open(t.url)}
-                          className="flex items-center gap-2 px-4 py-2 bg-white border border-morandi-primary/20 rounded-xl text-xs font-bold text-morandi-primary shadow-sm active:scale-95 transition-all shrink-0"
+                          className="flex items-center gap-2 px-4 py-2 bg-white border border-morandi-primary/20 rounded-xl text-sm font-bold text-morandi-primary shadow-sm active:scale-95 transition-all shrink-0"
                         >
-                          <Navigation size={14} /> 路線
+                          <Navigation size={16} /> 路線
                         </button>
                       </div>
                     ))}
@@ -875,15 +875,15 @@ function GuideModal({ item, onClose }: any) {
 
             {item.remarks && (
               <>
-                <div className="px-8">
+                <div className="px-5">
                   <hr className="border-morandi-sand/30" />
                 </div>
-                <div className="p-8 space-y-4">
+                <div className="p-5 space-y-4">
                   <div className="flex items-center gap-3 text-morandi-primary">
-                    <Info size={18} />
-                    <span className="text-sm font-bold uppercase tracking-widest">備註</span>
+                    <Info size={20} />
+                    <span className="text-base font-bold uppercase tracking-widest">備註</span>
                   </div>
-                  <div className="text-base leading-loose text-text-main">
+                  <div className="text-lg leading-relaxed text-text-main">
                     {item.remarks}
                   </div>
                 </div>
@@ -897,13 +897,13 @@ function GuideModal({ item, onClose }: any) {
                 <button 
                   key={idx}
                   onClick={() => window.open(link.url)}
-                  className="w-full py-5 px-8 bg-white border border-morandi-blue/20 text-morandi-blue rounded-2xl font-bold text-lg flex items-center justify-between gap-4 shadow-sm active:scale-[0.98] transition-all group"
+                  className="w-full py-5 px-5 bg-white border border-morandi-blue/20 text-morandi-blue rounded-2xl font-bold text-xl flex items-center justify-between gap-4 shadow-sm active:scale-[0.98] transition-all group"
                 >
                   <div className="flex items-center gap-4">
                     {getLinkIcon(link.icon)}
                     <span>{link.label}</span>
                   </div>
-                  <ChevronRight size={18} className="opacity-40 group-hover:translate-x-1 transition-transform" />
+                  <ChevronRight size={20} className="opacity-40 group-hover:translate-x-1 transition-transform" />
                 </button>
               ))}
             </div>
