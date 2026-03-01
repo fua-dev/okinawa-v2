@@ -39,25 +39,55 @@ const ITINERARY_DATA = [
         id: '1-1', time: "09:00", type: "transport", title: "桃園機場第一航廈會合", detail: "星宇航空櫃檯集合", address: "桃園市大園區航站南路15號", 
         content: "各位貴賓早安！我們即將展開期待已久的沖繩之旅。請大家再次確認護照、日文譯本以及最重要的心情都帶齊了嗎？第一站我們先在星宇櫃檯集合辦理登機。", 
         quickLinks: [
-          { label: "機捷時刻表", url: "https://www.tymetro.com.tw/tymetro-new/tw/_pages/travel-guide/timetable.php" },
-          { label: "路線圖", url: "https://www.tymetro.com.tw/tymetro-new/tw/_pages/travel-guide/road-map.php" }
-        ] 
+          { label: "機捷時刻表", url: "https://www.tymetro.com.tw/tymetro-new/tw/_pages/travel-guide/timetable.php" }
+        ],
+        noNav: true
       },
       { 
-        id: '1-2', time: "15:00", type: "flight", title: "抵達那霸空港 & 租車", detail: "預計抵達後分頭行動", address: "那霸機場", 
-        content: "抵達後約 15:30 進行租車行程。請搭乘機場接駁車前往營業所辦理手續。\n\n【指引】Joy Jungle 娃娃機店：位於那霸機場國內線，從國際線入境後往單軌電車站方向步行即可經過。\n\n【連結】OTS 租車接駁資訊：https://www.otsrentacar.ne.jp/okinawa/shuttlebus.html" 
+        id: '1-1-1', time: "15:50", type: "flight", title: "啟程：星宇航空 JX870", detail: "15:50–16:25 飛行時間", address: "桃園機場 -> 那霸機場", 
+        content: "搭乘星宇航空 JX870 班機前往那霸。預計 16:25 抵達沖繩。",
+        noModal: true
       },
       { 
-        id: '1-3', time: "16:00", type: "stay", title: "那霸歌町大和roynet飯店premier", detail: "Check-in 放置行李", address: "那霸市安里1-1-1", 
-        content: "飯店位於那霸新都心，地理位置極佳。對面就有百貨公司，周邊購物與餐飲選擇非常豐富。\n\n【步行指引】從單軌電車 Omoromachi 站步行約 5 分鐘即可抵達。\n\n【飯店官網】https://www.daiwaroynet.jp/naha-omoromachi-premier/\n\n【備註】兒童早餐券請於櫃檯辦理入住時確認領取。" 
+        id: '1-2', time: "15:00", type: "transport", title: "抵達那霸空港 & OTS 租車", detail: "預計抵達後分頭行動", address: "那霸機場 OTS 營業所", 
+        content: "抵達後約 15:30 進行租車行程。請搭乘機場接駁車前往營業所辦理手續。\n\n【OTS 接駁資訊】https://www.otsrentacar.ne.jp/okinawa/shuttlebus.html\n\n【備註】Joy Jungle 娃娃機店：位於那霸機場國內線，從國際線入境後往單軌電車站方向步行即可經過。",
+        links: [
+          { label: "OTS 接駁資訊", url: "https://www.otsrentacar.ne.jp/okinawa/shuttlebus.html", icon: "link" },
+          { label: "租車備註", url: "#", icon: "info" }
+        ],
+        noNav: true
+      },
+      { 
+        id: '1-3', time: "16:00", type: "stay", title: "那霸歌町大和roynet\n飯店premier", detail: "Check-in 放置行李", address: "那霸市安里1-1-1", 
+        content: "飯店位於那霸新都心，地理位置極佳。對面就有百貨公司，周邊購物與餐飲選擇非常豐富。\n\n【路線導覽】\n1. Omoromachi 站步行：從單軌電車站步行約 5 分鐘即可抵達。\n2. OTS 開車：從營業所開車約 20-30 分鐘。\n\n【新都心 MAIN PLACE 購物清單】\n- Tokyu Hands\n- San-A 超市\n- 各式日系服飾品牌",
+        links: [
+          { label: "飯店官網", url: "https://www.daiwaroynet.jp/naha-omoromachi-premier/", icon: "link" },
+          { label: "MAIN PLACE 官網", url: "https://www.san-a.co.jp/mainplace/", icon: "shopping" },
+          { label: "Omoromachi 站步行導航", url: "https://www.google.com/maps/dir/?api=1&origin=Omoromachi+Station&destination=Daiwa+Roynet+Hotel+Naha-Omoromachi+PREMIER", icon: "map" },
+          { label: "OTS 開車導航", url: "https://www.google.com/maps/dir/?api=1&origin=OTS+Rent-a-car+Naha+Airport&destination=Daiwa+Roynet+Hotel+Naha-Omoromachi+PREMIER", icon: "map" }
+        ],
+        noNav: true
       },
       { 
         id: '1-4', time: "17:30", type: "spot", title: "國際通散策", detail: "探索那霸最熱鬧的街道", address: "那霸市國際通", 
-        content: "國際通是那霸的心臟地帶。\n\n【國際通 Top 10 推薦】\n1. 淳久堂書店 (那霸店)\n2. Pork Tamago Onigiri (第一牧志公設市場店)\n3. Blue Seal 冰淇淋\n4. Calbee+ 現炸薯條\n5. 御菓子御殿 (紅芋塔)\n6. 鹽屋 (雪鹽霜淇淋)\n7. 牧志公設市場 (新鮮海鮮)\n8. Don Quijote 驚安殿堂\n9. 琉球咖啡館\n10. 沖繩屋 (土產專賣)" 
+        content: "國際通是那霸的心臟地帶，全長約 1.6 公里，匯集了各式土產店、餐廳與百貨，是沖繩最繁華的街道。\n\n【Top 10 商店/小吃】\n1. 淳久堂書店 (那霸店)\n2. Pork Tamago Onigiri\n3. Blue Seal 冰淇淋\n4. Calbee+ 現炸薯條\n5. 御菓子御殿\n6. 鹽屋\n7. 牧志公設市場\n8. Don Quijote\n9. 琉球咖啡館\n10. 沖繩屋",
+        links: [
+          { label: "國際通精簡介紹", url: "https://naha-kokusaidori.jp/", icon: "info" },
+          { label: "淳久堂書店", url: "https://www.google.com/maps/search/?api=1&query=淳久堂書店+那霸店", icon: "map" },
+          { label: "Pork Tamago Onigiri", url: "https://www.google.com/maps/search/?api=1&query=Pork+Tamago+Onigiri+第一牧志公設市場店", icon: "map" },
+          { label: "Blue Seal 國際通", url: "https://www.google.com/maps/search/?api=1&query=Blue+Seal+國際通", icon: "map" },
+          { label: "驚安殿堂 國際通", url: "https://www.google.com/maps/search/?api=1&query=Don+Quijote+國際通", icon: "map" }
+        ]
       },
       { 
         id: '1-5', time: "17:30", type: "food", title: "晚餐：國際通美食", detail: "可分隊用餐", address: "那霸市國際通", 
-        content: "國際通周邊餐廳選擇眾多，可依喜好分隊行動。\n\n【國際通 Top 10 餐廳】\n1. 暖暮拉麵 (那霸牧志店)\n2. 琉球新麵 通堂\n3. 碧 鐵板燒\n4. 88 牛排 (Steak House 88)\n5. ゆうなんぎい (琉球料理)\n6. 牧志公設市場 2F 食堂\n7. 琉球黑毛和牛 燒肉\n8. 嘉手納蕎麥麵\n9. 居酒屋 祭囃子\n10. 國際通屋台村 (多樣化小吃)" 
+        content: "國際通周邊餐廳選擇眾多，可依喜好分隊行動。\n\n【Top 10 餐廳】\n1. 暖暮拉麵 (那霸牧志店)\n2. 琉球新麵 通堂\n3. 碧 鐵板燒\n4. 88 牛排\n5. ゆうなんぎい\n6. 牧志公設市場 2F 食堂\n7. 琉球黑毛和牛 燒肉\n8. 嘉手納蕎麥麵\n9. 居酒屋 祭囃子\n10. 國際通屋台村",
+        links: [
+          { label: "暖暮拉麵 導航", url: "https://www.google.com/maps/search/?api=1&query=暖暮拉麵+那霸牧志店", icon: "map" },
+          { label: "通堂拉麵 導航", url: "https://www.google.com/maps/search/?api=1&query=琉球新麵+通堂+寄宮店", icon: "map" },
+          { label: "88 牛排 導航", url: "https://www.google.com/maps/search/?api=1&query=Steak+House+88+國際通", icon: "map" },
+          { label: "屋台村 導航", url: "https://www.google.com/maps/search/?api=1&query=國際通屋台村", icon: "map" }
+        ]
       }
     ]
   },
@@ -67,23 +97,48 @@ const ITINERARY_DATA = [
       { id: '2-0', time: "08:00", type: "food", title: "飯店早餐", detail: "享用飯店美味早餐", content: "開啟活力的一天。", noModal: true },
       { 
         id: '2-1', time: "08:30", type: "spot", title: "西來院達摩寺", detail: "祈福參拜", address: "那霸市首里赤田町1-5-1", 
-        content: "西來院是首里著名的寺院，環境清幽。\n\n【口金包兌換】持相關憑證可於寺內指定處兌換精美口金包。\n\n【說明文件】https://example.com/daruma-temple-guide.pdf" 
+        content: "西來院是首里著名的寺院，環境清幽。\n\n【口金包兌換】持相關憑證可於寺內指定處兌換精美口金包。",
+        links: [
+          { label: "口金包照片/資訊", url: "https://lh3.googleusercontent.com/d/1vnkzussydV7yR_d5nXTRV8wDW5HMirBQ", icon: "image" },
+          { label: "飯店至達摩寺導航", url: "https://www.google.com/maps/dir/?api=1&origin=Daiwa+Roynet+Hotel+Naha-Omoromachi+PREMIER&destination=西來院+達摩寺", icon: "map" }
+        ]
       },
       { 
         id: '2-2', time: "10:00", type: "spot", title: "古宇利島", detail: "跨海大橋美景", address: "今歸仁村古宇利", 
-        content: "古宇利島位於沖繩本島北部，以其絕美的「古宇利大橋」聞名。這座橋全長約 1960 公尺，橫跨在被稱為「古宇利藍」的清澈海面上，開車經過時彷彿在海上飛行。島上流傳著琉球版的亞當與夏娃傳說，因此也被稱為「神之島」或「戀島」。島北側的 Tinu 海灘有兩座著名的心形岩，是情侶必訪的打卡聖地。古宇利海洋塔則提供了俯瞰整座大橋與周邊海景的絕佳視角。在這裡，您可以品嚐著名的蝦蝦飯，或是坐在海邊咖啡廳享受悠閒的時光。清澈的海水非常適合戲水，白沙灘更是讓人流連忘返。無論是開車環島一圈（約 10 分鐘），還是停下來漫步沙灘，古宇利島都能讓您感受到沖繩最純粹的自然魅力與浪漫氣息。" 
+        content: "古宇利島位於沖繩本島北部，以絕美的「古宇利大橋」聞名。這座橋全長約 1960 公尺，橫跨在清澈的「古宇利藍」海面上。\n\n島上流傳著琉球版的亞當與夏娃傳說，因此也被稱為「戀島」。島北側的心形岩是情侶必訪聖地。古宇利海洋塔則可俯瞰整座大橋美景。\n\n在這裡，您可以品嚐著名的蝦蝦飯，享受悠閒的時光。",
+        links: [
+          { label: "古宇利風景照", url: "https://lh3.googleusercontent.com/d/1vnkzussydV7yR_d5nXTRV8wDW5HMirBQ", icon: "image" },
+          { label: "達摩寺至古宇利導航", url: "https://www.google.com/maps/dir/?api=1&origin=西來院+達摩寺&destination=古宇利島", icon: "map" }
+        ]
       },
       { 
         id: '2-3', time: "12:00", type: "food", title: "午餐：名護周邊美食", detail: "詳見彈跳窗備案", address: "名護市", 
-        content: "【原定餐廳】百年古家 大家 (阿古豬料理)\n\n【人氣午餐備案 (海鮮/牛肉)】\n1. 名護漁港食堂 (新鮮海鮮)\n2. 燒肉乃我那霸 (沖繩和牛)\n3. 幸ちゃんそば (沖繩蕎麥麵)\n4. Captain Kangaroo (漢堡)\n5. 岸本食堂 (百年蕎麥麵)" 
+        content: "【原定餐廳】百年古家 大家 (阿古豬料理)\n\n【人氣午餐備案】\n1. 名護漁港食堂\n2. 燒肉乃我那霸\n3. 幸ちゃんそば\n4. Captain Kangaroo\n5. 岸本食堂",
+        links: [
+          { label: "百年古家 大家 導航", url: "https://www.google.com/maps/search/?api=1&query=百年古家+大家", icon: "map" },
+          { label: "名護漁港食堂 導航", url: "https://www.google.com/maps/search/?api=1&query=名護漁港食堂", icon: "map" },
+          { label: "燒肉乃我那霸 導航", url: "https://www.google.com/maps/search/?api=1&query=燒肉乃我那霸", icon: "map" },
+          { label: "岸本食堂 導航", url: "https://www.google.com/maps/search/?api=1&query=岸本食堂", icon: "map" }
+        ],
+        noNav: true
       },
       { 
         id: '2-4', time: "14:00", type: "spot", title: "美麗海水族館", detail: "觀賞黑潮之海", address: "本部町石川424", 
-        content: "沖繩美麗海水族館是世界級的海洋主題公園，坐落於海洋博公園內。其最著名的「黑潮之海」大水槽，擁有高 8.2 公尺、寬 22.5 公尺的巨大壓克力面板，展示著巨大的鯨鯊與鬼蝠魟在深藍色水中優雅游動的壯觀景象。除了黑潮之海，水族館還展示了沖繩周邊豐富的珊瑚礁生態、深海生物以及各式各樣的熱帶魚類。戶外區還有精彩的海豚表演（Okichan Theater）、海龜館與海牛館，讓遊客能近距離觀察這些迷人的海洋生物。水族館的設計旨在讓遊客從淺灘一路探索到深海，體驗沖繩海洋的奧秘。每天下午的鯨鯊餵食秀更是不可錯過的亮點。這裡不僅是孩子們的樂園，也是大人們放鬆心情、感受海洋生命力的絕佳去處。建議預留至少 3 小時，才能完整體驗這座充滿驚奇的水中世界。\n\n【節目時刻表】https://churaumi.okinawa/program/" 
+        content: "【1F 深海世界】探索神祕的深海生物與生態。\n【2F 黑潮之海】世界級巨大水槽，觀賞鯨鯊與鬼蝠魟。\n【3F 珊瑚礁之旅】展示豐富多樣的珊瑚礁生態。\n【4F 大海召喚】俯瞰黑潮之海，感受海洋的壯闊。\n\n【節目時刻表】\n- 黑潮之海餵食秀：15:00 / 17:00\n- 海豚秀 (Okichan)：10:30 / 11:30 / 13:00 / 15:00 / 17:00",
+        links: [
+          { label: "水族館照片", url: "https://lh3.googleusercontent.com/d/1vnkzussydV7yR_d5nXTRV8wDW5HMirBQ", icon: "image" },
+          { label: "節目時刻表官網", url: "https://churaumi.okinawa/program/", icon: "link" },
+          { label: "水族館導航", url: "https://www.google.com/maps/search/?api=1&query=美麗海水族館", icon: "map" }
+        ]
       },
       { 
         id: '2-5', time: "18:00", type: "food", title: "晚餐：燒肉/壽司", detail: "詳見彈跳窗備案", address: "名護市", 
-        content: "【原定餐廳】燒肉五苑 (吃到飽燒肉)\n\n【晚餐備案】HAMA 濱壽司 (名護店) - 平價美味的迴轉壽司選擇。" 
+        content: "【原定餐廳】燒肉五苑 (吃到飽燒肉)\n\n【晚餐備案】HAMA 濱壽司 (名護店)",
+        links: [
+          { label: "水族館至燒肉五苑導航", url: "https://www.google.com/maps/dir/?api=1&origin=美麗海水族館&destination=燒肉五苑+名護店", icon: "map" },
+          { label: "水族館至濱壽司導航", url: "https://www.google.com/maps/dir/?api=1&origin=美麗海水族館&destination=HAMA+壽司+名護店", icon: "map" }
+        ],
+        noNav: true
       }
     ]
   },
@@ -93,17 +148,42 @@ const ITINERARY_DATA = [
       { id: '3-0', time: "08:00", type: "food", title: "飯店早餐", detail: "享用飯店早餐", content: "開啟活力的一天。", noModal: true },
       { 
         id: '3-1', time: "09:00", type: "spot", title: "東南植物樂園", detail: "漫步熱帶植物園", address: "沖繩市知花2146", 
-        content: "園區地圖：請參考入口處導覽圖。擁有豐富的熱帶植物，還有可愛動物互動。", 
-        quickLinks: [{ label: "體驗活動連結", url: "https://www.southeast-botanical.jp/activity/" }] 
+        content: "園區擁有豐富的熱帶植物，還有可愛動物互動區，適合全家大小一同遊玩。", 
+        links: [
+          { label: "體驗活動連結", url: "https://www.southeast-botanical.jp/activity/", icon: "link" },
+          { label: "飯店至植物樂園導航", url: "https://www.google.com/maps/dir/?api=1&origin=Daiwa+Roynet+Hotel+Naha-Omoromachi+PREMIER&destination=東南植物樂園", icon: "map" }
+        ]
       },
-      { id: '3-2', time: "12:00", type: "food", title: "午餐：海族工房", detail: "新鮮海鮮料理", address: "名護市", content: "菜單包含多樣化當地漁獲。必吃美食：海鮮丼、炸魚。" },
+      { 
+        id: '3-2', time: "12:00", type: "food", title: "午餐：海族工房", detail: "新鮮海鮮料理", address: "名護市", 
+        content: "菜單包含多樣化當地漁獲。必吃美食：海鮮丼、炸魚。",
+        links: [
+          { label: "植物樂園至海族工房導航", url: "https://www.google.com/maps/dir/?api=1&origin=東南植物樂園&destination=海族工房", icon: "map" }
+        ]
+      },
       { 
         id: '3-3', time: "13:30", type: "spot", title: "兒童沖繩王國", detail: "動物園與神奇博物館", address: "沖繩市胡屋5-7-1", 
-        content: "【官網】https://www.okzm.jp/\n\n【園區分區簡介】\n1. 動物園區：展示琉球群島原生種及世界各地動物。\n2. 神奇博物館：互動式科學與藝術體驗館，適合親子。\n3. 乘物廣場：各式小型遊樂設施。\n4. 故鄉園：展示沖繩傳統建築。" 
+        content: "結合動物園與互動博物館的親子景點。\n\n【簡介】展示琉球群島原生種及世界動物，提供豐富的自然教育體驗。",
+        links: [
+          { label: "官網資訊", url: "https://www.okzm.jp/", icon: "link" },
+          { label: "餵食體驗預約", url: "https://www.okzm.jp/event/feed/", icon: "ticket" },
+          { label: "兒童王國導航", url: "https://www.google.com/maps/search/?api=1&query=沖繩兒童王國", icon: "map" }
+        ]
       },
       { 
-        id: '3-4', time: "17:30", type: "food", title: "晚餐：永旺夢客來 (AEON Mall)", detail: "營業時間 10:00 - 22:00", address: "北中城村比嘉", 
-        content: "沖繩最大購物中心，店鋪清單包含美食街、各式餐廳及超市。\n\n【優惠券連結】https://www.aeon-okinawa.com.tw/coupon/\n\n【人氣品牌】Uniqlo, GU, H&M, Bic Camera, Sports Authority, 各式日系雜貨。" 
+        id: '3-4', time: "17:30", type: "food", title: "永旺夢樂城\n(AEON Mall)", detail: "營業時間 10:00 - 22:00", address: "北中城村比嘉", 
+        content: "沖繩最大購物中心，店鋪清單包含美食街、各式餐廳及超市。\n\n【1F-4F 人氣品牌】\n- 1F: AEON Style 超市, 藥妝\n- 2F: Uniqlo, GU, H&M\n- 3F: Sports Authority, 玩具反斗城\n- 4F: 美食街, 電影院",
+        links: [
+          { label: "優惠券連結", url: "https://www.aeon-okinawa.com.tw/coupon/", icon: "ticket" },
+          { label: "AEON Mall 導航", url: "https://www.google.com/maps/search/?api=1&query=AEON+Mall+Okinawa+Rycom", icon: "map" }
+        ]
+      },
+      { 
+        id: '3-5', time: "備案", type: "spot", title: "普天滿宮", detail: "神祕的鐘乳石洞神社", address: "宜野灣市普天間1-27-10", 
+        content: "普天滿宮是琉球八社之一，最特別的是其位於神社後方的鐘乳石洞穴，需向巫女申請方可進入參觀。",
+        links: [
+          { label: "普天滿宮導航", url: "https://www.google.com/maps/search/?api=1&query=普天滿宮", icon: "map" }
+        ]
       }
     ]
   },
@@ -113,24 +193,42 @@ const ITINERARY_DATA = [
       { id: '4-0', time: "08:00", type: "food", title: "飯店早餐", detail: "享用早餐", content: "最後一天的全日行程，吃飽再出發。", noModal: true },
       { 
         id: '4-1', time: "09:00", type: "spot", title: "DMM Kariyushi 水族館", detail: "沉浸式水族館體驗", address: "豐見城市豐崎3-35", 
-        content: "【提醒】建議先購買餵食體驗券。\n\n結合影像技術與空間設計的現代水族館。\n\n【樓層指南】https://kariyushi-aquarium.com/floor/\n\n【餵食時刻表】10:00/11:00 樹懶；10:30 企鵝。\n\n【部落格介紹】https://example.com/dmm-aquarium-blog" 
+        content: "結合影像技術與空間設計的現代水族館，提供沉浸式的海洋體驗。", 
+        links: [
+          { label: "樓層指南", url: "https://kariyushi-aquarium.com/floor/", icon: "map" },
+          { label: "餵食時刻表", url: "https://kariyushi-aquarium.com/program/", icon: "clock" },
+          { label: "部落格介紹", url: "https://example.com/dmm-aquarium-blog", icon: "link" },
+          { label: "飯店至 DMM 導航", url: "https://www.google.com/maps/dir/?api=1&origin=Daiwa+Roynet+Hotel+Naha-Omoromachi+PREMIER&destination=DMM+Kariyushi+Aquarium", icon: "map" }
+        ]
       },
       { 
         id: '4-2', time: "12:00", type: "food", title: "午餐：iiAS 沖繩豐崎", detail: "購物中心用餐", address: "豐見城市豐崎3-35", 
-        content: "iiAS 購物中心內有多樣化的美食街與餐廳選擇。", 
-        noModal: true,
-        quickLinks: [{ label: "豐崎 iias 官網連結", url: "https://toyosaki.iias.jp/" }] 
+        content: "iiAS 購物中心內有多樣化的美食街與餐廳選擇，適合放鬆用餐與逛街。", 
+        links: [
+          { label: "豐崎 iias 官網", url: "https://toyosaki.iias.jp/", icon: "link" }
+        ]
+      },
+      { 
+        id: '4-2-1', time: "備案", type: "food", title: "中本天婦羅", detail: "奧武島人氣美食", address: "南城市玉城奧武9", 
+        content: "奧武島上著名的天婦羅店，現炸美味。"
       },
       { 
         id: '4-3', time: "14:00", type: "spot", title: "沖繩世界文化王國", detail: "玉泉洞與傳統文化", address: "南城市玉城前川1336", 
-        content: "沖繩世界文化王國（Okinawa World）是體驗琉球傳統文化與自然景觀的首選之地。園內最震撼的景點莫過於「玉泉洞」，這座歷經 30 萬年形成的鐘乳石洞，全長約 5 公里（開放參觀約 890 公尺），規模在日本名列前茅，洞內密密麻麻的鐘乳石與清澈的地下泉水交織出奇幻的地下世界。走出洞穴後，您將進入「王國村」，這裡搬遷並重建了多棟具有百年歷史的琉球古民家，被列為國家登錄有形文化財。在這些古宅中，您可以體驗傳統的織布、造紙、陶藝或是穿著琉球傳統服飾拍照。此外，精彩絕倫的「Eisa 太鼓舞」表演更是展現了沖繩人的熱情與活力。園內還有毒蛇博物館，介紹沖繩特有的波布蛇。無論是自然奇觀、歷史建築還是傳統工藝，文化王國都能讓您在短短幾小時內，深度領略琉球王國的輝煌歷史與獨特魅力。\n\n【官網體驗連結】https://www.gyokusendo.co.jp/okinawaworld/handson/",
-        quickLinks: [{ label: "體驗時間表連結", url: "https://www.gyokusendo.co.jp/okinawaworld/event/" }] 
+        content: "【玉泉洞】歷經 30 萬年形成的鐘乳石洞，規模日本前茅。\n【王國村】重建百年琉球古民家，體驗傳統工藝。\n【Eisa 太鼓舞】展現沖繩熱情與活力的傳統表演。",
+        links: [
+          { label: "表演時間表", url: "https://www.gyokusendo.co.jp/okinawaworld/event/", icon: "clock" },
+          { label: "琉裝體驗預約", url: "https://www.gyokusendo.co.jp/okinawaworld/handson/", icon: "ticket" },
+          { label: "挖珍珠體驗", url: "https://www.gyokusendo.co.jp/okinawaworld/handson/", icon: "ticket" },
+          { label: "沖繩世界導航", url: "https://www.google.com/maps/search/?api=1&query=沖繩世界+文化王國", icon: "map" }
+        ]
       },
       { 
         id: '4-4', time: "17:00", type: "food", title: "晚餐：中本天婦羅", detail: "營業時間 10:00 - 18:00", address: "南城市玉城奧武9", 
-        content: "奧武島上著名的天婦羅店，現炸美味。推薦：鮮魚、花枝天婦羅。", 
-        noModal: true,
-        quickLinks: [{ label: "部落格連結", url: "https://example.com/nakamoto-tempura-blog" }] 
+        content: "奧武島是著名的「貓島」，以美味的天婦羅聞名。用餐方式為先填寫點單後排隊結帳，建議在海邊享用。\n\n【奧武島簡介】環島一圈僅需 5 分鐘，充滿悠閒的漁村氣息。除了天婦羅，這裡的貓咪也是一大亮點。",
+        links: [
+          { label: "菜單資訊", url: "https://lh3.googleusercontent.com/d/1vnkzussydV7yR_d5nXTRV8wDW5HMirBQ", icon: "image" },
+          { label: "部落格連結", url: "https://example.com/nakamoto-tempura-blog", icon: "link" }
+        ]
       }
     ]
   },
@@ -140,11 +238,28 @@ const ITINERARY_DATA = [
       { id: '5-0', time: "08:00", type: "food", title: "飯店早餐", detail: "最後一次享用早餐", content: "整理行李，準備退房。", noModal: true },
       { 
         id: '5-1', time: "08:30", type: "spot", title: "波上宮 & 逛街", detail: "懸崖上的神社", address: "那霸市若狹1-25-11", 
-        content: "波上宮是琉球八社之首，建在懸崖之上。\n\n【小祿站 AEON 購物資訊】位於單軌電車小祿站旁，有大型超市與各式店鋪，適合最後採買。" 
+        content: "波上宮是琉球八社之首，建在懸崖之上，可俯瞰海灘景觀。\n\n【小祿站 AEON 購物資訊】位於單軌電車小祿站旁，有大型超市與各式店鋪，適合最後採買。",
+        links: [
+          { label: "小祿站 AEON 資訊", url: "https://www.aeon-okinawa.com.tw/shop/aeon-naha/", icon: "shopping" },
+          { label: "波上宮停車場導航", url: "https://www.google.com/maps/search/?api=1&query=波上宮+停車場", icon: "map" }
+        ]
       },
-      { id: '5-2', time: "12:00", type: "food", title: "午餐", detail: "簡單午餐", content: "在前往機場前享用簡單的午餐。" },
-      { id: '5-3', time: "12:30", type: "transport", title: "前往機場候機", detail: "辦理登機手續", address: "那霸機場", content: "請預留充足時間辦理退稅與登機手續。" },
-      { id: '5-4', time: "18:00", type: "transport", title: "返家", detail: "平安回家", content: "結束愉快的 5 天 4 夜沖繩之旅。" }
+      { 
+        id: '5-2', time: "12:00", type: "food", title: "午餐：豬肉蛋飯糰", detail: "機場人氣美食", address: "那霸機場", 
+        content: "沖繩必吃的豬肉蛋飯糰，機場店雖然常排隊但值得一試。\n\n【機場人氣 10 間商店/美食】\n1. Pork Tamago Onigiri\n2. 琉球村\n3. 壽司 築地銀章魚燒\n4. 麥當勞 (沖繩限定口味)\n5. 沖繩蕎麥麵 志貴\n6. Blue Seal\n7. 伴手禮店 Coralway\n8. 驚安殿堂 (機場店)\n9. Royce' 櫃檯\n10. 御菓子御殿",
+        links: [
+          { label: "飯糰店導航", url: "https://www.google.com/maps/search/?api=1&query=Pork+Tamago+Onigiri+那霸機場店", icon: "map" },
+          { label: "機場商店地圖", url: "https://www.naha-airport.co.jp/zh-hant/shop_restaurant/", icon: "map" }
+        ]
+      },
+      { 
+        id: '5-3', time: "12:30", type: "transport", title: "前往機場候機", detail: "搭乘星宇 JX871", address: "那霸機場", 
+        content: "搭乘星宇航空 JX871 班機返家。請預留充足時間辦理退稅與登機手續。\n\n【2025 機場必買 10 樣伴手禮】\n1. Royce' 黑糖巧克力: 沖繩限定，鹹甜交織。\n2. 紅芋塔: 經典 100% 沖繩產紅芋。\n3. 雪鹽金楚糕: 宮古島雪鹽，酥脆順口。\n4. 石垣島辣油: 廚房必備，香氣濃郁。\n5. 泡盛辣椒油: 獨特酒香，麵食搭擋。\n6. 黑糖薯條: 酥脆薯條裹上濃郁黑糖。\n7. 扶桑花茶: 清爽解膩的特色茶飲。\n8. 紅芋起司塔: 現場烘焙的華麗邂逅。\n9. 琉球玻璃: 精緻的手工藝品選擇。\n10. 苦瓜乾: 獨特苦味，極佳下酒菜。",
+        links: [
+          { label: "伴手禮清單詳解", url: "https://example.com/okinawa-souvenir-2025", icon: "shopping" }
+        ]
+      },
+      { id: '5-4', time: "18:00", type: "transport", title: "返家", detail: "平安回家", content: "結束愉快的 5 天 4 夜沖繩之旅。", noModal: true }
     ]
   }
 ];
@@ -313,7 +428,7 @@ function ScheduleTab({ currentDay, setCurrentDay, setSelectedItem, weatherForeca
   const backupItems = items.filter(i => i.time === '備案');
 
   return (
-    <div className="space-y-4 pb-10">
+    <div className="space-y-0 pb-10">
       <div className="flex justify-between px-2 py-1 gap-2 hide-scrollbar overflow-x-auto">
         {ITINERARY_DATA.map(d => (
           <button key={d.day} onClick={() => setCurrentDay(d.day)} className="flex flex-col items-center min-w-[60px]">
@@ -327,7 +442,7 @@ function ScheduleTab({ currentDay, setCurrentDay, setSelectedItem, weatherForeca
       <div className="h-px bg-gray-200/40 mx-2" />
 
       {/* Visual Balance Section: Vertical Text + Photo */}
-      <div className="flex items-center gap-6 px-4 py-6">
+      <div className="flex items-center gap-6 px-4 pt-0 pb-4">
         {/* Left: Vertical Day Label */}
         <div 
           style={{ ...fontStyleSerif, writingMode: 'vertical-rl' }} 
@@ -335,8 +450,8 @@ function ScheduleTab({ currentDay, setCurrentDay, setSelectedItem, weatherForeca
         >
           {dayLabel}
         </div>
-        {/* Right: 16:9 Photo Frame */}
-        <div className="flex-1 aspect-video rounded-xl overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-white/20 bg-gray-100">
+        {/* Right: 3:2 Photo Frame (Sharp Edges) */}
+        <div className="flex-1 aspect-[3/2] rounded-none overflow-hidden shadow-[0_10px_40px_rgba(0,0,0,0.08)] border border-black/5 bg-gray-100">
           <img 
             key={dayImage}
             src={dayImage} 
@@ -349,8 +464,8 @@ function ScheduleTab({ currentDay, setCurrentDay, setSelectedItem, weatherForeca
 
       <div className="h-px bg-gray-200/40 mx-2" />
 
-      <div className="py-2">
-        <div className="flex overflow-x-auto justify-between px-4 py-3 hide-scrollbar snap-x">
+      <div className="py-1 mb-2">
+        <div className="flex overflow-x-auto justify-between px-4 py-1 hide-scrollbar snap-x">
           {weatherForecast.slice(0, 6).map((w: any, i: number) => (
             <button 
               key={i} 
@@ -376,12 +491,12 @@ function ScheduleTab({ currentDay, setCurrentDay, setSelectedItem, weatherForeca
                   }
                 }
               }}
-              className="flex flex-col items-center gap-2 snap-start active:scale-95 transition-all group"
+              className="flex flex-col items-center gap-1 snap-start active:scale-95 transition-all group"
             >
               <span style={fontStyleSerif} className="text-sm font-bold text-gray-400 group-hover:text-morandi-blue transition-colors">
                 {i === 0 ? "現在" : w.time}
               </span>
-              <div className="flex items-center justify-center py-1 group-hover:scale-110 transition-transform">
+              <div className="flex items-center justify-center py-0 group-hover:scale-110 transition-transform">
                 {getWeatherIcon(w.condition)}
               </div>
               <span style={fontStyleSerif} className="text-[15px] font-bold text-text-main group-hover:text-morandi-blue transition-colors">{w.temp}°</span>
@@ -392,7 +507,7 @@ function ScheduleTab({ currentDay, setCurrentDay, setSelectedItem, weatherForeca
 
       <div className="h-px bg-gray-200/40 mx-2" />
 
-      <div className="relative px-2 pt-2">
+      <div className="relative px-2 pt-0">
         <div className="relative">
           {/* Timeline Line - Only for main items */}
           <div className="absolute left-[4.5rem] top-4 bottom-4 w-px bg-gray-200" />
@@ -405,7 +520,7 @@ function ScheduleTab({ currentDay, setCurrentDay, setSelectedItem, weatherForeca
                   key={item.id} 
                   id={`itinerary-item-${item.id}`}
                   onClick={() => !isNoModal && setSelectedItem(item)} 
-                  className={`relative flex items-start gap-8 py-3 transition-all ${isNoModal ? 'cursor-default' : 'cursor-pointer group'}`}
+                  className={`relative flex items-start gap-8 py-1.5 transition-all ${isNoModal ? 'cursor-default' : 'cursor-pointer group'}`}
                 >
                   {/* Active Highlight Box */}
                   {!isNoModal && (
@@ -435,33 +550,34 @@ function ScheduleTab({ currentDay, setCurrentDay, setSelectedItem, weatherForeca
                         )}
                       </div>
 
-                      <h4 style={fontStyleSerif} className={`font-bold text-lg transition-colors truncate mb-0.5 ${isNoModal ? 'text-morandi-text/50' : 'text-morandi-text group-active:text-morandi-primary'}`}>
+                      <h4 style={fontStyleSerif} className={`font-bold text-lg transition-colors whitespace-pre-wrap mb-0.5 ${isNoModal ? 'text-morandi-text/50' : 'text-morandi-text group-active:text-morandi-primary'}`}>
                         {item.title}
                       </h4>
 
-                      <p className={`text-xs leading-relaxed line-clamp-1 opacity-80 ${isNoModal ? 'text-morandi-text-muted/50 italic' : 'text-morandi-text-muted'}`}>
-                        {item.detail}
-                      </p>
-                    </div>
-
-                    {/* QuickLinks - Vertically centered relative to content */}
-                    {item.quickLinks && (
-                      <div className="flex flex-col gap-2 shrink-0">
-                        {item.quickLinks.map((ql: any, idx: number) => (
-                          <button 
-                            key={idx}
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              window.open(ql.url);
-                            }}
-                            style={fontStyleSerif}
-                            className="flex items-center gap-1.5 px-2.5 py-1.5 bg-morandi-primary/5 hover:bg-morandi-primary/10 rounded-lg text-[10px] font-bold text-morandi-primary transition-colors border border-morandi-primary/10 whitespace-nowrap"
-                          >
-                            <Link size={10} /> {ql.label}
-                          </button>
-                        ))}
+                      <div className="flex items-center gap-3">
+                        <p className={`text-xs leading-relaxed line-clamp-1 opacity-80 ${isNoModal ? 'text-morandi-text-muted/50' : 'text-morandi-text-muted'} ${item.title.includes('早餐') && item.day >= 2 ? '' : (isNoModal ? 'italic' : '')}`}>
+                          {item.detail}
+                        </p>
+                        {/* QuickLinks - Moved to Detail Line */}
+                        {item.quickLinks && (
+                          <div className="flex items-center gap-1 shrink-0">
+                            {item.quickLinks.map((ql: any, idx: number) => (
+                              <button 
+                                key={idx}
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  window.open(ql.url);
+                                }}
+                                className="text-morandi-primary hover:text-morandi-primary-light transition-colors p-0.5"
+                                title={ql.label}
+                              >
+                                <Link size={12} />
+                              </button>
+                            ))}
+                          </div>
+                        )}
                       </div>
-                    )}
+                    </div>
                   </div>
                 </div>
               );
@@ -495,32 +611,47 @@ function ScheduleTab({ currentDay, setCurrentDay, setSelectedItem, weatherForeca
 }
 
 function GuideModal({ item, onClose }: any) {
+  const getLinkIcon = (iconName: string) => {
+    switch (iconName) {
+      case 'map': return <MapPin size={16} />;
+      case 'link': return <ExternalLink size={16} />;
+      case 'ticket': return <Ticket size={16} />;
+      case 'image': return <ImageIcon size={16} />;
+      case 'shopping': return <Utensils size={16} />;
+      case 'clock': return <Clock size={16} />;
+      case 'info': return <Info size={16} />;
+      default: return <Link size={16} />;
+    }
+  };
+
   return (
     <div className="fixed inset-0 z-[100] flex items-end justify-center bg-black/30 backdrop-blur-[2px] p-4">
       <motion.div 
         initial={{ y: '100%' }} 
         animate={{ y: 0 }} 
         exit={{ y: '100%' }} 
-        className="w-full max-w-[480px] bg-white/85 backdrop-blur-2xl rounded-t-[40px] p-8 pb-12 shadow-2xl relative max-h-[90vh] overflow-y-auto hide-scrollbar border-t border-x border-white/50"
+        className="w-full max-w-[480px] bg-white/90 backdrop-blur-2xl rounded-t-[40px] shadow-2xl relative max-h-[90vh] overflow-y-auto hide-scrollbar border-t border-x border-white/50 flex flex-col"
       >
-        <button 
-          onClick={onClose} 
-          className="absolute top-6 right-8 w-10 h-10 rounded-full bg-morandi-sand/80 flex items-center justify-center text-text-main shadow-sm active:scale-90 transition-all z-20"
-        >
-          <X size={20} />
-        </button>
-        <div className="text-center mb-8">
-          <div className="flex flex-col items-center gap-2">
+        {/* Sticky Header with Close Button */}
+        <div className="sticky top-0 z-30 px-8 pt-8 pb-4 bg-white/60 backdrop-blur-md flex justify-between items-start">
+          <div className="flex flex-col items-start gap-1">
             {TYPE_CONFIG[item.type] && (
-              <div className="flex items-center gap-1.5 text-xs font-bold text-slate-500/60 uppercase tracking-widest">
+              <div className="flex items-center gap-1.5 text-[10px] font-bold text-slate-500/60 uppercase tracking-widest">
                 {TYPE_CONFIG[item.type].icon}
                 <span>{TYPE_CONFIG[item.type].label}</span>
               </div>
             )}
-            <h2 className="text-3xl font-bold text-text-main leading-tight">{item.title}</h2>
+            <h2 className="text-2xl font-bold text-text-main leading-tight whitespace-pre-wrap text-left">{item.title}</h2>
           </div>
+          <button 
+            onClick={onClose} 
+            className="w-10 h-10 rounded-full bg-morandi-sand/80 flex items-center justify-center text-text-main shadow-sm active:scale-90 transition-all"
+          >
+            <X size={20} />
+          </button>
         </div>
-        <div className="space-y-6">
+
+        <div className="px-8 pb-12 space-y-6">
           <div className="bg-morandi-sand/50 p-6 rounded-[32px] space-y-4 text-sm">
             <div className="flex items-center gap-3"><MapPin size={16} className="text-morandi-blue" /><span>{item.address || "詳見地圖"}</span></div>
             <div className="flex items-center gap-3"><Clock size={16} className="text-morandi-blue" /><span>{item.time}</span></div>
@@ -529,22 +660,28 @@ function GuideModal({ item, onClose }: any) {
           <div className="text-sm leading-relaxed text-text-main bg-white border border-morandi-sand p-6 rounded-[32px] shadow-sm whitespace-pre-wrap">{item.content}</div>
           
           {item.links && item.links.length > 0 && (
-            <div className="space-y-3">
+            <div className="grid grid-cols-1 gap-3">
               {item.links.map((link: any, idx: number) => (
                 <button 
                   key={idx}
                   onClick={() => window.open(link.url)}
-                  className="w-full py-4 bg-white border border-morandi-blue/30 text-morandi-blue rounded-2xl font-bold text-sm flex items-center justify-center gap-3 shadow-sm active:scale-[0.98] transition-all"
+                  className="w-full py-4 px-6 bg-white border border-morandi-blue/20 text-morandi-blue rounded-2xl font-bold text-sm flex items-center justify-between gap-3 shadow-sm active:scale-[0.98] transition-all group"
                 >
-                  <Ticket size={18} /> {link.label}
+                  <div className="flex items-center gap-3">
+                    {getLinkIcon(link.icon)}
+                    <span>{link.label}</span>
+                  </div>
+                  <ChevronRight size={14} className="opacity-40 group-hover:translate-x-1 transition-transform" />
                 </button>
               ))}
             </div>
           )}
 
-          <button onClick={() => window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.address || item.title)}`)} className="w-full py-5 bg-morandi-blue text-white rounded-2xl font-bold tracking-[0.4em] flex items-center justify-center gap-3 shadow-lg">
-            <Navigation size={20} /> 開啟導航
-          </button>
+          {!item.noNav && (
+            <button onClick={() => window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.address || item.title)}`)} className="w-full py-5 bg-morandi-blue text-white rounded-2xl font-bold tracking-[0.4em] flex items-center justify-center gap-3 shadow-lg active:scale-[0.98] transition-all">
+              <Navigation size={20} /> 開啟導航
+            </button>
+          )}
         </div>
       </motion.div>
     </div>
