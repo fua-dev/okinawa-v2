@@ -90,8 +90,8 @@ const ITINERARY_DATA = [
           title: "TOP 10 商店/小吃",
           items: [
             { name: "淳久堂書店 (那霸店)", desc: "沖繩最大的書店，文具與書籍種類齊全。", url: "https://www.google.com/maps/search/?api=1&query=淳久堂書店+那霸店" },
-            { name: "市場本通", desc: "充滿昭和風情的商店街，販售各式土產與日常用品。", url: "https://www.google.com/maps/search/?api=1&query=市場本通" },
-            { name: "牧志公設市場", desc: "沖繩的廚房，一樓買海鮮二樓代客料理。", url: "https://www.google.com/maps/search/?api=1&query=第一牧志公設市場" },
+            { name: "Splash Okinawa", desc: "以沖繩海洋為主題的精緻飾品與雜貨店。", url: "https://www.google.com/maps/search/?api=1&query=Splash+Okinawa+國際通" },
+            { name: "Okinawa Art Shop Mash", desc: "匯集沖繩在地藝術家的原創手工藝品。", url: "https://www.google.com/maps/search/?api=1&query=Okinawa+Art+Shop+Mash" },
             { name: "御菓子御殿", desc: "紅芋塔名店，建築外觀極具特色。", url: "https://www.google.com/maps/search/?api=1&query=御菓子御殿+國際通松尾店" },
             { name: "鹽屋 (國際通店)", desc: "販售各式沖繩海鹽，推薦雪鹽霜淇淋。", url: "https://www.google.com/maps/search/?api=1&query=鹽屋+國際通店" },
             { name: "Calbee+", desc: "現炸薯條三兄弟與沖繩限定口味零食。", url: "https://www.google.com/maps/search/?api=1&query=Calbee+Plus+Okinawa" },
@@ -103,22 +103,22 @@ const ITINERARY_DATA = [
         }
       },
       { 
-        id: '1-5', time: "17:30", type: "food", title: "國際通晚餐 Top 10 推薦", detail: "可分隊用餐", address: "那霸市國際通", 
+        id: '1-5', time: "17:30", type: "food", title: "國際通晚餐「非牛/非生魚」Top 10 推薦", detail: "可分隊用餐", address: "那霸市國際通", 
         content: "國際通周邊餐廳選擇眾多，可依喜好分隊行動。",
         hideTime: true,
         top10: {
-          title: "國際通晚餐 Top 10 推薦",
+          title: "國際通晚餐「非牛/非生魚」Top 10 推薦",
           items: [
             { name: "暖暮拉麵 (那霸牧志店)", desc: "九州拉麵票選第一名，國際通排隊名店。", url: "https://www.google.com/maps/search/?api=1&query=暖暮拉麵+那霸牧志店" },
             { name: "琉球新麵 通堂", desc: "招牌男人麵與女人麵，湯頭層次豐富。", url: "https://www.google.com/maps/search/?api=1&query=琉球新麵+通堂+寄宮店" },
-            { name: "88 牛排 (國際通店)", desc: "沖繩老牌牛排館，肉質紮實份量足。", url: "https://www.google.com/maps/search/?api=1&query=88牛排+國際通店" },
-            { name: "碧 (Heisai) 鐵板燒", desc: "高品質石垣牛鐵板燒，服務親切。", url: "https://www.google.com/maps/search/?api=1&query=碧+鐵板燒+國際通" },
-            { name: "ゆうなんぎい (Yunangi)", desc: "沖繩家庭料理老店，東坡肉必點。", url: "https://www.google.com/maps/search/?api=1&query=ゆうなんぎい" },
-            { name: "國際通屋台村", desc: "匯集20多家特色小攤位，氛圍熱鬧。", url: "https://www.google.com/maps/search/?api=1&query=國際通屋台村" },
-            { name: "燒肉 華 (Hana)", desc: "提供高品質黑毛和牛與石垣牛燒肉。", url: "https://www.google.com/maps/search/?api=1&query=燒肉+華+那霸" },
-            { name: "牧志公設市場 2F 食堂", desc: "體驗道地沖繩家常菜與現煮海鮮。", url: "https://www.google.com/maps/search/?api=1&query=第一牧志公設市場+2F" },
-            { name: "嘉手納蕎麥麵", desc: "傳統沖繩麵，麵條Q彈湯頭清甜。", url: "https://www.google.com/maps/search/?api=1&query=嘉手納蕎麥麵" },
-            { name: "居酒屋 祭囃子", desc: "現場三線琴演奏，體驗沖繩熱鬧居酒屋文化。", url: "https://www.google.com/maps/search/?api=1&query=居酒屋+祭囃子" }
+            { name: "ゆうなんぎい (Yunangi)", desc: "沖繩家庭料理老店，東坡肉與苦瓜雜炒必點。", url: "https://www.google.com/maps/search/?api=1&query=ゆうなんぎい" },
+            { name: "沖繩麵 Eibun", desc: "超人氣創意沖繩麵，湯頭清甜且麵條Q彈。", url: "https://www.google.com/maps/search/?api=1&query=Okinawa+Soba+Eibun" },
+            { name: "Angama (あんがま)", desc: "道地沖繩料理搭配傳統表演，適合家庭聚餐。", url: "https://www.google.com/maps/search/?api=1&query=あんがま+國際通" },
+            { name: "國際通屋台村", desc: "匯集多樣化熟食小攤，氛圍熱鬧適合體驗當地風情。", url: "https://www.google.com/maps/search/?api=1&query=國際通屋台村" },
+            { name: "嘉手納蕎麥麵", desc: "傳統沖繩麵，簡單純粹的美味。", url: "https://www.google.com/maps/search/?api=1&query=嘉手納蕎麥麵" },
+            { name: "居酒屋 祭囃子", desc: "現場三線琴演奏，提供豐富的熟食沖繩料理。", url: "https://www.google.com/maps/search/?api=1&query=居酒屋+祭囃子" },
+            { name: "Gusto (ガスト) 那霸國際通店", desc: "知名家庭餐廳，餐點多樣化且對兒童非常友善。", url: "https://www.google.com/maps/search/?api=1&query=Gusto+那霸國際通店" },
+            { name: "琉球茶房 (Ashibiuna)", desc: "在古色古香的環境中享用精緻的沖繩熟食定食。", url: "https://www.google.com/maps/search/?api=1&query=琉球茶房+Ashibiuna" }
           ]
         }
       }
@@ -723,7 +723,7 @@ function GuideModal({ item, onClose }: any) {
             </div>
 
             {item.hotelDetails?.breakfastRemarks && (
-              <div className="px-5 pb-5 space-y-3">
+              <div className="px-5 pb-8 space-y-3">
                 <div className="flex items-center gap-3 text-morandi-primary">
                   <Info size={20} />
                   <span className="text-base font-bold uppercase tracking-widest">備註</span>
@@ -733,7 +733,7 @@ function GuideModal({ item, onClose }: any) {
                 </div>
               </div>
             )}
-            
+
             {item.officialSite && (
               <div className="px-5 pb-5">
                 <button 
@@ -792,17 +792,17 @@ function GuideModal({ item, onClose }: any) {
                     </h3>
                     <div className="space-y-4">
                       {item.hotelDetails.routes.map((route: any, idx: number) => (
-                        <div key={idx} className="flex items-center justify-between gap-6 bg-morandi-sand/20 p-5 rounded-[24px]">
-                          <div className="flex-1 min-w-0">
-                            <p className="text-xl font-bold text-morandi-text mb-2">{route.label}</p>
-                            <p className="text-lg text-morandi-text-muted leading-relaxed">{route.desc}</p>
+                        <div key={idx} className="bg-morandi-sand/20 p-5 rounded-[24px] space-y-3">
+                          <div className="flex items-center justify-between gap-4">
+                            <p className="text-xl font-bold text-morandi-text">{route.label}</p>
+                            <button 
+                              onClick={() => window.open(route.url)}
+                              className="flex items-center gap-2 px-4 py-2 bg-white border border-morandi-primary/20 rounded-xl text-sm font-bold text-morandi-primary shadow-sm active:scale-95 transition-all shrink-0"
+                            >
+                              <MapPin size={16} /> 路線
+                            </button>
                           </div>
-                          <button 
-                            onClick={() => window.open(route.url)}
-                            className="flex items-center gap-2 px-4 py-2 bg-white border border-morandi-primary/20 rounded-xl text-sm font-bold text-morandi-primary shadow-sm active:scale-95 transition-all shrink-0"
-                          >
-                            <MapPin size={16} /> 路線
-                          </button>
+                          <p className="text-lg text-morandi-text-muted leading-relaxed w-full">{route.desc}</p>
                         </div>
                       ))}
                     </div>
@@ -855,17 +855,17 @@ function GuideModal({ item, onClose }: any) {
                   </h3>
                   <div className="space-y-4">
                     {item.top10.items.map((t: any, idx: number) => (
-                      <div key={idx} className="flex items-center justify-between gap-6 bg-morandi-sand/20 p-5 rounded-[24px]">
-                        <div className="flex-1 min-w-0">
-                          <p className="text-lg font-bold text-morandi-text mb-2">{t.name}</p>
-                          <p className="text-base text-morandi-text-muted leading-relaxed">{t.desc}</p>
+                      <div key={idx} className="bg-morandi-sand/20 p-5 rounded-[24px] space-y-3">
+                        <div className="flex items-center justify-between gap-4">
+                          <p className="text-lg font-bold text-morandi-text">{t.name}</p>
+                          <button 
+                            onClick={() => window.open(t.url)}
+                            className="flex items-center gap-2 px-4 py-2 bg-white border border-morandi-primary/20 rounded-xl text-sm font-bold text-morandi-primary shadow-sm active:scale-95 transition-all shrink-0"
+                          >
+                            <Navigation size={16} /> 路線
+                          </button>
                         </div>
-                        <button 
-                          onClick={() => window.open(t.url)}
-                          className="flex items-center gap-2 px-4 py-2 bg-white border border-morandi-primary/20 rounded-xl text-sm font-bold text-morandi-primary shadow-sm active:scale-95 transition-all shrink-0"
-                        >
-                          <Navigation size={16} /> 路線
-                        </button>
+                        <p className="text-base text-morandi-text-muted leading-relaxed w-full">{t.desc}</p>
                       </div>
                     ))}
                   </div>
