@@ -464,9 +464,20 @@ function ScheduleTab({ currentDay, setCurrentDay, setSelectedItem, weatherForeca
 
       <div className="h-px bg-gray-200/40 mx-2" />
 
-      <div className="py-1 mb-2">
-        <div className="flex overflow-x-auto justify-between px-4 py-1 hide-scrollbar snap-x">
-          {weatherForecast.slice(0, 6).map((w: any, i: number) => (
+      {/* Weather Section - Refactored for Horizontal Scroll & Header */}
+      <div className="py-2 mb-10">
+        <div className="px-6 mb-4 flex justify-between items-center">
+          <span style={fontStyleSerif} className="text-[10px] font-bold text-morandi-text-muted uppercase tracking-[0.2em]">未來 24 小時預報</span>
+          <button 
+            onClick={() => window.open('https://weathernews.jp/onebox/tenki/okinawa/47201/')}
+            className="text-morandi-primary hover:text-morandi-primary-light transition-colors"
+          >
+            <CloudSun size={18} />
+          </button>
+        </div>
+        {/* Data source: weathernews.jp */}
+        <div className="flex overflow-x-auto px-6 py-1 hide-scrollbar snap-x gap-8">
+          {weatherForecast.map((w: any, i: number) => (
             <button 
               key={i} 
               onClick={() => {
@@ -491,15 +502,15 @@ function ScheduleTab({ currentDay, setCurrentDay, setSelectedItem, weatherForeca
                   }
                 }
               }}
-              className="flex flex-col items-center gap-1 snap-start active:scale-95 transition-all group"
+              className="flex flex-col items-center gap-2 snap-start active:scale-95 transition-all group shrink-0 min-w-[50px]"
             >
-              <span style={fontStyleSerif} className="text-sm font-bold text-gray-400 group-hover:text-morandi-blue transition-colors">
+              <span style={fontStyleSerif} className="text-[10px] font-bold text-gray-400 group-hover:text-morandi-blue transition-colors uppercase tracking-widest">
                 {i === 0 ? "現在" : w.time}
               </span>
               <div className="flex items-center justify-center py-0 group-hover:scale-110 transition-transform">
                 {getWeatherIcon(w.condition)}
               </div>
-              <span style={fontStyleSerif} className="text-[15px] font-bold text-text-main group-hover:text-morandi-blue transition-colors">{w.temp}°</span>
+              <span style={fontStyleSerif} className="text-lg font-bold text-text-main group-hover:text-morandi-blue transition-colors">{w.temp}°</span>
             </button>
           ))}
         </div>
