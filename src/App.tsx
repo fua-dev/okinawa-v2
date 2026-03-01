@@ -9,7 +9,7 @@ import {
   Calendar, Wallet, ListCheck, Info, MapPin, 
   CloudSun, Plus, Trash2, ChevronRight, Navigation, X, 
   Image as ImageIcon, Smartphone, Users, CheckCircle2, Circle, Clock, Ticket,
-  ExternalLink, Sun, Cloud, CloudRain, Utensils, Plane, Car, Upload,
+  ExternalLink, Sun, Cloud, CloudRain, Utensils, Plane, Car, Upload, Star,
   LayoutGrid, StretchHorizontal, ChevronLeft, ChevronRight as ChevronRightIcon,
   PhoneCall, PlusCircle, Link
 } from 'lucide-react';
@@ -50,44 +50,76 @@ const ITINERARY_DATA = [
       },
       { 
         id: '1-2', time: "15:00", type: "transport", title: "抵達那霸空港 & OTS 租車", detail: "預計抵達後分頭行動", address: "那霸機場 OTS 營業所", 
-        content: "抵達後約 15:30 進行租車行程。請搭乘機場接駁車前往營業所辦理手續。\n\n【OTS 接駁資訊】https://www.otsrentacar.ne.jp/okinawa/shuttlebus.html\n\n【備註】Joy Jungle 娃娃機店：位於那霸機場國內線，從國際線入境後往單軌電車站方向步行即可經過。",
-        links: [
-          { label: "OTS 接駁資訊", url: "https://www.otsrentacar.ne.jp/okinawa/shuttlebus.html", icon: "link" },
-          { label: "租車備註", url: "#", icon: "info" }
-        ],
+        content: "抵達後約 15:30 進行租車行程。請搭乘機場接駁車前往營業所辦理手續。",
+        otsInfo: {
+          title: "OTS 接駁資訊",
+          link: "https://www.otsinternational.jp/otsrentacar/cn/okinawa/pickup/naha-airport-international/",
+          mapImage: "https://www.otsinternational.jp/otsrentacar/cn/img/page/okinawa/access/pickup_naha_international/floor-map_2026-cn.png",
+          guide: "到達那霸機場領取行李並通過檢查口 → 請向右走（國內線方向）走到盡頭 → 搭乘電扶梯上二樓後左轉 → 馬上再向右轉進到長廊直走 → 搭乘電扶梯下到國內線 1 樓並前往 4 號出口 → 由 4 號出口出來後請穿過人行道，前往左側的「10-A（R-10）」接駁站。"
+        },
+        remarks: "Joy Jungle 娃娃機店：位於那霸機場國內線，從國際線入境後往單軌電車站方向步行即可經過。",
         noNav: true
       },
       { 
-        id: '1-3', time: "16:00", type: "stay", title: "那霸歌町大和roynet\n飯店premier", detail: "Check-in 放置行李", address: "那霸市安里1-1-1", 
-        content: "飯店位於那霸新都心，地理位置極佳。對面就有百貨公司，周邊購物與餐飲選擇非常豐富。\n\n【路線導覽】\n1. Omoromachi 站步行：從單軌電車站步行約 5 分鐘即可抵達。\n2. OTS 開車：從營業所開車約 20-30 分鐘。\n\n【新都心 MAIN PLACE 購物清單】\n- Tokyu Hands\n- San-A 超市\n- 各式日系服飾品牌",
-        links: [
-          { label: "飯店官網", url: "https://www.daiwaroynet.jp/naha-omoromachi-premier/", icon: "link" },
-          { label: "MAIN PLACE 官網", url: "https://www.san-a.co.jp/mainplace/", icon: "shopping" },
-          { label: "Omoromachi 站步行導航", url: "https://www.google.com/maps/dir/?api=1&origin=Omoromachi+Station&destination=Daiwa+Roynet+Hotel+Naha-Omoromachi+PREMIER", icon: "map" },
-          { label: "OTS 開車導航", url: "https://www.google.com/maps/dir/?api=1&origin=OTS+Rent-a-car+Naha+Airport&destination=Daiwa+Roynet+Hotel+Naha-Omoromachi+PREMIER", icon: "map" }
-        ],
+        id: '1-3', time: "16:00", type: "stay", title: "那霸歌町大和roynet飯店premier", detail: "Check-in 放置行李", address: "那霸市安里1-1-1", 
+        content: "飯店位於那霸新都心，地理位置極佳。對面就有百貨公司，周邊購物與餐飲選擇非常豐富。",
+        hotelDetails: {
+          officialSite: "https://www.daiwaroynet.jp/naha-omoromachi-premier/",
+          routes: [
+            { label: "Omoromachi 站步行", desc: "從單軌電車站步行約 5 分鐘即可抵達。", url: "https://www.google.com/maps/dir/?api=1&origin=Omoromachi+Station&destination=Daiwa+Roynet+Hotel+Naha-Omoromachi+PREMIER" },
+            { label: "OTS 開車", desc: "從 OTS 臨空豐崎營業所開車約 20-30 分鐘。", url: "https://www.google.com/maps/dir/?api=1&origin=OTS+Rent-a-car+Naha+Airport&destination=Daiwa+Roynet+Hotel+Naha-Omoromachi+PREMIER" }
+          ],
+          shopping: {
+            name: "新都心 MAIN PLACE",
+            url: "https://blog-nahamainplace.san-a.co.jp/shoplist/",
+            hours: "10:00~22:00 (部分店鋪)",
+            floors: [
+              "1F: earth, wego, kastane, 靴下屋, niko and…, LOWRYS FARM, 3COINS, Lattice",
+              "2F: ABM-MART, 三麗鷗商店，無印良品，扭蛋"
+            ]
+          }
+        },
         noNav: true
       },
       { 
         id: '1-4', time: "17:30", type: "spot", title: "國際通散策", detail: "探索那霸最熱鬧的街道", address: "那霸市國際通", 
-        content: "國際通是那霸的心臟地帶，全長約 1.6 公里，匯集了各式土產店、餐廳與百貨，是沖繩最繁華的街道。\n\n【Top 10 商店/小吃】\n1. 淳久堂書店 (那霸店)\n2. Pork Tamago Onigiri\n3. Blue Seal 冰淇淋\n4. Calbee+ 現炸薯條\n5. 御菓子御殿\n6. 鹽屋\n7. 牧志公設市場\n8. Don Quijote\n9. 琉球咖啡館\n10. 沖繩屋",
-        links: [
-          { label: "國際通精簡介紹", url: "https://naha-kokusaidori.jp/", icon: "info" },
-          { label: "淳久堂書店", url: "https://www.google.com/maps/search/?api=1&query=淳久堂書店+那霸店", icon: "map" },
-          { label: "Pork Tamago Onigiri", url: "https://www.google.com/maps/search/?api=1&query=Pork+Tamago+Onigiri+第一牧志公設市場店", icon: "map" },
-          { label: "Blue Seal 國際通", url: "https://www.google.com/maps/search/?api=1&query=Blue+Seal+國際通", icon: "map" },
-          { label: "驚安殿堂 國際通", url: "https://www.google.com/maps/search/?api=1&query=Don+Quijote+國際通", icon: "map" }
-        ]
+        content: "國際通是那霸的心臟地帶，全長約 1.6 公里，匯集了各式土產店、餐廳與百貨，是沖繩最繁華的街道。",
+        officialSite: "https://www.japan.travel/hk/spot/587/",
+        top10: {
+          title: "TOP 10 商店/小吃",
+          items: [
+            { name: "淳久堂書店 (那霸店)", desc: "沖繩最大的書店，文具與書籍種類齊全。", url: "https://www.google.com/maps/search/?api=1&query=淳久堂書店+那霸店" },
+            { name: "市場本通", desc: "充滿昭和風情的商店街，販售各式土產與日常用品。", url: "https://www.google.com/maps/search/?api=1&query=市場本通" },
+            { name: "牧志公設市場", desc: "沖繩的廚房，一樓買海鮮二樓代客料理。", url: "https://www.google.com/maps/search/?api=1&query=第一牧志公設市場" },
+            { name: "御菓子御殿", desc: "紅芋塔名店，建築外觀極具特色。", url: "https://www.google.com/maps/search/?api=1&query=御菓子御殿+國際通松尾店" },
+            { name: "鹽屋 (國際通店)", desc: "販售各式沖繩海鹽，推薦雪鹽霜淇淋。", url: "https://www.google.com/maps/search/?api=1&query=鹽屋+國際通店" },
+            { name: "Calbee+", desc: "現炸薯條三兄弟與沖繩限定口味零食。", url: "https://www.google.com/maps/search/?api=1&query=Calbee+Plus+Okinawa" },
+            { name: "Blue Seal 冰淇淋", desc: "沖繩代表性冰淇淋，口味選擇眾多。", url: "https://www.google.com/maps/search/?api=1&query=Blue+Seal+國際通" },
+            { name: "驚安殿堂 唐吉訶德", desc: "24小時營業，購物補貨的最佳去處。", url: "https://www.google.com/maps/search/?api=1&query=Don+Quijote+國際通" },
+            { name: "琉球咖啡館", desc: "推薦著名的「武士咖啡」，口感濃郁。", url: "https://www.google.com/maps/search/?api=1&query=琉球咖啡館" },
+            { name: "沖繩屋 (Okinawa-ya)", desc: "販售各式沖繩特色小物與紀念品。", url: "https://www.google.com/maps/search/?api=1&query=沖繩屋+國際通" }
+          ]
+        }
       },
       { 
-        id: '1-5', time: "17:30", type: "food", title: "晚餐：國際通美食", detail: "可分隊用餐", address: "那霸市國際通", 
-        content: "國際通周邊餐廳選擇眾多，可依喜好分隊行動。\n\n【Top 10 餐廳】\n1. 暖暮拉麵 (那霸牧志店)\n2. 琉球新麵 通堂\n3. 碧 鐵板燒\n4. 88 牛排\n5. ゆうなんぎい\n6. 牧志公設市場 2F 食堂\n7. 琉球黑毛和牛 燒肉\n8. 嘉手納蕎麥麵\n9. 居酒屋 祭囃子\n10. 國際通屋台村",
-        links: [
-          { label: "暖暮拉麵 導航", url: "https://www.google.com/maps/search/?api=1&query=暖暮拉麵+那霸牧志店", icon: "map" },
-          { label: "通堂拉麵 導航", url: "https://www.google.com/maps/search/?api=1&query=琉球新麵+通堂+寄宮店", icon: "map" },
-          { label: "88 牛排 導航", url: "https://www.google.com/maps/search/?api=1&query=Steak+House+88+國際通", icon: "map" },
-          { label: "屋台村 導航", url: "https://www.google.com/maps/search/?api=1&query=國際通屋台村", icon: "map" }
-        ]
+        id: '1-5', time: "17:30", type: "food", title: "國際通晚餐 Top 10 推薦", detail: "可分隊用餐", address: "那霸市國際通", 
+        content: "國際通周邊餐廳選擇眾多，可依喜好分隊行動。",
+        hideTime: true,
+        top10: {
+          title: "國際通晚餐 Top 10 推薦",
+          items: [
+            { name: "暖暮拉麵 (那霸牧志店)", desc: "九州拉麵票選第一名，國際通排隊名店。", url: "https://www.google.com/maps/search/?api=1&query=暖暮拉麵+那霸牧志店" },
+            { name: "琉球新麵 通堂", desc: "招牌男人麵與女人麵，湯頭層次豐富。", url: "https://www.google.com/maps/search/?api=1&query=琉球新麵+通堂+寄宮店" },
+            { name: "88 牛排 (國際通店)", desc: "沖繩老牌牛排館，肉質紮實份量足。", url: "https://www.google.com/maps/search/?api=1&query=88牛排+國際通店" },
+            { name: "碧 (Heisai) 鐵板燒", desc: "高品質石垣牛鐵板燒，服務親切。", url: "https://www.google.com/maps/search/?api=1&query=碧+鐵板燒+國際通" },
+            { name: "ゆうなんぎい (Yunangi)", desc: "沖繩家庭料理老店，東坡肉必點。", url: "https://www.google.com/maps/search/?api=1&query=ゆうなんぎい" },
+            { name: "國際通屋台村", desc: "匯集20多家特色小攤位，氛圍熱鬧。", url: "https://www.google.com/maps/search/?api=1&query=國際通屋台村" },
+            { name: "燒肉 華 (Hana)", desc: "提供高品質黑毛和牛與石垣牛燒肉。", url: "https://www.google.com/maps/search/?api=1&query=燒肉+華+那霸" },
+            { name: "牧志公設市場 2F 食堂", desc: "體驗道地沖繩家常菜與現煮海鮮。", url: "https://www.google.com/maps/search/?api=1&query=第一牧志公設市場+2F" },
+            { name: "嘉手納蕎麥麵", desc: "傳統沖繩麵，麵條Q彈湯頭清甜。", url: "https://www.google.com/maps/search/?api=1&query=嘉手納蕎麥麵" },
+            { name: "居酒屋 祭囃子", desc: "現場三線琴演奏，體驗沖繩熱鬧居酒屋文化。", url: "https://www.google.com/maps/search/?api=1&query=居酒屋+祭囃子" }
+          ]
+        }
       }
     ]
   },
@@ -335,7 +367,7 @@ export default function App() {
           </div>
           <div className="flex items-center gap-4">
             <div className="h-[1px] flex-1 bg-gradient-to-r from-morandi-primary/30 to-transparent" />
-            <span className="text-[10px] italic text-morandi-text-muted tracking-[0.3em] uppercase">Family Adventure</span>
+            <span className="text-[10px] text-morandi-text-muted tracking-[0.3em] uppercase">Family Adventure</span>
             <div className="h-[1px] w-12 bg-morandi-accent/30" />
           </div>
         </div>
@@ -541,7 +573,7 @@ function ScheduleTab({ currentDay, setCurrentDay, setSelectedItem, weatherForeca
                   {/* Time Column */}
                   <div className="w-14 text-right pt-0.5 relative z-10">
                     <span style={fontStyleSerif} className={`text-lg font-bold transition-colors ${isNoModal ? 'text-morandi-text/40' : 'text-morandi-text group-active:text-morandi-primary'}`}>
-                      {item.time}
+                      {item.hideTime ? "" : item.time}
                     </span>
                   </div>
 
@@ -561,12 +593,12 @@ function ScheduleTab({ currentDay, setCurrentDay, setSelectedItem, weatherForeca
                         )}
                       </div>
 
-                      <h4 style={fontStyleSerif} className={`font-bold text-lg transition-colors whitespace-pre-wrap mb-0.5 ${isNoModal ? 'text-morandi-text/50' : 'text-morandi-text group-active:text-morandi-primary'}`}>
+                      <h4 style={fontStyleSerif} className={`font-bold text-lg transition-colors mb-0.5 ${item.type === 'stay' ? 'whitespace-nowrap overflow-hidden text-ellipsis' : 'whitespace-pre-wrap'} ${isNoModal ? 'text-morandi-text/50' : 'text-morandi-text group-active:text-morandi-primary'}`}>
                         {item.title}
                       </h4>
 
                       <div className="flex items-center gap-3">
-                        <p className={`text-xs leading-relaxed line-clamp-1 opacity-80 ${isNoModal ? 'text-morandi-text-muted/50' : 'text-morandi-text-muted'} ${item.title.includes('早餐') && item.day >= 2 ? '' : (isNoModal ? 'italic' : '')}`}>
+                        <p className={`text-xs leading-relaxed line-clamp-1 opacity-80 ${isNoModal ? 'text-morandi-text-muted/50' : 'text-morandi-text-muted'}`}>
                           {item.detail}
                         </p>
                         {/* QuickLinks - Moved to Detail Line */}
@@ -652,7 +684,7 @@ function GuideModal({ item, onClose }: any) {
                 <span>{TYPE_CONFIG[item.type].label}</span>
               </div>
             )}
-            <h2 className="text-2xl font-bold text-text-main leading-tight whitespace-pre-wrap text-left">{item.title}</h2>
+            <h2 className={`text-2xl font-bold text-text-main leading-tight text-left ${item.type === 'stay' ? 'whitespace-nowrap' : 'whitespace-pre-wrap'}`}>{item.title}</h2>
           </div>
           <button 
             onClick={onClose} 
@@ -668,8 +700,184 @@ function GuideModal({ item, onClose }: any) {
             <div className="flex items-center gap-3"><Clock size={16} className="text-morandi-blue" /><span>{item.time}</span></div>
           </div>
 
-          <div className="text-sm leading-relaxed text-text-main bg-white border border-morandi-sand p-6 rounded-[32px] shadow-sm whitespace-pre-wrap">{item.content}</div>
-          
+          <div className="bg-white border border-morandi-sand rounded-[32px] shadow-sm overflow-hidden">
+            {/* Hotel Official Site at the very top if it exists */}
+            {item.hotelDetails && (
+              <div className="p-6 pb-0">
+                <button 
+                  onClick={() => window.open(item.hotelDetails.officialSite)}
+                  className="w-full py-3 px-4 bg-morandi-primary/5 border border-morandi-primary/10 rounded-xl flex items-center justify-between group"
+                >
+                  <div className="flex items-center gap-3 text-morandi-primary">
+                    <ExternalLink size={16} />
+                    <span className="text-sm font-bold">飯店官網</span>
+                  </div>
+                  <ChevronRight size={14} className="opacity-40 group-hover:translate-x-1 transition-transform" />
+                </button>
+              </div>
+            )}
+
+            <div className="p-6 text-sm leading-relaxed text-text-main whitespace-pre-wrap">
+              {item.content}
+            </div>
+
+            {item.officialSite && (
+              <div className="px-6 pb-6">
+                <button 
+                  onClick={() => window.open(item.officialSite)}
+                  className="w-full py-3 px-4 bg-morandi-primary/5 border border-morandi-primary/10 rounded-xl flex items-center justify-between group"
+                >
+                  <div className="flex items-center gap-3 text-morandi-primary">
+                    <ExternalLink size={16} />
+                    <span className="text-sm font-bold">國際通介紹</span>
+                  </div>
+                  <ChevronRight size={14} className="opacity-40 group-hover:translate-x-1 transition-transform" />
+                </button>
+              </div>
+            )}
+            
+            {item.otsInfo && (
+              <>
+                <div className="px-6">
+                  <hr className="border-morandi-sand/30" />
+                </div>
+                <div className="p-6 pt-4 space-y-4">
+                  <div className="flex items-center gap-2">
+                    <h3 style={fontStyleSerif} className="text-lg font-bold text-morandi-text">{item.otsInfo.title}</h3>
+                    <button 
+                      onClick={() => window.open(item.otsInfo.link)}
+                      className="text-morandi-primary hover:text-morandi-primary-light transition-colors p-1"
+                    >
+                      <ExternalLink size={14} />
+                    </button>
+                  </div>
+                  <div className="rounded-none overflow-hidden border-y border-morandi-sand/20 -mx-6">
+                    <img 
+                      src={item.otsInfo.mapImage} 
+                      alt="OTS Map" 
+                      className="w-full h-auto" 
+                      referrerPolicy="no-referrer" 
+                    />
+                  </div>
+                  <div style={fontStyleSerif} className="text-xs leading-relaxed text-text-main py-3">
+                    {item.otsInfo.guide}
+                  </div>
+                </div>
+              </>
+            )}
+
+            {item.hotelDetails && (
+              <>
+                <div className="px-6">
+                  <hr className="border-morandi-sand/30" />
+                </div>
+                <div className="p-6 pt-4 space-y-6">
+                  {/* Routes */}
+                  <div className="space-y-4">
+                    <h3 style={fontStyleSerif} className="text-sm font-bold text-morandi-text-muted uppercase tracking-widest flex items-center gap-2">
+                      <Navigation size={14} /> 路線導覽
+                    </h3>
+                    <div className="space-y-3">
+                      {item.hotelDetails.routes.map((route: any, idx: number) => (
+                        <div key={idx} className="flex items-center justify-between gap-4 bg-morandi-sand/20 p-4 rounded-2xl">
+                          <div className="flex-1 min-w-0">
+                            <p className="text-xs font-bold text-morandi-text mb-1">{route.label}</p>
+                            <p className="text-[10px] text-morandi-text-muted leading-relaxed">{route.desc}</p>
+                          </div>
+                          <button 
+                            onClick={() => window.open(route.url)}
+                            className="flex items-center gap-1.5 px-3 py-1.5 bg-white border border-morandi-primary/20 rounded-lg text-[10px] font-bold text-morandi-primary shadow-sm active:scale-95 transition-all"
+                          >
+                            <MapPin size={10} /> 路線
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="px-2">
+                    <hr className="border-morandi-sand/20" />
+                  </div>
+
+                  {/* Shopping */}
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <h3 style={fontStyleSerif} className="text-sm font-bold text-morandi-text uppercase tracking-widest flex items-center gap-2">
+                        <Utensils size={14} className="text-morandi-primary" /> {item.hotelDetails.shopping.name}
+                      </h3>
+                      <button 
+                        onClick={() => window.open(item.hotelDetails.shopping.url)}
+                        className="flex items-center gap-1.5 px-3 py-1.5 bg-morandi-primary text-white rounded-lg text-[10px] font-bold shadow-sm active:scale-95 transition-all"
+                      >
+                        <ExternalLink size={10} /> 官網
+                      </button>
+                    </div>
+                    <div className="bg-morandi-sand/20 p-4 rounded-2xl space-y-3">
+                      <div className="flex items-center gap-2 text-[10px] text-morandi-text-muted">
+                        <Clock size={12} />
+                        <span>營業時間：{item.hotelDetails.shopping.hours}</span>
+                      </div>
+                      <div className="space-y-2">
+                        {item.hotelDetails.shopping.floors.map((floor: string, idx: number) => (
+                          <div key={idx} className="flex gap-2">
+                            <div className="w-1 h-1 rounded-full bg-morandi-primary mt-1.5 shrink-0" />
+                            <p className="text-[11px] text-morandi-text leading-relaxed">{floor}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </>
+            )}
+
+            {item.top10 && (
+              <>
+                <div className="px-6">
+                  <hr className="border-morandi-sand/30" />
+                </div>
+                <div className="p-6 pt-4 space-y-4">
+                  <h3 style={fontStyleSerif} className="text-sm font-bold text-morandi-text uppercase tracking-widest flex items-center gap-2">
+                    <Star size={14} className="text-morandi-primary" /> {item.top10.title}
+                  </h3>
+                  <div className="space-y-3">
+                    {item.top10.items.map((t: any, idx: number) => (
+                      <div key={idx} className="flex items-center justify-between gap-4 bg-morandi-sand/20 p-4 rounded-2xl">
+                        <div className="flex-1 min-w-0">
+                          <p className="text-xs font-bold text-morandi-text mb-1">{t.name}</p>
+                          <p className="text-[10px] text-morandi-text-muted leading-relaxed">{t.desc}</p>
+                        </div>
+                        <button 
+                          onClick={() => window.open(t.url)}
+                          className="flex items-center gap-1.5 px-3 py-1.5 bg-white border border-morandi-primary/20 rounded-lg text-[10px] font-bold text-morandi-primary shadow-sm active:scale-95 transition-all"
+                        >
+                          <Navigation size={10} /> 路線
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </>
+            )}
+
+            {item.remarks && (
+              <>
+                <div className="px-6">
+                  <hr className="border-morandi-sand/30" />
+                </div>
+                <div className="p-6 space-y-2">
+                  <div className="flex items-center gap-2 text-morandi-primary">
+                    <Info size={14} />
+                    <span className="text-xs font-bold uppercase tracking-widest">備註</span>
+                  </div>
+                  <div className="text-xs leading-relaxed text-text-main">
+                    {item.remarks}
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
+
           {item.links && item.links.length > 0 && (
             <div className="grid grid-cols-1 gap-3">
               {item.links.map((link: any, idx: number) => (
@@ -839,7 +1047,7 @@ function BudgetTab({ expenses, setExpenses, rate }: any) {
         <div className="space-y-3">
           {expenses.length === 0 ? (
             <div className="bg-white/40 rounded-[24px] p-12 text-center border border-white/60">
-              <p className="text-sm text-morandi-text-muted italic">尚無支出紀錄</p>
+              <p className="text-sm text-morandi-text-muted">尚無支出紀錄</p>
             </div>
           ) : (
             expenses.map((ex: any) => (
@@ -1357,7 +1565,7 @@ function InfoTab() {
             <CouponItem name="Bic Camera" discount="10% + 7% OFF" url="https://www.biccamera.com.t.tj.hp.transer.com/service/logistics/tax-free/index.html" />
             <CouponItem name="Don Quijote (唐吉訶德)" discount="10% + 5% OFF" url="https://www.donki.com/en/service/coupon.php" />
             <CouponItem name="松本清 (Matsukiyo)" discount="10% + 3-7% OFF" url="https://www.matsukiyo.co.jp/service/taxfree" />
-            <p className="text-[10px] text-center text-morandi-text-muted mt-2 italic">點擊開啟官方優惠券頁面，結帳時出示即可。</p>
+            <p className="text-[10px] text-center text-morandi-text-muted mt-2">點擊開啟官方優惠券頁面，結帳時出示即可。</p>
           </div>
         </CollapsibleSection>
       </div>
