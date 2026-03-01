@@ -695,19 +695,20 @@ function GuideModal({ item, onClose }: any) {
           </button>
         </div>
 
-        <div className="px-5 pb-12 space-y-8">
+        <div className="px-4 pb-12 space-y-8">
           <div className="bg-morandi-sand/50 p-6 rounded-[32px] space-y-6 text-xl">
             <div className="flex items-center gap-4"><MapPin size={22} className="text-morandi-blue" /><span>{item.address || "詳見地圖"}</span></div>
             <div className="flex items-center gap-4"><Clock size={22} className="text-morandi-blue" /><span>{item.time}</span></div>
           </div>
 
-          <div className="bg-white border border-morandi-sand rounded-[32px] shadow-sm overflow-hidden">
-            {/* Hotel Official Site at the very top if it exists */}
-            {item.hotelDetails && (
-              <div className="p-5 pb-0">
+          <div className="space-y-8">
+            {/* Hotel Specific Layout */}
+            {item.hotelDetails ? (
+              <>
+                {/* Layer 1: Official Site */}
                 <button 
                   onClick={() => window.open(item.hotelDetails.officialSite)}
-                  className="w-full py-4 px-5 bg-morandi-primary/5 border border-morandi-primary/10 rounded-2xl flex items-center justify-between group"
+                  className="w-full py-5 px-6 bg-morandi-primary/5 border border-morandi-primary/10 rounded-2xl flex items-center justify-between group"
                 >
                   <div className="flex items-center gap-4 text-morandi-primary">
                     <ExternalLink size={22} />
@@ -715,179 +716,173 @@ function GuideModal({ item, onClose }: any) {
                   </div>
                   <ChevronRight size={20} className="opacity-40 group-hover:translate-x-1 transition-transform" />
                 </button>
-              </div>
-            )}
 
-            <div className="p-5 text-xl leading-relaxed text-text-main whitespace-pre-wrap">
-              {item.content}
-            </div>
+                <hr className="border-morandi-sand/20" />
 
-            {item.hotelDetails?.breakfastRemarks && (
-              <div className="px-5 pb-8 space-y-3">
-                <div className="flex items-center gap-3 text-morandi-primary">
-                  <Info size={20} />
-                  <span className="text-base font-bold uppercase tracking-widest">備註</span>
-                </div>
-                <div className="text-lg leading-relaxed text-text-main bg-morandi-primary/5 p-4 rounded-xl border border-morandi-primary/10">
-                  {item.hotelDetails.breakfastRemarks}
-                </div>
-              </div>
-            )}
-
-            {item.officialSite && (
-              <div className="px-5 pb-5">
-                <button 
-                  onClick={() => window.open(item.officialSite)}
-                  className="w-full py-4 px-5 bg-morandi-primary/5 border border-morandi-primary/10 rounded-2xl flex items-center justify-between group"
-                >
-                  <div className="flex items-center gap-4 text-morandi-primary">
-                    <ExternalLink size={22} />
-                    <span className="text-xl font-bold">國際通介紹</span>
-                  </div>
-                  <ChevronRight size={20} className="opacity-40 group-hover:translate-x-1 transition-transform" />
-                </button>
-              </div>
-            )}
-            
-            {item.otsInfo && (
-              <>
-                <div className="px-5">
-                  <hr className="border-morandi-sand/30" />
-                </div>
-                <div className="p-5 pt-6 space-y-6">
-                  <div className="flex items-center gap-3">
-                    <h3 style={fontStyleSerif} className="text-2xl font-bold text-morandi-text">{item.otsInfo.title}</h3>
-                    <button 
-                      onClick={() => window.open(item.otsInfo.link)}
-                      className="text-morandi-primary hover:text-morandi-primary-light transition-colors p-1"
-                    >
-                      <ExternalLink size={20} />
-                    </button>
-                  </div>
-                  <div className="rounded-none overflow-hidden border-y border-morandi-sand/20 -mx-5">
-                    <img 
-                      src={item.otsInfo.mapImage} 
-                      alt="OTS Map" 
-                      className="w-full h-auto" 
-                      referrerPolicy="no-referrer" 
-                    />
-                  </div>
-                  <div style={fontStyleSerif} className="text-lg leading-relaxed text-text-main py-4">
-                    {item.otsInfo.guide}
+                {/* Layer 2: Intro */}
+                <div className="space-y-4">
+                  <h2 className="text-2xl font-bold text-text-main leading-tight whitespace-pre-wrap">{item.title}</h2>
+                  <div className="text-xl leading-relaxed text-text-main whitespace-pre-wrap">
+                    {item.content}
                   </div>
                 </div>
-              </>
-            )}
 
-            {item.hotelDetails && (
-              <>
-                <div className="px-5">
-                  <hr className="border-morandi-sand/30" />
-                </div>
-                <div className="p-5 pt-6 space-y-8">
-                  {/* Routes */}
+                {/* Layer 3: Remarks with lines */}
+                {item.hotelDetails.breakfastRemarks && (
                   <div className="space-y-6">
-                    <h3 style={fontStyleSerif} className="text-lg font-bold text-morandi-text-muted uppercase tracking-widest flex items-center gap-3">
-                      <Navigation size={20} /> 路線導覽
-                    </h3>
-                    <div className="space-y-4">
-                      {item.hotelDetails.routes.map((route: any, idx: number) => (
-                        <div key={idx} className="bg-morandi-sand/20 p-5 rounded-[24px] space-y-3">
-                          <div className="flex items-center justify-between gap-4">
-                            <p className="text-xl font-bold text-morandi-text">{route.label}</p>
-                            <button 
-                              onClick={() => window.open(route.url)}
-                              className="flex items-center gap-2 px-4 py-2 bg-white border border-morandi-primary/20 rounded-xl text-sm font-bold text-morandi-primary shadow-sm active:scale-95 transition-all shrink-0"
-                            >
-                              <MapPin size={16} /> 路線
-                            </button>
-                          </div>
-                          <p className="text-lg text-morandi-text-muted leading-relaxed w-full">{route.desc}</p>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="px-4">
-                    <hr className="border-morandi-sand/20" />
-                  </div>
-
-                  {/* Shopping */}
-                  <div className="space-y-6">
-                    <div className="flex items-center justify-between">
-                      <h3 style={fontStyleSerif} className="text-lg font-bold text-morandi-text uppercase tracking-widest flex items-center gap-3">
-                        <Utensils size={20} className="text-morandi-primary" /> {item.hotelDetails.shopping.name}
-                      </h3>
-                      <button 
-                        onClick={() => window.open(item.hotelDetails.shopping.url)}
-                        className="flex items-center gap-2 px-4 py-2 bg-morandi-primary text-white rounded-xl text-sm font-bold shadow-sm active:scale-95 transition-all"
-                      >
-                        <ExternalLink size={16} /> 官網
-                      </button>
-                    </div>
-                    <div className="bg-morandi-sand/20 p-5 rounded-[24px] space-y-4">
-                      <div className="flex items-center gap-3 text-base text-morandi-text-muted">
-                        <Clock size={18} />
-                        <span>營業時間：{item.hotelDetails.shopping.hours}</span>
+                    <hr className="border-morandi-sand/30" />
+                    <div className="space-y-3">
+                      <div className="flex items-center gap-3 text-morandi-primary">
+                        <Info size={20} />
+                        <span className="text-base font-bold uppercase tracking-widest">備註</span>
                       </div>
-                      <div className="space-y-3">
-                        {item.hotelDetails.shopping.floors.map((floor: string, idx: number) => (
-                          <div key={idx} className="flex gap-3">
-                            <div className="w-1.5 h-1.5 rounded-full bg-morandi-primary mt-2 shrink-0" />
-                            <p className="text-lg text-morandi-text leading-relaxed">{floor}</p>
-                          </div>
-                        ))}
+                      <div className="text-lg leading-relaxed text-text-main bg-morandi-primary/5 p-5 rounded-2xl border border-morandi-primary/10">
+                        {item.hotelDetails.breakfastRemarks}
                       </div>
                     </div>
+                    <hr className="border-morandi-sand/30" />
                   </div>
-                </div>
-              </>
-            )}
+                )}
 
-            {item.top10 && (
-              <>
-                <div className="px-5">
-                  <hr className="border-morandi-sand/30" />
-                </div>
-                <div className="p-5 pt-6 space-y-6">
-                  <h3 style={fontStyleSerif} className="text-lg font-bold text-morandi-text uppercase tracking-widest flex items-center gap-3">
-                    <Star size={20} className="text-morandi-primary" /> {item.top10.title}
+                {/* Layer 4: Routes */}
+                <div className="space-y-6">
+                  <h3 style={fontStyleSerif} className="text-lg font-bold text-morandi-text-muted uppercase tracking-widest flex items-center gap-3">
+                    <Navigation size={20} /> 路線導覽
                   </h3>
-                  <div className="space-y-4">
-                    {item.top10.items.map((t: any, idx: number) => (
-                      <div key={idx} className="bg-morandi-sand/20 p-5 rounded-[24px] space-y-3">
+                  <div className="space-y-6">
+                    {item.hotelDetails.routes.map((route: any, idx: number) => (
+                      <div key={idx} className="space-y-3">
                         <div className="flex items-center justify-between gap-4">
-                          <p className="text-lg font-bold text-morandi-text">{t.name}</p>
+                          <p className="text-xl font-bold text-morandi-text">{route.label}</p>
                           <button 
-                            onClick={() => window.open(t.url)}
+                            onClick={() => window.open(route.url)}
                             className="flex items-center gap-2 px-4 py-2 bg-white border border-morandi-primary/20 rounded-xl text-sm font-bold text-morandi-primary shadow-sm active:scale-95 transition-all shrink-0"
                           >
-                            <Navigation size={16} /> 路線
+                            <MapPin size={16} /> 路線
                           </button>
                         </div>
-                        <p className="text-base text-morandi-text-muted leading-relaxed w-full">{t.desc}</p>
+                        <p className="text-lg text-morandi-text-muted leading-relaxed w-full">{route.desc}</p>
+                        {idx < item.hotelDetails.routes.length - 1 && <hr className="border-morandi-sand/10 mt-4" />}
                       </div>
                     ))}
                   </div>
                 </div>
-              </>
-            )}
 
-            {item.remarks && (
-              <>
-                <div className="px-5">
-                  <hr className="border-morandi-sand/30" />
-                </div>
-                <div className="p-5 space-y-4">
-                  <div className="flex items-center gap-3 text-morandi-primary">
-                    <Info size={20} />
-                    <span className="text-base font-bold uppercase tracking-widest">備註</span>
+                <hr className="border-morandi-sand/20" />
+
+                {/* Layer 5: Shopping */}
+                <div className="space-y-6">
+                  <div className="flex items-center justify-between">
+                    <h3 style={fontStyleSerif} className="text-lg font-bold text-morandi-text uppercase tracking-widest flex items-center gap-3">
+                      <Utensils size={20} className="text-morandi-primary" /> {item.hotelDetails.shopping.name}
+                    </h3>
+                    <button 
+                      onClick={() => window.open(item.hotelDetails.shopping.url)}
+                      className="flex items-center gap-2 px-4 py-2 bg-morandi-primary text-white rounded-xl text-sm font-bold shadow-sm active:scale-95 transition-all"
+                    >
+                      <ExternalLink size={16} /> 官網
+                    </button>
                   </div>
-                  <div className="text-lg leading-relaxed text-text-main">
-                    {item.remarks}
+                  <div className="bg-morandi-sand/20 p-6 rounded-[24px] space-y-4">
+                    <div className="flex items-center gap-3 text-base text-morandi-text-muted">
+                      <Clock size={18} />
+                      <span>營業時間：{item.hotelDetails.shopping.hours}</span>
+                    </div>
+                    <div className="space-y-3">
+                      {item.hotelDetails.shopping.floors.map((floor: string, idx: number) => (
+                        <div key={idx} className="flex gap-3">
+                          <div className="w-1.5 h-1.5 rounded-full bg-morandi-primary mt-2 shrink-0" />
+                          <p className="text-lg text-morandi-text leading-relaxed">{floor}</p>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </>
+            ) : (
+              /* Default Layout for non-hotel items (still de-cardified) */
+              <div className="space-y-8">
+                {item.officialSite && (
+                  <button 
+                    onClick={() => window.open(item.officialSite)}
+                    className="w-full py-4 px-5 bg-morandi-primary/5 border border-morandi-primary/10 rounded-2xl flex items-center justify-between group"
+                  >
+                    <div className="flex items-center gap-4 text-morandi-primary">
+                      <ExternalLink size={22} />
+                      <span className="text-xl font-bold">官方連結</span>
+                    </div>
+                    <ChevronRight size={20} className="opacity-40 group-hover:translate-x-1 transition-transform" />
+                  </button>
+                )}
+
+                <div className="text-xl leading-relaxed text-text-main whitespace-pre-wrap">
+                  {item.content}
+                </div>
+
+                {item.otsInfo && (
+                  <div className="space-y-6">
+                    <hr className="border-morandi-sand/30" />
+                    <div className="flex items-center gap-3">
+                      <h3 style={fontStyleSerif} className="text-2xl font-bold text-morandi-text">{item.otsInfo.title}</h3>
+                      <button 
+                        onClick={() => window.open(item.otsInfo.link)}
+                        className="text-morandi-primary hover:text-morandi-primary-light transition-colors p-1"
+                      >
+                        <ExternalLink size={20} />
+                      </button>
+                    </div>
+                    <div className="rounded-none overflow-hidden border-y border-morandi-sand/20 -mx-4">
+                      <img 
+                        src={item.otsInfo.mapImage} 
+                        alt="OTS Map" 
+                        className="w-full h-auto" 
+                        referrerPolicy="no-referrer" 
+                      />
+                    </div>
+                    <div style={fontStyleSerif} className="text-lg leading-relaxed text-text-main">
+                      {item.otsInfo.guide}
+                    </div>
+                  </div>
+                )}
+
+                {item.top10 && (
+                  <div className="space-y-6">
+                    <hr className="border-morandi-sand/30" />
+                    <h3 style={fontStyleSerif} className="text-lg font-bold text-morandi-text uppercase tracking-widest flex items-center gap-3">
+                      <Star size={20} className="text-morandi-primary" /> {item.top10.title}
+                    </h3>
+                    <div className="space-y-6">
+                      {item.top10.items.map((t: any, idx: number) => (
+                        <div key={idx} className="bg-morandi-sand/20 p-5 rounded-[24px] space-y-3">
+                          <div className="flex items-center justify-between gap-4">
+                            <p className="text-lg font-bold text-morandi-text">{t.name}</p>
+                            <button 
+                              onClick={() => window.open(t.url)}
+                              className="flex items-center gap-2 px-4 py-2 bg-white border border-morandi-primary/20 rounded-xl text-sm font-bold text-morandi-primary shadow-sm active:scale-95 transition-all shrink-0"
+                            >
+                              <Navigation size={16} /> 路線
+                            </button>
+                          </div>
+                          <p className="text-base text-morandi-text-muted leading-relaxed w-full">{t.desc}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {item.remarks && (
+                  <div className="space-y-4">
+                    <hr className="border-morandi-sand/30" />
+                    <div className="flex items-center gap-3 text-morandi-primary">
+                      <Info size={20} />
+                      <span className="text-base font-bold uppercase tracking-widest">備註</span>
+                    </div>
+                    <div className="text-lg leading-relaxed text-text-main">
+                      {item.remarks}
+                    </div>
+                  </div>
+                )}
+              </div>
             )}
           </div>
 
