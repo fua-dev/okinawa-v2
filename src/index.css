@@ -8,7 +8,7 @@
 }
 
 :root {
-  --morandi-bg: #F0F4F7;
+  --morandi-bg: #e9f2f7;
   --morandi-card: #F8FAFB;
   --morandi-primary: #849BB3;
   --morandi-primary-light: #A3B5C7;
@@ -16,6 +16,12 @@
   --morandi-text-muted: #718096;
   --morandi-accent: #BCCCDC;
   --morandi-shadow: rgba(132, 155, 179, 0.1);
+
+  /* New Morandi Colors for Labels */
+  --morandi-sage: #9FB1A3;
+  --morandi-rose: #C2A3A3;
+  --morandi-sand: #B5B2A6;
+  --morandi-teal: #9FBCC0;
 }
 
 body {
