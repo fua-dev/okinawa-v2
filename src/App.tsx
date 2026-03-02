@@ -55,7 +55,7 @@ const ITINERARY_DATA = [
           title: "OTS 接駁資訊",
           link: "https://www.otsinternational.jp/otsrentacar/cn/okinawa/pickup/naha-airport-international/",
           mapImage: "https://www.otsinternational.jp/otsrentacar/cn/img/page/okinawa/access/pickup_naha_international/floor-map_2026-cn.png",
-          guide: "到達那霸機場領取行李並通過檢查口 → 請向右走（國內線方向）走到盡頭 → 搭乘電扶梯上二樓後左轉 → 馬上再向右轉進到長廊直走 → 搭乘電扶梯下到國內線 1 樓並前往 4 號出口 → 由 4 號出口出來後請穿過人行道，前往左側的「10-A（R-10）」接駁站。"
+          guide: "1. 抵達那霸機場： 領取行李並通過檢查口。\n2. 右轉前進： 請向右走（國內線方向）走到底。\n3. 上樓右轉： 搭乘電扶梯上二樓後左轉，隨即再向右轉進入長廊直走。\n4. 下樓出站： 搭乘電扶梯下到國內線 1 樓，並前往 4 號出口。\n5. 抵達接駁點： 由 4 號出口出來後穿過人行道，前往左側的「10-A (R-10)」接駁站。"
         },
         remarks: "Joy Jungle 娃娃機店：位於那霸機場國內線，從國際線入境後往單軌電車站方向步行即可經過。",
         noNav: true
@@ -222,7 +222,7 @@ const ITINERARY_DATA = [
       },
       { 
         id: '3-4', time: "17:30", type: "food", title: "永旺夢樂城\n(AEON Mall)", detail: "營業時間 10:00 - 22:00", address: "北中城村比嘉", 
-        content: "沖繩最大購物中心，可以先到遊客中心拿優惠券。\n\n【1F 人氣品牌】UNIQLO(1-2F)、GU、寶可夢中心、大創、3COINS、LOFT\n\n【2F 人氣品牌】mont-bell\n\n【3F 人氣品牌】ABC-MART、LOWRYS FARM、AEON STYLE(毛線パンドラ)\n\n【4F 人氣品牌】童裝apres les cours、童裝BREEZE、WEGO、扭蛋、三麗鷗商店、橡子共和國、玩具反斗城",
+        content: "沖繩最大購物中心，可以先到遊客中心拿優惠券。\n\n【1F 人氣品牌】UNIQLO(1-2F)、GU、寶可夢中心、大創、3COINS、LOFT\n【2F 人氣品牌】mont-bell\n【3F 人氣品牌】ABC-MART、LOWRYS FARM、AEON STYLE(毛線パンドラ)\n【4F 人氣品牌】童裝apres les cours、童裝BREEZE、WEGO、扭蛋、三麗鷗商店、橡子共和國、玩具反斗城",
         links: [
           { label: "優惠券連結", url: "https://tw.aeonmall.global/mall/okinawarycom/coupons", icon: "ticket" },
           { label: "AEON Mall 導航", url: "https://www.google.com/maps/search/?api=1&query=AEON+Mall+Okinawa+Rycom", icon: "map" }
@@ -266,7 +266,7 @@ const ITINERARY_DATA = [
       },
       { 
         id: '4-3', time: "14:00", type: "spot", title: "沖繩世界文化王國", detail: "玉泉洞與傳統文化", address: "南城市玉城前川1336", 
-        content: "【玉泉洞】歷經 30 萬年形成的鐘乳石洞，規模日本前茅。洞內石筍與鐘乳石林立，景觀壯麗。\n\n【王國村】重建百年琉球古民家，體驗傳統工藝如織布、藍染等，感受濃厚的琉球歷史氣息。\n\n【毒蛇博物公園】展示沖繩特有的毒蛇與爬蟲類，提供驚險刺激的活蛇表演與教育資訊。\n\n---\n\n【下午表演】\n- 14:30 Eisa 太鼓舞\n- 15:30 毒蛇表演",
+        content: "【玉泉洞】歷經 30 萬年形成的鐘乳石洞，規模日本前茅。洞內石筍與鐘乳石林立，景觀壯麗。\n\n【王國村】重建百年琉球古民家，體驗傳統工藝如織布、藍染等，感受濃厚的琉球歷史氣息。\n\n【毒蛇博物公園】展示沖繩特有的毒蛇與爬蟲類，提供驚險刺激的活蛇表演與教育資訊。\n\n---\n\n【下午表演】\n・14:30 Eisa 太鼓舞\n・15:30 毒蛇表演\n\n【體驗項目】\n・琉裝散步\n・挖珍珠體驗",
         links: [
           { label: "節目表", url: "https://www.gyokusendo.co.jp/okinawaworld/event/", icon: "clock" },
           { label: "體驗項目", url: "https://www.gyokusendo.co.jp/okinawaworld/handson/", icon: "ticket" },
@@ -676,11 +676,11 @@ function SmartParagraph({ children, className = "" }: { children: ReactNode, cla
   const [isLong, setIsLong] = useState(false);
   const textRef = useRef<HTMLDivElement>(null);
 
-  // Check if content is a list (starts with numbers like "1." or bullet points like "-", "*", "•")
+  // Check if content is a list (starts with numbers like "1." or bullet points like "-", "*", "•", "・" or "【")
   const isList = useMemo(() => {
     if (typeof children !== 'string') return false;
-    // Match "1. ", "- ", "* ", "• " at the start of the string or after a newline
-    return /^\s*(\d+\.|[-*•])\s+/.test(children);
+    // Match "1. ", "- ", "* ", "• ", "・ ", "【" at the start of the string or after a newline
+    return /^\s*(\d+\.|[-*•・]|【)\s*/.test(children);
   }, [children]);
 
   useEffect(() => {
@@ -691,8 +691,8 @@ function SmartParagraph({ children, className = "" }: { children: ReactNode, cla
         const lineHeight = parseInt(style.lineHeight) || 21; // Fallback to 21px if line-height is normal
         const height = element.getBoundingClientRect().height;
         const lines = Math.round(height / lineHeight);
-        // Only show vertical line if it's 3+ lines AND not a list
-        setIsLong(lines >= 3 && !isList);
+        // Only show vertical line if it's 4+ lines AND not a list
+        setIsLong(lines >= 4 && !isList);
       }
     };
 
