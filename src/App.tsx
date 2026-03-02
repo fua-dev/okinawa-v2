@@ -180,7 +180,7 @@ const ITINERARY_DATA = [
           title: "名護人氣熟食推薦 (非牛/非生魚)",
           items: [
             { name: "我那霸豚肉店", desc: "專營優質沖繩豬肉，提供多樣化的豬肉料理。特別推薦外酥內嫩的炸豬排與肉質鮮甜的豬肉涮涮鍋，是喜愛高品質豬肉料理長輩的首選。", url: "https://www.google.com/maps/search/?api=1&query=我那霸豚肉店+名護" },
-            { name: "暖暮拉麵 (名護店)", desc: "九州拉麵名店在名護的分店。湯頭濃郁香醇，麵條可依喜好調整硬度。對於不吃牛或生魚片的遊客來說，這裡的熟食拉麵是既方便又美味的選擇。", url: "https://www.google.com/maps/search/?api=1&query=暖暮拉麵+名護店" },
+            { name: "燒肉五苑 (名護店)", desc: "主打高 CP 值燒肉吃到飽，食材新鮮且空間寬敞，非常適合全家大小一同聚餐。店內提供多樣化的熟食、海鮮與非牛肉選項，讓不吃牛的長輩也能在此盡情享用豐富且高品質的美味佳餚。", url: "https://www.google.com/maps/search/?api=1&query=燒肉五苑+名護店" },
             { name: "ゆきの (Yukino)", desc: "深受在地人喜愛的居酒屋，氛圍輕鬆愉快。提供豐富多樣的沖繩熟食料理，從炒苦瓜到各式炸物應有盡有，非常適合全家大小一同前來聚餐。", url: "https://www.google.com/maps/search/?api=1&query=居酒屋+ゆきの+名護" },
             { name: "Cookhal", desc: "農場直營的景觀餐廳，強調食安與在地食材。提供多種以新鮮蔬菜與在地肉類烹調的熟食料理，口味清爽健康，讓您在用餐的同時也能感受大自然的氣息。", url: "https://www.google.com/maps/search/?api=1&query=Cookhal+名護" },
             { name: "Gusto (ガスト) 名護店", desc: "知名的連鎖家庭餐廳，提供多樣化的熟食選擇。店內環境舒適且對兒童與長輩非常友善，是想要輕鬆享用多樣化餐點時的最佳選擇。", url: "https://www.google.com/maps/search/?api=1&query=Gusto+名護店" },
@@ -672,7 +672,7 @@ function ScheduleTab({ currentDay, setCurrentDay, setSelectedItem, weatherForeca
   );
 }
 
-function SmartParagraph({ children, className = "" }: { children: ReactNode, className?: string, key?: any }) {
+function SmartParagraph({ children, className = "", noBorder = false }: { children: ReactNode, className?: string, noBorder?: boolean, key?: any }) {
   const [isLong, setIsLong] = useState(false);
   const textRef = useRef<HTMLDivElement>(null);
 
@@ -691,8 +691,8 @@ function SmartParagraph({ children, className = "" }: { children: ReactNode, cla
         const lineHeight = parseInt(style.lineHeight) || 21; // Fallback to 21px if line-height is normal
         const height = element.getBoundingClientRect().height;
         const lines = Math.round(height / lineHeight);
-        // Only show vertical line if it's 4+ lines AND not a list
-        setIsLong(lines >= 4 && !isList);
+        // Only show vertical line if it's 4+ lines AND not a list AND noBorder is false
+        setIsLong(lines >= 4 && !isList && !noBorder);
       }
     };
 
@@ -856,7 +856,7 @@ function GuideModal({ item, onClose }: any) {
                             </button>
                           </div>
                           <div className="py-0.5">
-                            <SmartParagraph className="!py-0">
+                            <SmartParagraph className="!py-0" noBorder={true}>
                               {route.desc}
                             </SmartParagraph>
                           </div>
@@ -964,7 +964,7 @@ function GuideModal({ item, onClose }: any) {
                           referrerPolicy="no-referrer" 
                         />
                       </div>
-                      <SmartParagraph>
+                      <SmartParagraph noBorder={true}>
                         {item.otsInfo.guide}
                       </SmartParagraph>
                     </div>
@@ -1010,7 +1010,7 @@ function GuideModal({ item, onClose }: any) {
                                     className="overflow-hidden"
                                   >
                                     <div className="pt-3">
-                                      <SmartParagraph className="!py-0">
+                                      <SmartParagraph className="!py-0" noBorder={true}>
                                         {t.desc}
                                       </SmartParagraph>
                                     </div>
@@ -1488,7 +1488,7 @@ function InfoTab() {
     return saved ? JSON.parse(saved) : [];
   });
   const [resInput, setResInput] = useState({ label: '', code: '' });
-  const [openSection, setOpenSection] = useState<string | null>('emergency');
+  const [openSection, setOpenSection] = useState<string | null>(null);
 
   useEffect(() => { localStorage.setItem('okinawa_reservations', JSON.stringify(reservations)); }, [reservations]);
 
@@ -1505,7 +1505,7 @@ function InfoTab() {
   };
 
   return (
-    <div className="space-y-6 pb-10">
+    <div className="pb-20 space-y-6">
       {/* 1. Google Map - Top */}
       <div className="bg-white/40 rounded-[32px] overflow-hidden h-[260px] relative shadow-sm border border-white/60">
         <iframe 
@@ -1541,18 +1541,17 @@ function InfoTab() {
       </div>
 
       {/* 3. Accordion Sections */}
-      <div className="space-y-3">
+      <div className="bg-white/40 rounded-[32px] border border-white/60 shadow-sm overflow-hidden divide-y divide-morandi-primary/10">
         {/* 緊急聯絡資訊 */}
         <CollapsibleSection 
           id="emergency" 
           title="緊急聯絡資訊" 
-          icon={<PhoneCall size={18} />} 
+          icon={<PhoneCall size={20} />} 
           isOpen={openSection === 'emergency'} 
           onToggle={() => toggleSection('emergency')}
           color="morandi-primary"
         >
           <div className="space-y-4">
-            {/* Quick Numbers */}
             <div className="grid grid-cols-2 gap-3">
               <div className="bg-white/60 p-5 rounded-2xl border border-white/80 shadow-sm flex flex-col items-center justify-center gap-1">
                 <span className="text-[9px] font-bold text-morandi-text-muted uppercase tracking-widest">警察局</span>
@@ -1563,8 +1562,6 @@ function InfoTab() {
                 <span style={fontStyleSerif} className="text-3xl font-bold text-red-400/80">119</span>
               </div>
             </div>
-
-            {/* Medical Hotline */}
             <div className="bg-white/60 p-5 rounded-2xl border border-white/80 shadow-sm space-y-3">
               <div className="flex justify-between items-center">
                 <span className="text-[9px] font-bold text-morandi-text-muted uppercase tracking-widest">訪日外國人醫療熱線</span>
@@ -1577,8 +1574,6 @@ function InfoTab() {
                 </button>
               </div>
             </div>
-
-            {/* Representative Office */}
             <div className="bg-white/60 p-5 rounded-2xl border border-white/80 shadow-sm space-y-3">
               <div className="flex justify-between items-center">
                 <span className="text-[9px] font-bold text-morandi-text-muted uppercase tracking-widest">駐日辦事處那霸分處</span>
@@ -1600,28 +1595,33 @@ function InfoTab() {
         <CollapsibleSection 
           id="reservations" 
           title="預約代號" 
-          icon={<Ticket size={18} />} 
+          icon={<Ticket size={20} />} 
           isOpen={openSection === 'reservations'} 
           onToggle={() => toggleSection('reservations')}
           color="morandi-primary"
         >
           <div className="space-y-5">
-            <div className="flex gap-2">
+            <div className="flex items-center gap-2">
               <input 
                 value={resInput.label}
                 onChange={(e) => setResInput({...resInput, label: e.target.value})}
-                placeholder="項目 (如: 星宇)"
-                className="flex-1 bg-white/40 p-3 rounded-xl text-xs outline-none border border-transparent focus:border-morandi-primary/20"
+                placeholder="項目"
+                className="flex-[0_0_40%] bg-white/40 py-3 px-2 rounded-xl text-[15px] leading-relaxed outline-none border border-transparent focus:border-morandi-primary/20"
               />
               <input 
                 value={resInput.code}
                 onChange={(e) => setResInput({...resInput, code: e.target.value})}
                 placeholder="代號"
-                className="flex-1 bg-white/40 p-3 rounded-xl text-xs outline-none border border-transparent focus:border-morandi-primary/20 font-mono"
+                className="flex-[0_0_40%] bg-white/40 py-3 px-2 rounded-xl text-[15px] leading-relaxed outline-none border border-transparent focus:border-morandi-primary/20 font-mono"
               />
-              <button onClick={addRes} className="p-3 bg-morandi-primary text-white rounded-xl active:scale-90 transition-all shadow-sm">
-                <Plus size={18} />
-              </button>
+              <div className="flex-1 flex justify-center">
+                <button 
+                  onClick={addRes} 
+                  className="w-8 h-8 flex items-center justify-center bg-morandi-primary text-white rounded-full active:scale-90 transition-all shadow-sm z-10 shrink-0"
+                >
+                  <Plus size={18} />
+                </button>
+              </div>
             </div>
             <div className="grid grid-cols-2 gap-3">
               {reservations.map(res => (
@@ -1641,12 +1641,12 @@ function InfoTab() {
         <CollapsibleSection 
           id="taboos" 
           title="旅遊禁忌與注意事項" 
-          icon={<AlertTriangle size={18} />} 
+          icon={<AlertTriangle size={20} />} 
           isOpen={openSection === 'taboos'} 
           onToggle={() => toggleSection('taboos')}
           color="morandi-primary"
         >
-          <ul className="space-y-5 text-sm text-morandi-text leading-relaxed px-2">
+          <ul className="space-y-5 text-[15px] text-morandi-text leading-relaxed px-2">
             <li className="flex gap-4">
               <span className="text-morandi-primary font-bold text-lg opacity-40">01</span>
               <p><span className="font-bold">出入境違禁品：</span>嚴禁攜帶肉類製品、新鮮蔬果。包含肉鬆、含肉泡麵等。</p>
@@ -1666,7 +1666,7 @@ function InfoTab() {
         <CollapsibleSection 
           id="yuirail" 
           title="單軌列車 (Yui Rail)" 
-          icon={<Car size={18} />} 
+          icon={<Car size={20} />} 
           isOpen={openSection === 'yuirail'} 
           onToggle={() => toggleSection('yuirail')}
           color="morandi-primary"
@@ -1680,7 +1680,7 @@ function InfoTab() {
                 alt="Yui Rail Map"
               />
             </div>
-            <div className="bg-white/40 p-5 rounded-2xl space-y-2 text-xs leading-relaxed text-morandi-text border border-white/60">
+            <div className="bg-white/40 p-5 rounded-2xl space-y-2 text-[15px] leading-relaxed text-morandi-text border border-white/60">
               <p>• 可使用現金、Suica, ICOCA 等交通卡。</p>
               <p>• 6歲以下兒童免票，6-12歲半價。</p>
               <p>• 飯店位於 <span className="font-bold text-morandi-primary">11 歌町站 (Omoromachi)</span>。</p>
@@ -1692,15 +1692,15 @@ function InfoTab() {
         <CollapsibleSection 
           id="funpass" 
           title="沖繩 FUNPASS" 
-          icon={<Ticket size={18} />} 
+          icon={<Ticket size={20} />} 
           isOpen={openSection === 'funpass'} 
           onToggle={() => toggleSection('funpass')}
           color="morandi-primary"
         >
           <div className="flex items-center justify-between bg-white/40 p-5 rounded-2xl border border-white/60">
             <div className="space-y-1">
-              <p className="text-sm font-bold text-morandi-text">一票玩遍沖繩熱門景點！</p>
-              <p className="text-[10px] text-morandi-text-muted">包含水族館、植物園等 7 大景點。</p>
+              <p className="text-[15px] font-bold text-morandi-text">一票玩遍沖繩熱門景點！</p>
+              <p className="text-[10px] text-morandi-text-muted font-bold uppercase tracking-widest">7 大景點通行證</p>
             </div>
             <a href="https://okinawa.funpass.app/" target="_blank" rel="noreferrer" className="w-10 h-10 bg-morandi-primary text-white rounded-xl flex items-center justify-center shadow-sm active:scale-90 transition-all">
               <ExternalLink size={16} />
@@ -1712,7 +1712,7 @@ function InfoTab() {
         <CollapsibleSection 
           id="coupons" 
           title="購物折價券" 
-          icon={<Wallet size={18} />} 
+          icon={<Wallet size={20} />} 
           isOpen={openSection === 'coupons'} 
           onToggle={() => toggleSection('coupons')}
           color="morandi-primary"
@@ -1721,7 +1721,7 @@ function InfoTab() {
             <CouponItem name="Bic Camera" discount="10% + 7% OFF" url="https://www.biccamera.com.t.tj.hp.transer.com/service/logistics/tax-free/index.html" />
             <CouponItem name="Don Quijote (唐吉訶德)" discount="10% + 5% OFF" url="https://www.donki.com/en/service/coupon.php" />
             <CouponItem name="松本清 (Matsukiyo)" discount="10% + 3-7% OFF" url="https://www.matsukiyo.co.jp/service/taxfree" />
-            <p className="text-[10px] text-center text-morandi-text-muted mt-2">點擊開啟官方優惠券頁面，結帳時出示即可。</p>
+            <p className="text-[10px] text-center text-morandi-text-muted mt-2 font-bold uppercase tracking-widest">結帳時出示官方優惠券即可</p>
           </div>
         </CollapsibleSection>
       </div>
@@ -1731,7 +1731,7 @@ function InfoTab() {
 
 function CollapsibleSection({ id, title, icon, children, isOpen, onToggle, color }: any) {
   return (
-    <div className="bg-white/40 rounded-[32px] overflow-hidden border border-white/60 shadow-sm">
+    <div className="overflow-hidden">
       <button 
         onClick={onToggle}
         className={`w-full p-6 flex items-center justify-between transition-all ${isOpen ? 'bg-white/20' : 'hover:bg-white/40'}`}
@@ -1740,14 +1740,14 @@ function CollapsibleSection({ id, title, icon, children, isOpen, onToggle, color
           <div className={`w-10 h-10 rounded-2xl flex items-center justify-center ${color === 'morandi-primary' ? 'bg-morandi-primary/10 text-morandi-primary' : 'bg-morandi-accent/10 text-morandi-accent'}`}>
             {icon}
           </div>
-          <h3 className="text-base font-bold text-morandi-text">{title}</h3>
+          <h3 className="text-[18px] font-bold text-morandi-text">{title}</h3>
         </div>
         <motion.div
           animate={{ rotate: isOpen ? 180 : 0 }}
           transition={{ duration: 0.3 }}
           className="text-morandi-accent/60"
         >
-          <ChevronRight size={18} className="rotate-90" />
+          <ChevronDown size={18} />
         </motion.div>
       </button>
       <AnimatePresence>
@@ -1758,7 +1758,7 @@ function CollapsibleSection({ id, title, icon, children, isOpen, onToggle, color
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.3 }}
           >
-            <div className="p-6 pt-2 border-t border-morandi-primary/5">
+            <div className="p-6 pt-2">
               {children}
             </div>
           </motion.div>
