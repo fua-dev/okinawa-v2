@@ -200,7 +200,7 @@ const ITINERARY_DATA = [
         id: '3-1', time: "09:00", type: "spot", title: "東南植物樂園", detail: "漫步熱帶植物園", address: "沖繩市知花2146", 
         content: "園區擁有豐富的熱帶植物，還有可愛動物互動區，適合全家大小一同遊玩。", 
         links: [
-          { label: "體驗活動連結", url: "https://www.southeast-botanical.jp/activity/", icon: "link" },
+          { label: "體驗活動連結", url: "https://www.southeast-botanical.jp/tw/", icon: "link" },
           { label: "飯店至植物樂園導航", url: "https://www.google.com/maps/dir/?api=1&origin=Daiwa+Roynet+Hotel+Naha-Omoromachi+PREMIER&destination=東南植物樂園", icon: "map" }
         ]
       },
@@ -212,27 +212,34 @@ const ITINERARY_DATA = [
         ]
       },
       { 
-        id: '3-3', time: "13:30", type: "spot", title: "兒童沖繩王國", detail: "動物園與神奇博物館", address: "沖繩市胡屋5-7-1", 
-        content: "結合動物園與互動博物館的親子景點。\n\n【簡介】展示琉球群島原生種及世界動物，提供豐富的自然教育體驗。",
+        id: '3-3', time: "13:20", type: "spot", title: "兒童沖繩王國", detail: "動物園與神奇博物館", address: "沖繩市胡屋5-7-1", 
+        content: "【神奇博物館】以「智慧、感性、創造」為主題，提供多樣化的互動科學與藝術體驗，讓孩子在玩樂中學習。\n\n【動物園區】展示琉球群島原生種及世界各地的珍稀動物，強調生態保育與自然教育，是近距離觀察動物的好地方。\n\n【里山體驗】模擬沖繩傳統農村環境，讓遊客體驗在地文化與自然共生的智慧，感受悠閒的田園氣氛。",
         links: [
           { label: "官網資訊", url: "https://www.okzm.jp/", icon: "link" },
-          { label: "餵食體驗預約", url: "https://www.okzm.jp/event/feed/", icon: "ticket" },
+          { label: "餵食體驗", url: "https://www.okzm.jp/experience/?content=feeding#feeding", icon: "ticket" },
           { label: "兒童王國導航", url: "https://www.google.com/maps/search/?api=1&query=沖繩兒童王國", icon: "map" }
         ]
       },
       { 
         id: '3-4', time: "17:30", type: "food", title: "永旺夢樂城\n(AEON Mall)", detail: "營業時間 10:00 - 22:00", address: "北中城村比嘉", 
-        content: "沖繩最大購物中心，店鋪清單包含美食街、各式餐廳及超市。\n\n【1F-4F 人氣品牌】\n- 1F: AEON Style 超市, 藥妝\n- 2F: Uniqlo, GU, H&M\n- 3F: Sports Authority, 玩具反斗城\n- 4F: 美食街, 電影院",
+        content: "沖繩最大購物中心，可以先到遊客中心拿優惠券。\n\n【1F 人氣品牌】UNIQLO(1-2F)、GU、寶可夢中心、大創、3COINS、LOFT\n\n【2F 人氣品牌】mont-bell\n\n【3F 人氣品牌】ABC-MART、LOWRYS FARM、AEON STYLE(毛線パンドラ)\n\n【4F 人氣品牌】童裝apres les cours、童裝BREEZE、WEGO、扭蛋、三麗鷗商店、橡子共和國、玩具反斗城",
         links: [
-          { label: "優惠券連結", url: "https://www.aeon-okinawa.com.tw/coupon/", icon: "ticket" },
+          { label: "優惠券連結", url: "https://tw.aeonmall.global/mall/okinawarycom/coupons", icon: "ticket" },
           { label: "AEON Mall 導航", url: "https://www.google.com/maps/search/?api=1&query=AEON+Mall+Okinawa+Rycom", icon: "map" }
         ]
       },
       { 
         id: '3-5', time: "備案", type: "spot", title: "普天滿宮", detail: "神祕的鐘乳石洞神社", address: "宜野灣市普天間1-27-10", 
-        content: "普天滿宮是琉球八社之一，最特別的是其位於神社後方的鐘乳石洞穴，需向巫女申請方可進入參觀。",
+        content: "普天滿宮是琉球八社之一，最特別的是其位於神社後方的鐘乳石洞穴，需向巫女申請方可進入參觀。\n\n【營業時間】09:30 - 18:00",
         links: [
           { label: "普天滿宮導航", url: "https://www.google.com/maps/search/?api=1&query=普天滿宮", icon: "map" }
+        ]
+      },
+      { 
+        id: '3-6', time: "備案", type: "spot", title: "沖宮神社", detail: "御守種類繁多的能量景點", address: "那霸市奧武山町44", 
+        content: "沖宮是琉球八社之一，位於奧武山公園內。這裡以種類繁多且精緻的御守聞名，是許多遊客前來祈福與收集御守的首選之地。\n\n【營業時間】09:00 - 17:00",
+        links: [
+          { label: "沖宮神社導航", url: "https://www.google.com/maps/search/?api=1&query=沖宮", icon: "map" }
         ]
       }
     ]
@@ -243,41 +250,35 @@ const ITINERARY_DATA = [
       { id: '4-0', time: "08:00", type: "food", title: "飯店早餐", detail: "享用早餐", content: "最後一天的全日行程，吃飽再出發。", noModal: true },
       { 
         id: '4-1', time: "09:00", type: "spot", title: "DMM Kariyushi 水族館", detail: "沉浸式水族館體驗", address: "豐見城市豐崎3-35", 
-        content: "結合影像技術與空間設計的現代水族館，提供沉浸式的海洋體驗。", 
+        content: "結合影像技術與空間設計的現代水族館，提供沉浸式的海洋體驗。提醒：建議先買餵食體驗券。\n\n【常綠之森】漫步在充滿綠意的空間，近距離觀察陸生動物與熱帶魚類，感受大自然的生機。\n\n【澄清之海】巨大的圓柱水槽與透明地板，讓您彷彿漫步在海面上，俯瞰繽紛的珊瑚礁生態。\n\n【時光之海】透過大型影像與音效，呈現海洋在不同時段的迷人姿態，帶來感官的震撼。\n\n【備註】時刻表以當日公布為主。", 
         links: [
+          { label: "餵食項目", url: "https://kariyushi-aquarium.com/feeding/", icon: "clock" },
           { label: "樓層指南", url: "https://kariyushi-aquarium.com/floor/", icon: "map" },
-          { label: "餵食時刻表", url: "https://kariyushi-aquarium.com/program/", icon: "clock" },
-          { label: "部落格介紹", url: "https://example.com/dmm-aquarium-blog", icon: "link" },
           { label: "飯店至 DMM 導航", url: "https://www.google.com/maps/dir/?api=1&origin=Daiwa+Roynet+Hotel+Naha-Omoromachi+PREMIER&destination=DMM+Kariyushi+Aquarium", icon: "map" }
         ]
       },
       { 
         id: '4-2', time: "12:00", type: "food", title: "午餐：iiAS 沖繩豐崎", detail: "購物中心用餐", address: "豐見城市豐崎3-35", 
-        content: "iiAS 購物中心內有多樣化的美食街與餐廳選擇，適合放鬆用餐與逛街。", 
+        content: "iiAS 購物中心與 DMM 水族館相連，提供多樣化的美食街與餐廳選擇，適合放鬆用餐與逛街。\n\n【午餐備案】若擔心晚餐排隊，可考慮先前往奧武島【中本天婦羅】用餐（該店 18:00 關門）。", 
         links: [
           { label: "豐崎 iias 官網", url: "https://toyosaki.iias.jp/", icon: "link" }
         ]
       },
       { 
-        id: '4-2-1', time: "備案", type: "food", title: "中本天婦羅", detail: "奧武島人氣美食", address: "南城市玉城奧武9", 
-        content: "奧武島上著名的天婦羅店，現炸美味。"
-      },
-      { 
         id: '4-3', time: "14:00", type: "spot", title: "沖繩世界文化王國", detail: "玉泉洞與傳統文化", address: "南城市玉城前川1336", 
-        content: "【玉泉洞】歷經 30 萬年形成的鐘乳石洞，規模日本前茅。\n【王國村】重建百年琉球古民家，體驗傳統工藝。\n【Eisa 太鼓舞】展現沖繩熱情與活力的傳統表演。",
+        content: "【玉泉洞】歷經 30 萬年形成的鐘乳石洞，規模日本前茅。洞內石筍與鐘乳石林立，景觀壯麗。\n\n【王國村】重建百年琉球古民家，體驗傳統工藝如織布、藍染等，感受濃厚的琉球歷史氣息。\n\n【毒蛇博物公園】展示沖繩特有的毒蛇與爬蟲類，提供驚險刺激的活蛇表演與教育資訊。\n\n---\n\n【下午表演】\n- 14:30 Eisa 太鼓舞\n- 15:30 毒蛇表演",
         links: [
-          { label: "表演時間表", url: "https://www.gyokusendo.co.jp/okinawaworld/event/", icon: "clock" },
-          { label: "琉裝體驗預約", url: "https://www.gyokusendo.co.jp/okinawaworld/handson/", icon: "ticket" },
-          { label: "挖珍珠體驗", url: "https://www.gyokusendo.co.jp/okinawaworld/handson/", icon: "ticket" },
-          { label: "沖繩世界導航", url: "https://www.google.com/maps/search/?api=1&query=沖繩世界+文化王國", icon: "map" }
+          { label: "節目表", url: "https://www.gyokusendo.co.jp/okinawaworld/event/", icon: "clock" },
+          { label: "體驗項目", url: "https://www.gyokusendo.co.jp/okinawaworld/handson/", icon: "ticket" },
+          { label: "沖繩世界導航", url: "https://www.google.com/maps/search/?api=1&query=沖繩世界", icon: "map" }
         ]
       },
       { 
         id: '4-4', time: "17:00", type: "food", title: "晚餐：中本天婦羅", detail: "營業時間 10:00 - 18:00", address: "南城市玉城奧武9", 
         content: "奧武島是著名的「貓島」，以美味的天婦羅聞名。用餐方式為先填寫點單後排隊結帳，建議在海邊享用。\n\n【奧武島簡介】環島一圈僅需 5 分鐘，充滿悠閒的漁村氣息。除了天婦羅，這裡的貓咪也是一大亮點。",
         links: [
-          { label: "菜單資訊", url: "https://lh3.googleusercontent.com/d/1vnkzussydV7yR_d5nXTRV8wDW5HMirBQ", icon: "image" },
-          { label: "部落格連結", url: "https://example.com/nakamoto-tempura-blog", icon: "link" }
+          { label: "菜單資訊", url: "https://nakamotosengyoten.com/tw/tenpura/", icon: "image" },
+          { label: "中本天婦羅導航", url: "https://www.google.com/maps/search/?api=1&query=中本天婦羅店", icon: "map" }
         ]
       }
     ]
@@ -287,26 +288,26 @@ const ITINERARY_DATA = [
     items: [
       { id: '5-0', time: "08:00", type: "food", title: "飯店早餐", detail: "最後一次享用早餐", content: "整理行李，準備退房。", noModal: true },
       { 
-        id: '5-1', time: "08:30", type: "spot", title: "波上宮 & 逛街", detail: "懸崖上的神社", address: "那霸市若狹1-25-11", 
-        content: "波上宮是琉球八社之首，建在懸崖之上，可俯瞰海灘景觀。\n\n【小祿站 AEON 購物資訊】位於單軌電車小祿站旁，有大型超市與各式店鋪，適合最後採買。",
+        id: '5-1', time: "08:30", type: "spot", title: "波上宮 & 最後採買", detail: "懸崖上的神社與購物", address: "那霸市若狹1-25-11", 
+        content: "波上宮是琉球八社之首，建在懸崖之上，可俯瞰海灘景觀。參拜完後可前往周邊進行最後採買。\n\n---\n\n【小祿站 AEON】位於單軌電車站旁，重點樓層：1F 大創、2F SM2、3F 毛線店。周邊還有大國藥妝百元店，適合補貨。\n\n【Rainbow House】在地知名的手工藝品店，提供各式精緻的手作材料與成品。",
         links: [
+          { label: "波上宮停車場導航", url: "https://www.google.com/maps/search/?api=1&query=波上宮+停車場", icon: "map" },
           { label: "小祿站 AEON 資訊", url: "https://www.aeon-okinawa.com.tw/shop/aeon-naha/", icon: "shopping" },
-          { label: "波上宮停車場導航", url: "https://www.google.com/maps/search/?api=1&query=波上宮+停車場", icon: "map" }
+          { label: "Rainbow House 導航", url: "https://www.google.com/maps/search/?api=1&query=Rainbow+House+Okinawa", icon: "map" }
         ]
       },
       { 
         id: '5-2', time: "12:00", type: "food", title: "午餐：豬肉蛋飯糰", detail: "機場人氣美食", address: "那霸機場", 
         content: "沖繩必吃的豬肉蛋飯糰，機場店雖然常排隊但值得一試。\n\n【機場人氣 10 間商店/美食】\n1. Pork Tamago Onigiri\n2. 琉球村\n3. 壽司 築地銀章魚燒\n4. 麥當勞 (沖繩限定口味)\n5. 沖繩蕎麥麵 志貴\n6. Blue Seal\n7. 伴手禮店 Coralway\n8. 驚安殿堂 (機場店)\n9. Royce' 櫃檯\n10. 御菓子御殿",
         links: [
-          { label: "飯糰店導航", url: "https://www.google.com/maps/search/?api=1&query=Pork+Tamago+Onigiri+那霸機場店", icon: "map" },
-          { label: "機場商店地圖", url: "https://www.naha-airport.co.jp/zh-hant/shop_restaurant/", icon: "map" }
+          { label: "飯糰店導航", url: "https://www.google.com/maps/search/?api=1&query=Pork+Tamago+Onigiri+那霸機場店", icon: "map" }
         ]
       },
       { 
         id: '5-3', time: "12:30", type: "transport", title: "前往機場候機", detail: "搭乘星宇 JX871", address: "那霸機場", 
         content: "搭乘星宇航空 JX871 班機返家。請預留充足時間辦理退稅與登機手續。\n\n【2025 機場必買 10 樣伴手禮】\n1. Royce' 黑糖巧克力: 沖繩限定，鹹甜交織。\n2. 紅芋塔: 經典 100% 沖繩產紅芋。\n3. 雪鹽金楚糕: 宮古島雪鹽，酥脆順口。\n4. 石垣島辣油: 廚房必備，香氣濃郁。\n5. 泡盛辣椒油: 獨特酒香，麵食搭擋。\n6. 黑糖薯條: 酥脆薯條裹上濃郁黑糖。\n7. 扶桑花茶: 清爽解膩的特色茶飲。\n8. 紅芋起司塔: 現場烘焙的華麗邂逅。\n9. 琉球玻璃: 精緻的手工藝品選擇。\n10. 苦瓜乾: 獨特苦味，極佳下酒菜。",
         links: [
-          { label: "伴手禮清單詳解", url: "https://example.com/okinawa-souvenir-2025", icon: "shopping" }
+          { label: "機場商店連結", url: "https://www.naha-airport.co.jp/zh-hant/spend/shop_and_restaurant/", icon: "shopping" }
         ]
       },
       { id: '5-4', time: "18:00", type: "transport", title: "返家", detail: "平安回家", content: "結束愉快的 5 天 4 夜沖繩之旅。", noModal: true }
@@ -675,6 +676,13 @@ function SmartParagraph({ children, className = "" }: { children: ReactNode, cla
   const [isLong, setIsLong] = useState(false);
   const textRef = useRef<HTMLDivElement>(null);
 
+  // Check if content is a list (starts with numbers like "1." or bullet points like "-", "*", "•")
+  const isList = useMemo(() => {
+    if (typeof children !== 'string') return false;
+    // Match "1. ", "- ", "* ", "• " at the start of the string or after a newline
+    return /^\s*(\d+\.|[-*•])\s+/.test(children);
+  }, [children]);
+
   useEffect(() => {
     const checkLines = () => {
       if (textRef.current) {
@@ -683,7 +691,8 @@ function SmartParagraph({ children, className = "" }: { children: ReactNode, cla
         const lineHeight = parseInt(style.lineHeight) || 21; // Fallback to 21px if line-height is normal
         const height = element.getBoundingClientRect().height;
         const lines = Math.round(height / lineHeight);
-        setIsLong(lines >= 3);
+        // Only show vertical line if it's 3+ lines AND not a list
+        setIsLong(lines >= 3 && !isList);
       }
     };
 
@@ -698,10 +707,10 @@ function SmartParagraph({ children, className = "" }: { children: ReactNode, cla
       window.removeEventListener('resize', checkLines);
       clearTimeout(timer);
     };
-  }, [children]);
+  }, [children, isList]);
 
   return (
-    <div className={`${isLong ? 'border-l border-morandi-primary/20 pl-4' : ''} py-1 ${className} transition-all duration-300`}>
+    <div className={`${isLong ? 'border-l border-black/10 pl-4' : ''} py-1 ${className} transition-all duration-300`}>
       <div ref={textRef} className="text-[13px] leading-relaxed text-morandi-text whitespace-pre-wrap">
         {children}
       </div>
@@ -802,11 +811,16 @@ function GuideModal({ item, onClose }: any) {
                       <Info size={16} />
                       <span className="text-[15px] font-bold uppercase tracking-widest">關於此處 (ABOUT)</span>
                     </div>
-                    {item.content && item.content.split('\n\n').map((paragraph: string, pIdx: number) => (
-                      <SmartParagraph key={pIdx}>
-                        {paragraph}
-                      </SmartParagraph>
-                    ))}
+                    {item.content && item.content.split('\n\n').map((paragraph: string, pIdx: number) => {
+                      if (paragraph.trim() === '---') {
+                        return <div key={pIdx} className="h-px bg-morandi-primary/10 my-8" />;
+                      }
+                      return (
+                        <SmartParagraph key={pIdx}>
+                          {paragraph}
+                        </SmartParagraph>
+                      );
+                    })}
                   </div>
 
                   {/* Layer 3: Remarks */}
@@ -901,11 +915,16 @@ function GuideModal({ item, onClose }: any) {
                       <Info size={16} />
                       <span className="text-[15px] font-bold uppercase tracking-widest">關於此處 (ABOUT)</span>
                     </div>
-                    {item.content && item.content.split('\n\n').map((paragraph: string, pIdx: number) => (
-                      <SmartParagraph key={pIdx}>
-                        {paragraph}
-                      </SmartParagraph>
-                    ))}
+                    {item.content && item.content.split('\n\n').map((paragraph: string, pIdx: number) => {
+                      if (paragraph.trim() === '---') {
+                        return <div key={pIdx} className="h-px bg-morandi-primary/10 my-8" />;
+                      }
+                      return (
+                        <SmartParagraph key={pIdx}>
+                          {paragraph}
+                        </SmartParagraph>
+                      );
+                    })}
                   </div>
 
                   {item.darumaExchange && (
