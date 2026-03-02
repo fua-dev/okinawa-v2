@@ -11,7 +11,7 @@ import {
   Image as ImageIcon, Smartphone, Users, CheckCircle2, Circle, Clock, Ticket,
   ExternalLink, Sun, Cloud, CloudRain, Utensils, Plane, Car, Upload, Star,
   LayoutGrid, StretchHorizontal, ChevronLeft, ChevronRight as ChevronRightIcon,
-  PhoneCall, PlusCircle, Link
+  PhoneCall, PlusCircle, Link, ChevronDown
 } from 'lucide-react';
 
 const fontStyleSerif = {
@@ -89,16 +89,16 @@ const ITINERARY_DATA = [
         top10: {
           title: "TOP 10 商店/小吃",
           items: [
-            { name: "淳久堂書店 (那霸店)", desc: "沖繩最大的書店，文具與書籍種類齊全。", url: "https://www.google.com/maps/search/?api=1&query=淳久堂書店+那霸店" },
-            { name: "Splash Okinawa", desc: "以沖繩海洋為主題的精緻飾品與雜貨店。", url: "https://www.google.com/maps/search/?api=1&query=Splash+Okinawa+國際通" },
-            { name: "Okinawa Art Shop Mash", desc: "匯集沖繩在地藝術家的原創手工藝品。", url: "https://www.google.com/maps/search/?api=1&query=Okinawa+Art+Shop+Mash" },
-            { name: "御菓子御殿", desc: "紅芋塔名店，建築外觀極具特色。", url: "https://www.google.com/maps/search/?api=1&query=御菓子御殿+國際通松尾店" },
-            { name: "鹽屋 (國際通店)", desc: "販售各式沖繩海鹽，推薦雪鹽霜淇淋。", url: "https://www.google.com/maps/search/?api=1&query=鹽屋+國際通店" },
-            { name: "Calbee+", desc: "現炸薯條三兄弟與沖繩限定口味零食。", url: "https://www.google.com/maps/search/?api=1&query=Calbee+Plus+Okinawa" },
-            { name: "Blue Seal 冰淇淋", desc: "沖繩代表性冰淇淋，口味選擇眾多。", url: "https://www.google.com/maps/search/?api=1&query=Blue+Seal+國際通" },
-            { name: "驚安殿堂 唐吉訶德", desc: "24小時營業，購物補貨的最佳去處。", url: "https://www.google.com/maps/search/?api=1&query=Don+Quijote+國際通" },
-            { name: "琉球咖啡館", desc: "推薦著名的「武士咖啡」，口感濃郁。", url: "https://www.google.com/maps/search/?api=1&query=琉球咖啡館" },
-            { name: "沖繩屋 (Okinawa-ya)", desc: "販售各式沖繩特色小物與紀念品。", url: "https://www.google.com/maps/search/?api=1&query=沖繩屋+國際通" }
+            { name: "淳久堂書店 (那霸店)", desc: "沖繩規模最大的書店，藏書豐富且文具種類極其齊全。環境安靜寬敞，非常適合長輩悠閒漫步，挑選精緻的日本文具或藝術書籍作為紀念。", url: "https://www.google.com/maps/search/?api=1&query=淳久堂書店+那霸店" },
+            { name: "Splash Okinawa", desc: "以沖繩湛藍海洋為靈感的原創雜貨店。店內充滿海邊氣息，販售精緻的飾品、織物與居家裝飾，是挑選具備在地特色且質感優雅禮品的首選之地。", url: "https://www.google.com/maps/search/?api=1&query=Splash+Okinawa+國際通" },
+            { name: "Okinawa Art Shop Mash", desc: "匯集了多位沖繩在地藝術家的手工作品。從陶器、玻璃製品到獨特的布藝品，每一件都蘊含著創作者的心意，展現出沖繩深厚的文化底蘊與藝術魅力。", url: "https://www.google.com/maps/search/?api=1&query=Okinawa+Art+Shop+Mash" },
+            { name: "御菓子御殿", desc: "著名的紅芋塔創始店，建築外觀仿照首里城設計，極具氣勢。店內提供各式精緻的沖繩傳統糕點，口感細膩且甜度適中，深受長輩喜愛。", url: "https://www.google.com/maps/search/?api=1&query=御菓子御殿+國際通松尾店" },
+            { name: "鹽屋 (國際通店)", desc: "全日本種類最齊全的鹽專賣店。除了可以試吃來自各地的特色海鹽，最推薦嘗試撒上特製鹽粉的雪鹽霜淇淋，鹹甜交織的獨特口感令人難忘。", url: "https://www.google.com/maps/search/?api=1&query=鹽屋+國際通店" },
+            { name: "Calbee+", desc: "知名零食品牌的現炸體驗店。您可以品嚐到剛出爐、熱騰騰的現炸薯條與沖繩限定口味零食，香脆可口，是逛街途中補充體力的絕佳選擇。", url: "https://www.google.com/maps/search/?api=1&query=Calbee+Plus+Okinawa" },
+            { name: "Blue Seal 冰淇淋", desc: "沖繩最具代表性的冰淇淋品牌。口味融合了美式風格與在地特色，如紅芋、鹽屋鹽等。口感綿密香濃，在炎熱的午後享用一份，倍感清涼舒爽。", url: "https://www.google.com/maps/search/?api=1&query=Blue+Seal+國際通" },
+            { name: "驚安殿堂 唐吉訶德", desc: "24小時營業的大型連鎖折扣店。從藥妝、零食到生活百貨應有盡有，價格實惠且種類繁多，是回程前一次買齊所有伴手禮與生活用品的最佳去處。", url: "https://www.google.com/maps/search/?api=1&query=Don+Quijote+國際通" },
+            { name: "琉球咖啡館", desc: "以著名的「武士咖啡」聞名，口感極其濃郁且帶有獨特的香氣。店內氛圍古色古香，非常適合在逛街之餘坐下來，細細品味一杯道地的琉球咖啡。", url: "https://www.google.com/maps/search/?api=1&query=琉球咖啡館" },
+            { name: "沖繩屋 (Okinawa-ya)", desc: "販售各式充滿沖繩風情的特色小物與紀念品。從傳統織物到現代設計的雜貨，種類豐富且設計精美，是尋找獨特旅遊回憶的好地方。", url: "https://www.google.com/maps/search/?api=1&query=沖繩屋+國際通" }
           ]
         }
       },
@@ -109,16 +109,16 @@ const ITINERARY_DATA = [
         top10: {
           title: "國際通晚餐「非牛/非生魚」Top 10 推薦",
           items: [
-            { name: "暖暮拉麵 (那霸牧志店)", desc: "九州拉麵票選第一名，國際通排隊名店。", url: "https://www.google.com/maps/search/?api=1&query=暖暮拉麵+那霸牧志店" },
-            { name: "琉球新麵 通堂", desc: "招牌男人麵與女人麵，湯頭層次豐富。", url: "https://www.google.com/maps/search/?api=1&query=琉球新麵+通堂+寄宮店" },
-            { name: "ゆうなんぎい (Yunangi)", desc: "沖繩家庭料理老店，東坡肉與苦瓜雜炒必點。", url: "https://www.google.com/maps/search/?api=1&query=ゆうなんぎい" },
-            { name: "沖繩麵 Eibun", desc: "超人氣創意沖繩麵，湯頭清甜且麵條Q彈。", url: "https://www.google.com/maps/search/?api=1&query=Okinawa+Soba+Eibun" },
-            { name: "Angama (あんがま)", desc: "道地沖繩料理搭配傳統表演，適合家庭聚餐。", url: "https://www.google.com/maps/search/?api=1&query=あんがま+國際通" },
-            { name: "國際通屋台村", desc: "匯集多樣化熟食小攤，氛圍熱鬧適合體驗當地風情。", url: "https://www.google.com/maps/search/?api=1&query=國際通屋台村" },
-            { name: "嘉手納蕎麥麵", desc: "傳統沖繩麵，簡單純粹的美味。", url: "https://www.google.com/maps/search/?api=1&query=嘉手納蕎麥麵" },
-            { name: "居酒屋 祭囃子", desc: "現場三線琴演奏，提供豐富的熟食沖繩料理。", url: "https://www.google.com/maps/search/?api=1&query=居酒屋+祭囃子" },
-            { name: "Gusto (ガスト) 那霸國際通店", desc: "知名家庭餐廳，餐點多樣化且對兒童非常友善。", url: "https://www.google.com/maps/search/?api=1&query=Gusto+那霸國際通店" },
-            { name: "琉球茶房 (Ashibiuna)", desc: "在古色古香的環境中享用精緻的沖繩熟食定食。", url: "https://www.google.com/maps/search/?api=1&query=琉球茶房+Ashibiuna" }
+            { name: "暖暮拉麵 (那霸牧志店)", desc: "曾榮獲九州拉麵票選第一名，是國際通的人氣名店。湯頭濃郁卻不膩口，麵條Q彈有勁，非常適合喜愛道地日本拉麵的長輩享用。", url: "https://www.google.com/maps/search/?api=1&query=暖暮拉麵+那霸牧志店" },
+            { name: "琉球新麵 通堂", desc: "以獨特的男人麵（豚骨）與女人麵（鹽味）聞名。湯頭層次分明，配料豐富，店內環境溫馨，是體驗沖繩在地麵食文化的絕佳選擇。", url: "https://www.google.com/maps/search/?api=1&query=琉球新麵+通堂+寄宮店" },
+            { name: "ゆうなんぎい (Yunangi)", desc: "深受在地人喜愛的沖繩家庭料理老店。招牌東坡肉入口即化，苦瓜雜炒清脆爽口，每一道菜都充滿了溫暖的家鄉味，非常適合家庭聚餐。", url: "https://www.google.com/maps/search/?api=1&query=ゆうなんぎい" },
+            { name: "沖繩麵 Eibun", desc: "充滿創意的超人氣沖繩麵店。湯頭清甜且不油膩，麵條口感極佳，並提供多種創新口味，讓傳統的沖繩麵展現出令人驚喜的現代風味。", url: "https://www.google.com/maps/search/?api=1&query=Okinawa+Soba+Eibun" },
+            { name: "Angama (あんがま)", desc: "在充滿傳統氛圍的環境中享用道地沖繩料理。用餐時還能欣賞精彩的傳統表演，讓您在品嚐美食的同時，也能深度感受沖繩的文化魅力。", url: "https://www.google.com/maps/search/?api=1&query=あんがま+國際通" },
+            { name: "國際通屋台村", desc: "匯集了多家各具特色的熟食小攤，氛圍熱鬧非凡。您可以一次品嚐到多種沖繩在地小吃，非常適合想要體驗當地夜生活與熱鬧氣氛的遊客。", url: "https://www.google.com/maps/search/?api=1&query=國際通屋台村" },
+            { name: "嘉手納蕎麥麵", desc: "專注於傳統沖繩麵的製作，口味簡單而純粹。湯頭鮮美，麵條紮實，展現出最道地的沖繩風味，是喜愛傳統美食長輩的不二之選。", url: "https://www.google.com/maps/search/?api=1&query=嘉手納蕎麥麵" },
+            { name: "居酒屋 祭囃子", desc: "店內有現場三線琴演奏，營造出濃厚的琉球風情。提供豐富的熟食沖繩料理，讓您在悠揚的樂聲中，享受一段輕鬆愉快的晚餐時光。", url: "https://www.google.com/maps/search/?api=1&query=居酒屋+祭囃子" },
+            { name: "Gusto (ガスト) 那霸國際通店", desc: "知名的連鎖家庭餐廳，餐點選擇極其多樣化且價格實惠。店內空間寬敞，對兒童與長輩非常友善，是全家大小輕鬆用餐的理想場所。", url: "https://www.google.com/maps/search/?api=1&query=Gusto+那霸國際通店" },
+            { name: "琉球茶房 (Ashibiuna)", desc: "位於古色古香的日式建築內，環境優雅寧靜。提供精緻的沖繩熟食定食，讓您在充滿禪意的庭園景觀中，細細品味高品質的在地料理。", url: "https://www.google.com/maps/search/?api=1&query=琉球茶房+Ashibiuna" }
           ]
         }
       }
@@ -155,11 +155,11 @@ const ITINERARY_DATA = [
         top10: {
           title: "名護周邊美食推薦",
           items: [
-            { name: "百年古家 大家", desc: "著名的阿古豬料理，在百年古宅中用餐，氛圍極佳。", url: "https://www.google.com/maps/search/?api=1&query=百年古家+大家" },
-            { name: "幸ちゃんそば", desc: "在地人喜愛的沖繩麵店，湯頭清甜，麵條Q彈。", url: "https://www.google.com/maps/search/?api=1&query=幸ちゃんそば" },
-            { name: "名護漁港食堂", desc: "漁港直營，提供新鮮的炸魚定食與海鮮料理。", url: "https://www.google.com/maps/search/?api=1&query=名護漁港食堂" },
-            { name: "岸本食堂", desc: "沖繩麵名店，傳統木灰水製麵，口感獨特。", url: "https://www.google.com/maps/search/?api=1&query=岸本食堂" },
-            { name: "Captain Kangaroo", desc: "被譽為沖繩最好吃的漢堡店，份量十足。", url: "https://www.google.com/maps/search/?api=1&query=Captain+Kangaroo+名護" }
+            { name: "百年古家 大家", desc: "以著名的阿古豬料理聞名，餐廳位於擁有百年歷史的古宅內，環境優美且充滿歷史感。在潺潺水聲中享用精緻美食，是極致的視覺與味覺饗宴。", url: "https://www.google.com/maps/search/?api=1&query=百年古家+大家" },
+            { name: "幸ちゃんそば", desc: "深受在地人喜愛的沖繩麵店。湯頭清甜不油膩，麵條口感Q彈紮實，配上滷得入味的軟骨肉，每一口都能感受到最純粹的沖繩在地美味。", url: "https://www.google.com/maps/search/?api=1&query=幸ちゃんそば" },
+            { name: "名護漁港食堂", desc: "由漁港直營的食堂，保證食材的新鮮度。提供份量十足的炸魚定食與各式海鮮料理，價格實惠且口味地道，是體驗漁村飲食文化的最佳去處。", url: "https://www.google.com/maps/search/?api=1&query=名護漁港食堂" },
+            { name: "岸本食堂", desc: "傳承多年的沖繩麵名店，堅持使用傳統木灰水製麵，口感獨特且香氣十足。簡單的配料卻能展現出深厚的料理功底，是許多老饕心中的第一名。", url: "https://www.google.com/maps/search/?api=1&query=岸本食堂" },
+            { name: "Captain Kangaroo", desc: "被譽為沖繩最好吃的漢堡店。漢堡份量驚人，肉排鮮嫩多汁，搭配特製醬料與酥脆麵包，每一口都充滿驚喜，是喜愛美式料理遊客的必訪之地。", url: "https://www.google.com/maps/search/?api=1&query=Captain+Kangaroo+名護" }
           ]
         },
         noNav: true
@@ -179,13 +179,13 @@ const ITINERARY_DATA = [
         top10: {
           title: "名護人氣熟食推薦 (非牛/非生魚)",
           items: [
-            { name: "我那霸豚肉店", desc: "專營優質沖繩豬肉，推薦炸豬排與豬肉涮涮鍋。", url: "https://www.google.com/maps/search/?api=1&query=我那霸豚肉店+名護" },
-            { name: "暖暮拉麵 (名護店)", desc: "九州拉麵名店，熟食拉麵的最佳選擇。", url: "https://www.google.com/maps/search/?api=1&query=暖暮拉麵+名護店" },
-            { name: "ゆきの (Yukino)", desc: "深受在地人喜愛的居酒屋，提供多樣化的沖繩熟食料理。", url: "https://www.google.com/maps/search/?api=1&query=居酒屋+ゆきの+名護" },
-            { name: "Cookhal", desc: "農場直營餐廳，提供新鮮蔬菜與在地食材烹調的熟食。", url: "https://www.google.com/maps/search/?api=1&query=Cookhal+名護" },
-            { name: "Gusto (ガスト) 名護店", desc: "知名家庭餐廳，餐點選擇極多且對兒童非常友善。", url: "https://www.google.com/maps/search/?api=1&query=Gusto+名護店" },
-            { name: "A&W 名護店", desc: "沖繩特色美式速食，推薦熱狗堡與雞肉餐點。", url: "https://www.google.com/maps/search/?api=1&query=A%26W+名護店" },
-            { name: "大家 (Ufuya) 晚餐", desc: "晚間提供精緻的阿古豬火鍋定食，環境優美。", url: "https://www.google.com/maps/search/?api=1&query=百年古家+大家" }
+            { name: "我那霸豚肉店", desc: "專營優質沖繩豬肉，提供多樣化的豬肉料理。特別推薦外酥內嫩的炸豬排與肉質鮮甜的豬肉涮涮鍋，是喜愛高品質豬肉料理長輩的首選。", url: "https://www.google.com/maps/search/?api=1&query=我那霸豚肉店+名護" },
+            { name: "暖暮拉麵 (名護店)", desc: "九州拉麵名店在名護的分店。湯頭濃郁香醇，麵條可依喜好調整硬度。對於不吃牛或生魚片的遊客來說，這裡的熟食拉麵是既方便又美味的選擇。", url: "https://www.google.com/maps/search/?api=1&query=暖暮拉麵+名護店" },
+            { name: "ゆきの (Yukino)", desc: "深受在地人喜愛的居酒屋，氛圍輕鬆愉快。提供豐富多樣的沖繩熟食料理，從炒苦瓜到各式炸物應有盡有，非常適合全家大小一同前來聚餐。", url: "https://www.google.com/maps/search/?api=1&query=居酒屋+ゆきの+名護" },
+            { name: "Cookhal", desc: "農場直營的景觀餐廳，強調食安與在地食材。提供多種以新鮮蔬菜與在地肉類烹調的熟食料理，口味清爽健康，讓您在用餐的同時也能感受大自然的氣息。", url: "https://www.google.com/maps/search/?api=1&query=Cookhal+名護" },
+            { name: "Gusto (ガスト) 名護店", desc: "知名的連鎖家庭餐廳，提供多樣化的熟食選擇。店內環境舒適且對兒童與長輩非常友善，是想要輕鬆享用多樣化餐點時的最佳選擇。", url: "https://www.google.com/maps/search/?api=1&query=Gusto+名護店" },
+            { name: "A&W 名護店", desc: "沖繩獨有的美式速食品牌。除了著名的麥根沙士，這裡的熱狗堡與雞肉餐點也深受好評。充滿懷舊美式風格的店內環境，也是拍照留念的好地方。", url: "https://www.google.com/maps/search/?api=1&query=A%26W+名護店" },
+            { name: "大家 (Ufuya) 晚餐", desc: "晚間提供精緻的阿古豬火鍋定食。在燈光美氣氛佳的百年古宅內，慢火烹煮鮮甜的豬肉與時蔬，讓您在寧靜的夜晚享受一段高品質的味覺旅程。", url: "https://www.google.com/maps/search/?api=1&query=百年古家+大家" }
           ]
         },
         noNav: true
@@ -711,7 +711,7 @@ function SmartParagraph({ children, className = "" }: { children: ReactNode, cla
 
   return (
     <div className={`${isLong ? 'border-l border-black/10 pl-4' : ''} py-1 ${className} transition-all duration-300`}>
-      <div ref={textRef} className="text-[14px] leading-relaxed text-morandi-text whitespace-pre-wrap">
+      <div ref={textRef} className="text-[15px] leading-relaxed text-morandi-text whitespace-pre-wrap">
         {children}
       </div>
     </div>
@@ -808,8 +808,8 @@ function GuideModal({ item, onClose }: any) {
                   {/* Layer 2: Intro */}
                   <div className="space-y-6 pt-2">
                     <div className="flex items-center gap-2 text-morandi-text/60">
-                      <Info size={18} />
-                      <span className="text-[17px] font-bold uppercase tracking-widest">關於此處 (ABOUT)</span>
+                      <Info size={20} />
+                      <span className="text-[18px] font-bold uppercase tracking-widest">關於此處 (ABOUT)</span>
                     </div>
                     {item.content && item.content.split('\n\n').map((paragraph: string, pIdx: number) => {
                       if (paragraph.trim() === '---') {
@@ -828,8 +828,8 @@ function GuideModal({ item, onClose }: any) {
                     <div className="space-y-4 pt-2">
                       <div className="space-y-3">
                         <div className="flex items-center gap-2 text-morandi-text/60">
-                          <Info size={18} />
-                          <span className="text-[17px] font-bold uppercase tracking-widest">備註</span>
+                          <Info size={20} />
+                          <span className="text-[18px] font-bold uppercase tracking-widest">備註</span>
                         </div>
                         <SmartParagraph>
                           {item.hotelDetails.breakfastRemarks}
@@ -840,14 +840,14 @@ function GuideModal({ item, onClose }: any) {
 
                   {/* Layer 4: Routes */}
                   <div className="space-y-6 pt-2">
-                    <h3 className="text-[17px] font-bold text-morandi-text/60 uppercase tracking-widest flex items-center gap-2">
+                    <h3 className="text-[18px] font-bold text-morandi-text/60 uppercase tracking-widest flex items-center gap-2">
                       <Navigation size={20} /> 路線導覽
                     </h3>
                     <div className="space-y-8">
                       {item.hotelDetails.routes.map((route: any, idx: number) => (
                         <div key={idx} className="space-y-3">
                           <div className="flex items-center justify-between gap-4">
-                            <p className="text-[14px] font-bold text-morandi-text">{route.label}</p>
+                            <p className="text-[15px] font-bold text-morandi-text">{route.label}</p>
                             <button 
                               onClick={() => window.open(route.url)}
                               className="flex items-center gap-1.5 px-4 py-2 bg-white/20 border border-morandi-primary/30 rounded-none text-xs font-bold text-morandi-text shadow-sm active:scale-95 transition-all shrink-0"
@@ -868,7 +868,7 @@ function GuideModal({ item, onClose }: any) {
                   {/* Layer 5: Shopping */}
                   <div className="space-y-6 pt-2">
                     <div className="flex items-center justify-between">
-                      <h3 className="text-[17px] font-bold text-morandi-text/60 uppercase tracking-widest flex items-center gap-2">
+                      <h3 className="text-[18px] font-bold text-morandi-text/60 uppercase tracking-widest flex items-center gap-2">
                         <Utensils size={20} /> {item.hotelDetails.shopping.name}
                       </h3>
                       <button 
@@ -887,7 +887,7 @@ function GuideModal({ item, onClose }: any) {
                         {item.hotelDetails.shopping.floors.map((floor: string, idx: number) => (
                           <div key={idx} className="flex gap-3">
                             <div className="w-1 h-1 rounded-full bg-morandi-primary mt-2.5 shrink-0" />
-                            <p className="text-[14px] text-morandi-text leading-relaxed">{floor}</p>
+                            <p className="text-[15px] text-morandi-text leading-relaxed">{floor}</p>
                           </div>
                         ))}
                       </div>
@@ -912,8 +912,8 @@ function GuideModal({ item, onClose }: any) {
 
                   <div className="space-y-6 pt-2">
                     <div className="flex items-center gap-2 text-morandi-text/60">
-                      <Info size={18} />
-                      <span className="text-[17px] font-bold uppercase tracking-widest">關於此處 (ABOUT)</span>
+                      <Info size={20} />
+                      <span className="text-[18px] font-bold uppercase tracking-widest">關於此處 (ABOUT)</span>
                     </div>
                     {item.content && item.content.split('\n\n').map((paragraph: string, pIdx: number) => {
                       if (paragraph.trim() === '---') {
@@ -932,7 +932,7 @@ function GuideModal({ item, onClose }: any) {
                       <div className="space-y-4">
                         <div className="flex items-center gap-2 text-morandi-text/60">
                           <Ticket size={20} />
-                          <span className="text-[17px] font-bold uppercase tracking-widest">{item.darumaExchange.title}</span>
+                          <span className="text-[18px] font-bold uppercase tracking-widest">{item.darumaExchange.title}</span>
                         </div>
                         <SmartParagraph>
                           {item.darumaExchange.desc}
@@ -947,8 +947,8 @@ function GuideModal({ item, onClose }: any) {
                   {item.otsInfo && (
                     <div className="space-y-6 pt-2">
                       <div className="flex items-center gap-2 text-morandi-text/60">
-                        <Info size={18} />
-                        <h3 className="text-[17px] font-bold uppercase tracking-widest">{item.otsInfo.title}</h3>
+                        <Info size={20} />
+                        <h3 className="text-[18px] font-bold uppercase tracking-widest">{item.otsInfo.title}</h3>
                         <button 
                           onClick={() => window.open(item.otsInfo.link)}
                           className="text-morandi-primary hover:text-morandi-primary-light transition-colors p-1"
@@ -972,28 +972,54 @@ function GuideModal({ item, onClose }: any) {
 
                   {item.top10 && (
                     <div className="space-y-6 pt-2">
-                      <h3 className="text-[17px] font-bold text-morandi-text/60 uppercase tracking-widest flex items-center gap-2">
+                      <h3 className="text-[18px] font-bold text-morandi-text/60 uppercase tracking-widest flex items-center gap-2">
                         <Star size={20} /> {item.top10.title}
                       </h3>
-                      <div className="space-y-6">
-                        {item.top10.items.map((t: any, idx: number) => (
-                          <div key={idx} className="bg-white/10 p-5 border border-morandi-primary/10 rounded-none space-y-3">
-                            <div className="flex items-center justify-between gap-4">
-                              <p className="text-[14px] font-bold text-morandi-text">{t.name}</p>
-                              <button 
-                                onClick={() => window.open(t.url)}
-                                className="flex items-center gap-1.5 px-4 py-2 bg-white/20 border border-morandi-primary/30 rounded-none text-xs font-bold text-morandi-text shadow-sm active:scale-95 transition-all shrink-0"
+                      <div className="divide-y divide-morandi-primary/10">
+                        {item.top10.items.map((t: any, idx: number) => {
+                          const [isOpen, setIsOpen] = useState(false);
+                          return (
+                            <div key={idx} className="py-4">
+                              <div 
+                                className="flex items-center justify-between gap-4 cursor-pointer group"
+                                onClick={() => setIsOpen(!isOpen)}
                               >
-                                <Navigation size={14} /> 路線
-                              </button>
+                                <p className="text-[15px] font-bold text-morandi-text group-hover:text-morandi-primary transition-colors">{t.name}</p>
+                                <div className="flex items-center gap-3 shrink-0">
+                                  <button 
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      window.open(t.url);
+                                    }}
+                                    className="p-2 text-morandi-text/40 hover:text-morandi-primary transition-colors"
+                                  >
+                                    <Navigation size={18} />
+                                  </button>
+                                  <ChevronDown 
+                                    size={18} 
+                                    className={`text-morandi-text/20 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} 
+                                  />
+                                </div>
+                              </div>
+                              <AnimatePresence>
+                                {isOpen && (
+                                  <motion.div
+                                    initial={{ height: 0, opacity: 0 }}
+                                    animate={{ height: 'auto', opacity: 1 }}
+                                    exit={{ height: 0, opacity: 0 }}
+                                    className="overflow-hidden"
+                                  >
+                                    <div className="pt-3">
+                                      <SmartParagraph className="!py-0">
+                                        {t.desc}
+                                      </SmartParagraph>
+                                    </div>
+                                  </motion.div>
+                                )}
+                              </AnimatePresence>
                             </div>
-                            <div className="py-0.5">
-                              <SmartParagraph className="!py-0">
-                                {t.desc}
-                              </SmartParagraph>
-                            </div>
-                          </div>
-                        ))}
+                          );
+                        })}
                       </div>
                     </div>
                   )}
@@ -1001,8 +1027,8 @@ function GuideModal({ item, onClose }: any) {
                   {item.remarks && (
                     <div className="space-y-3 pt-2">
                       <div className="flex items-center gap-2 text-morandi-text/60">
-                        <Info size={18} />
-                        <span className="text-[17px] font-bold uppercase tracking-widest">備註</span>
+                        <Info size={20} />
+                        <span className="text-[18px] font-bold uppercase tracking-widest">備註</span>
                       </div>
                       <SmartParagraph>
                         {item.remarks}
