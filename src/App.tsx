@@ -1601,23 +1601,23 @@ function InfoTab() {
           color="morandi-primary"
         >
           <div className="space-y-5">
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 w-full">
               <input 
                 value={resInput.label}
                 onChange={(e) => setResInput({...resInput, label: e.target.value})}
                 placeholder="項目"
-                className="flex-[0_0_40%] bg-white/40 py-3 px-2 rounded-xl text-[15px] leading-relaxed outline-none border border-transparent focus:border-morandi-primary/20"
+                className="w-[35%] shrink-0 bg-white/40 py-3 px-2 rounded-xl text-[15px] leading-relaxed outline-none border border-transparent focus:border-morandi-primary/20"
               />
               <input 
                 value={resInput.code}
                 onChange={(e) => setResInput({...resInput, code: e.target.value})}
                 placeholder="代號"
-                className="flex-[0_0_40%] bg-white/40 py-3 px-2 rounded-xl text-[15px] leading-relaxed outline-none border border-transparent focus:border-morandi-primary/20 font-mono"
+                className="w-[35%] shrink-0 bg-white/40 py-3 px-2 rounded-xl text-[15px] leading-relaxed outline-none border border-transparent focus:border-morandi-primary/20 font-mono"
               />
-              <div className="flex-1 flex justify-center">
+              <div className="flex-1 flex justify-end">
                 <button 
                   onClick={addRes} 
-                  className="w-8 h-8 flex items-center justify-center bg-morandi-primary text-white rounded-full active:scale-90 transition-all shadow-sm z-10 shrink-0"
+                  className="w-8 h-8 min-w-[32px] flex items-center justify-center bg-morandi-primary text-white rounded-full active:scale-90 transition-all shadow-sm z-10"
                 >
                   <Plus size={18} />
                 </button>
