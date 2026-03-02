@@ -711,7 +711,7 @@ function SmartParagraph({ children, className = "" }: { children: ReactNode, cla
 
   return (
     <div className={`${isLong ? 'border-l border-black/10 pl-4' : ''} py-1 ${className} transition-all duration-300`}>
-      <div ref={textRef} className="text-[13px] leading-relaxed text-morandi-text whitespace-pre-wrap">
+      <div ref={textRef} className="text-[14px] leading-relaxed text-morandi-text whitespace-pre-wrap">
         {children}
       </div>
     </div>
@@ -800,16 +800,16 @@ function GuideModal({ item, onClose }: any) {
                   >
                     <div className="flex items-center gap-3 text-morandi-text">
                       <ExternalLink size={18} />
-                      <span className="text-[13px] font-bold">飯店官網</span>
+                      <span className="text-[14px] font-bold">飯店官網</span>
                     </div>
                     <ChevronRight size={18} className="opacity-40 group-hover:translate-x-1 transition-transform" />
                   </button>
 
                   {/* Layer 2: Intro */}
-                  <div className="space-y-6">
+                  <div className="space-y-6 pt-2">
                     <div className="flex items-center gap-2 text-morandi-text/60">
-                      <Info size={16} />
-                      <span className="text-[15px] font-bold uppercase tracking-widest">關於此處 (ABOUT)</span>
+                      <Info size={18} />
+                      <span className="text-[17px] font-bold uppercase tracking-widest">關於此處 (ABOUT)</span>
                     </div>
                     {item.content && item.content.split('\n\n').map((paragraph: string, pIdx: number) => {
                       if (paragraph.trim() === '---') {
@@ -825,11 +825,11 @@ function GuideModal({ item, onClose }: any) {
 
                   {/* Layer 3: Remarks */}
                   {item.hotelDetails.breakfastRemarks && (
-                    <div className="space-y-4">
+                    <div className="space-y-4 pt-2">
                       <div className="space-y-3">
                         <div className="flex items-center gap-2 text-morandi-text/60">
-                          <Info size={16} />
-                          <span className="text-[15px] font-bold uppercase tracking-widest">備註</span>
+                          <Info size={18} />
+                          <span className="text-[17px] font-bold uppercase tracking-widest">備註</span>
                         </div>
                         <SmartParagraph>
                           {item.hotelDetails.breakfastRemarks}
@@ -839,15 +839,15 @@ function GuideModal({ item, onClose }: any) {
                   )}
 
                   {/* Layer 4: Routes */}
-                  <div className="space-y-6">
-                    <h3 className="text-[15px] font-bold text-morandi-text/60 uppercase tracking-widest flex items-center gap-2">
-                      <Navigation size={18} /> 路線導覽
+                  <div className="space-y-6 pt-2">
+                    <h3 className="text-[17px] font-bold text-morandi-text/60 uppercase tracking-widest flex items-center gap-2">
+                      <Navigation size={20} /> 路線導覽
                     </h3>
                     <div className="space-y-8">
                       {item.hotelDetails.routes.map((route: any, idx: number) => (
                         <div key={idx} className="space-y-3">
                           <div className="flex items-center justify-between gap-4">
-                            <p className="text-[13px] font-bold text-morandi-text">{route.label}</p>
+                            <p className="text-[14px] font-bold text-morandi-text">{route.label}</p>
                             <button 
                               onClick={() => window.open(route.url)}
                               className="flex items-center gap-1.5 px-4 py-2 bg-white/20 border border-morandi-primary/30 rounded-none text-xs font-bold text-morandi-text shadow-sm active:scale-95 transition-all shrink-0"
@@ -866,10 +866,10 @@ function GuideModal({ item, onClose }: any) {
                   </div>
 
                   {/* Layer 5: Shopping */}
-                  <div className="space-y-6">
+                  <div className="space-y-6 pt-2">
                     <div className="flex items-center justify-between">
-                      <h3 className="text-[15px] font-bold text-morandi-text/60 uppercase tracking-widest flex items-center gap-2">
-                        <Utensils size={18} /> {item.hotelDetails.shopping.name}
+                      <h3 className="text-[17px] font-bold text-morandi-text/60 uppercase tracking-widest flex items-center gap-2">
+                        <Utensils size={20} /> {item.hotelDetails.shopping.name}
                       </h3>
                       <button 
                         onClick={() => window.open(item.hotelDetails.shopping.url)}
@@ -887,7 +887,7 @@ function GuideModal({ item, onClose }: any) {
                         {item.hotelDetails.shopping.floors.map((floor: string, idx: number) => (
                           <div key={idx} className="flex gap-3">
                             <div className="w-1 h-1 rounded-full bg-morandi-primary mt-2.5 shrink-0" />
-                            <p className="text-[13px] text-morandi-text leading-relaxed">{floor}</p>
+                            <p className="text-[14px] text-morandi-text leading-relaxed">{floor}</p>
                           </div>
                         ))}
                       </div>
@@ -904,16 +904,16 @@ function GuideModal({ item, onClose }: any) {
                     >
                       <div className="flex items-center gap-3 text-morandi-text">
                         <ExternalLink size={18} />
-                        <span className="text-[13px] font-bold">官方連結</span>
+                        <span className="text-[14px] font-bold">官方連結</span>
                       </div>
                       <ChevronRight size={18} className="opacity-40 group-hover:translate-x-1 transition-transform" />
                     </button>
                   )}
 
-                  <div className="space-y-6">
+                  <div className="space-y-6 pt-2">
                     <div className="flex items-center gap-2 text-morandi-text/60">
-                      <Info size={16} />
-                      <span className="text-[15px] font-bold uppercase tracking-widest">關於此處 (ABOUT)</span>
+                      <Info size={18} />
+                      <span className="text-[17px] font-bold uppercase tracking-widest">關於此處 (ABOUT)</span>
                     </div>
                     {item.content && item.content.split('\n\n').map((paragraph: string, pIdx: number) => {
                       if (paragraph.trim() === '---') {
@@ -928,11 +928,11 @@ function GuideModal({ item, onClose }: any) {
                   </div>
 
                   {item.darumaExchange && (
-                    <div className="space-y-6">
+                    <div className="space-y-6 pt-2">
                       <div className="space-y-4">
                         <div className="flex items-center gap-2 text-morandi-text/60">
-                          <Ticket size={18} />
-                          <span className="text-[15px] font-bold uppercase tracking-widest">{item.darumaExchange.title}</span>
+                          <Ticket size={20} />
+                          <span className="text-[17px] font-bold uppercase tracking-widest">{item.darumaExchange.title}</span>
                         </div>
                         <SmartParagraph>
                           {item.darumaExchange.desc}
@@ -945,10 +945,10 @@ function GuideModal({ item, onClose }: any) {
                   )}
 
                   {item.otsInfo && (
-                    <div className="space-y-6">
+                    <div className="space-y-6 pt-2">
                       <div className="flex items-center gap-2 text-morandi-text/60">
-                        <Info size={16} />
-                        <h3 className="text-[15px] font-bold uppercase tracking-widest">{item.otsInfo.title}</h3>
+                        <Info size={18} />
+                        <h3 className="text-[17px] font-bold uppercase tracking-widest">{item.otsInfo.title}</h3>
                         <button 
                           onClick={() => window.open(item.otsInfo.link)}
                           className="text-morandi-primary hover:text-morandi-primary-light transition-colors p-1"
@@ -971,15 +971,15 @@ function GuideModal({ item, onClose }: any) {
                   )}
 
                   {item.top10 && (
-                    <div className="space-y-6">
-                      <h3 className="text-[15px] font-bold text-morandi-text/60 uppercase tracking-widest flex items-center gap-2">
-                        <Star size={18} /> {item.top10.title}
+                    <div className="space-y-6 pt-2">
+                      <h3 className="text-[17px] font-bold text-morandi-text/60 uppercase tracking-widest flex items-center gap-2">
+                        <Star size={20} /> {item.top10.title}
                       </h3>
                       <div className="space-y-6">
                         {item.top10.items.map((t: any, idx: number) => (
                           <div key={idx} className="bg-white/10 p-5 border border-morandi-primary/10 rounded-none space-y-3">
                             <div className="flex items-center justify-between gap-4">
-                              <p className="text-[13px] font-bold text-morandi-text">{t.name}</p>
+                              <p className="text-[14px] font-bold text-morandi-text">{t.name}</p>
                               <button 
                                 onClick={() => window.open(t.url)}
                                 className="flex items-center gap-1.5 px-4 py-2 bg-white/20 border border-morandi-primary/30 rounded-none text-xs font-bold text-morandi-text shadow-sm active:scale-95 transition-all shrink-0"
@@ -999,10 +999,10 @@ function GuideModal({ item, onClose }: any) {
                   )}
 
                   {item.remarks && (
-                    <div className="space-y-3">
+                    <div className="space-y-3 pt-2">
                       <div className="flex items-center gap-2 text-morandi-text/60">
-                        <Info size={16} />
-                        <span className="text-[15px] font-bold uppercase tracking-widest">備註</span>
+                        <Info size={18} />
+                        <span className="text-[17px] font-bold uppercase tracking-widest">備註</span>
                       </div>
                       <SmartParagraph>
                         {item.remarks}
