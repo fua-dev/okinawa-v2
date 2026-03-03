@@ -87,23 +87,22 @@ const ITINERARY_DATA = [
         content: "國際通是那霸的心臟地帶，全長約 1.6 公里，匯集了各式土產店、餐廳與百貨，是沖繩最繁華的街道。",
         officialSite: "https://www.japan.travel/hk/spot/587/",
         top10: {
-          title: "TOP 10 商店/小吃",
+          title: "推薦商店/小吃",
           items: [
-            { name: "淳久堂書店 (那霸店)", desc: "沖繩規模最大的書店，藏書豐富且文具種類極其齊全。環境安靜寬敞，非常適合長輩悠閒漫步，挑選精緻的日本文具或藝術書籍作為紀念。", url: "https://www.google.com/maps/search/?api=1&query=淳久堂書店+那霸店" },
-            { name: "Splash Okinawa", desc: "以沖繩湛藍海洋為靈感的原創雜貨店。店內充滿海邊氣息，販售精緻的飾品、織物與居家裝飾，是挑選具備在地特色且質感優雅禮品的首選之地。", url: "https://www.google.com/maps/search/?api=1&query=Splash+Okinawa+國際通" },
-            { name: "Okinawa Art Shop Mash", desc: "匯集了多位沖繩在地藝術家的手工作品。從陶器、玻璃製品到獨特的布藝品，每一件都蘊含著創作者的心意，展現出沖繩深厚的文化底蘊與藝術魅力。", url: "https://www.google.com/maps/search/?api=1&query=Okinawa+Art+Shop+Mash" },
-            { name: "御菓子御殿", desc: "著名的紅芋塔創始店，建築外觀仿照首里城設計，極具氣勢。店內提供各式精緻的沖繩傳統糕點，口感細膩且甜度適中，深受長輩喜愛。", url: "https://www.google.com/maps/search/?api=1&query=御菓子御殿+國際通松尾店" },
+            { name: "淳久堂書店 (那霸店)", desc: "沖繩規模最大的書店。1~3樓是書店，4樓是大創，地下1樓則是扭蛋玩具區。", url: "https://www.google.com/maps/search/?api=1&query=淳久堂書店+那霸店" },
+            { name: "唐吉訶德 驚安殿堂 (國際通店)", desc: "24小時營業的大型連鎖折扣店。是回程前一次買齊所有伴手禮與生活用品的最佳去處。", url: "https://maps.app.goo.gl/CzLUuwSvfESf65wn9" },
             { name: "鹽屋 (國際通店)", desc: "全日本種類最齊全的鹽專賣店。除了可以試吃來自各地的特色海鹽，最推薦嘗試撒上特製鹽粉的雪鹽霜淇淋，鹹甜交織的獨特口感令人難忘。", url: "https://www.google.com/maps/search/?api=1&query=鹽屋+國際通店" },
+            { name: "御菓子御殿", desc: "著名的紅芋塔創始店，建築外觀仿照首里城設計，極具氣勢。店內提供各式精緻的沖繩傳統糕點，口感細膩且甜度適中，深受長輩喜愛。", url: "https://www.google.com/maps/search/?api=1&query=御菓子御殿+國際通松尾店" },
             { name: "Calbee+", desc: "知名零食品牌的現炸體驗店。您可以品嚐到剛出爐、熱騰騰的現炸薯條與沖繩限定口味零食，香脆可口，是逛街途中補充體力的絕佳選擇。", url: "https://www.google.com/maps/search/?api=1&query=Calbee+Plus+Okinawa" },
             { name: "Blue Seal 冰淇淋", desc: "沖繩最具代表性的冰淇淋品牌。口味融合了美式風格與在地特色，如紅芋、鹽屋鹽等。口感綿密香濃，在炎熱的午後享用一份，倍感清涼舒爽。", url: "https://www.google.com/maps/search/?api=1&query=Blue+Seal+國際通" },
-            { name: "驚安殿堂 唐吉訶德", desc: "24小時營業的大型連鎖折扣店。從藥妝、零食到生活百貨應有盡有，價格實惠且種類繁多，是回程前一次買齊所有伴手禮與生活用品的最佳去處。", url: "https://www.google.com/maps/search/?api=1&query=Don+Quijote+國際通" },
-            { name: "琉球咖啡館", desc: "以著名的「武士咖啡」聞名，口感極其濃郁且帶有獨特的香氣。店內氛圍古色古香，非常適合在逛街之餘坐下來，細細品味一杯道地的琉球咖啡。", url: "https://www.google.com/maps/search/?api=1&query=琉球咖啡館" },
-            { name: "沖繩屋 (Okinawa-ya)", desc: "販售各式充滿沖繩風情的特色小物與紀念品。從傳統織物到現代設計的雜貨，種類豐富且設計精美，是尋找獨特旅遊回憶的好地方。", url: "https://www.google.com/maps/search/?api=1&query=沖繩屋+國際通" }
+            { name: "Jef那霸店", desc: "特製苦瓜圈（類似洋蔥圈）及苦瓜漢堡吃起來微甜很清爽。", url: "https://maps.app.goo.gl/xhrchg1Y17FD85qN9" },
+            { name: "福助玉子燒", desc: "福助玉子燒最有名的是7公分的超厚玉子燒，偏鹹的口味有柴魚的香氣。使用自助機點餐，店門口前有擺放椅子，可以直接在店門口前享用。", url: "https://maps.app.goo.gl/ivQSQqwtw4hUhPjw9" },
+            { name: "林檎堂Ringodou", desc: "販售各種口味的蘋果糖葫蘆，價格從650~850JPY，看評價蘋果堂有點偏硬，有興趣可以吃吃看。", url: "https://maps.app.goo.gl/STgCk95gNARVz8Bn9" }
           ]
         }
       },
       { 
-        id: '1-5', time: "17:30", type: "food", title: "國際通晚餐「非牛/非生魚」Top 10 推薦", detail: "可分隊用餐", address: "那霸市國際通", 
+        id: '1-5', time: "17:30", type: "food", title: "國際通晚餐推薦", detail: "可分隊用餐", address: "那霸市國際通", 
         content: "國際通周邊餐廳選擇眾多，可依喜好分隊行動。",
         hideTime: true,
         top10: {
