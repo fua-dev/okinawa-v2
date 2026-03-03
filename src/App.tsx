@@ -37,31 +37,31 @@ const ITINERARY_DATA = [
     items: [
       { 
         id: '1-1', time: "09:00", type: "transport", title: "桃園機場第一航廈會合", detail: "星宇航空櫃檯集合", address: "桃園市大園區航站南路15號", 
-        content: "各位貴賓早安！我們即將展開期待已久的沖繩之旅。請大家再次確認護照、日文譯本以及最重要的心情都帶齊了嗎？第一站我們先在星宇櫃檯集合辦理登機。", 
+        content: "各位貴賓早安！我們即將展開期待已久的沖繩之旅。請大家再次確認護照、駕照日文譯本以及最重要的心情都帶齊了嗎？第一站我們先在星宇櫃檯集合辦理登機。", 
         quickLinks: [
           { label: "機捷時刻表", url: "https://www.tymetro.com.tw/tymetro-new/tw/_pages/travel-guide/timetable.php" }
         ],
         noNav: true
       },
       { 
-        id: '1-1-1', time: "15:50", type: "flight", title: "啟程：星宇航空 JX870", detail: "15:50–16:25 飛行時間", address: "桃園機場 -> 那霸機場", 
-        content: "搭乘星宇航空 JX870 班機前往那霸。預計 16:25 抵達沖繩。",
+        id: '1-1-1', time: "12:00", type: "flight", title: "啟程：星宇航空 JX870", detail: "【飛行時間】約1個小時40分，預計14:40抵達那霸機場", address: "桃園機場 -> 那霸機場", 
+        content: "搭乘星宇航空 JX870 班機前往那霸。預計 14:40 抵達沖繩。",
         noModal: true
       },
       { 
-        id: '1-2', time: "15:00", type: "transport", title: "抵達那霸空港 & OTS 租車", detail: "預計抵達後分頭行動", address: "那霸機場 OTS 營業所", 
-        content: "抵達後約 15:30 進行租車行程。請搭乘機場接駁車前往營業所辦理手續。",
+        id: '1-2', time: "15:30", type: "transport", title: "抵達那霸空港 & OTS 租車", detail: "預計抵達後分頭行動", address: "那霸機場 OTS 營業所", 
+        content: "抵達後約 15:30 世睿組請搭乘機場接駁車前往租車營業所辦理手續;姐姐組搭乘單軌電車前往飯店。",
         otsInfo: {
           title: "OTS 接駁資訊",
           link: "https://www.otsinternational.jp/otsrentacar/cn/okinawa/pickup/naha-airport-international/",
           mapImage: "https://www.otsinternational.jp/otsrentacar/cn/img/page/okinawa/access/pickup_naha_international/floor-map_2026-cn.png",
           guide: "1. 抵達那霸機場： 領取行李並通過檢查口。\n2. 右轉前進： 請向右走（國內線方向）走到底。\n3. 上樓右轉： 搭乘電扶梯上二樓後左轉，隨即再向右轉進入長廊直走。\n4. 下樓出站： 搭乘電扶梯下到國內線 1 樓，並前往 4 號出口。\n5. 抵達接駁點： 由 4 號出口出來後穿過人行道，前往左側的「10-A (R-10)」接駁站。"
         },
-        remarks: "Joy Jungle 娃娃機店：位於那霸機場國內線，從國際線入境後往單軌電車站方向步行即可經過。",
+        remarks: "(網友分享)Joy Jungle 夾娃娃機：位於那霸機場國內線，從國際線入境後往單軌電車站方向步行即可經過。)",
         noNav: true
       },
       { 
-        id: '1-3', time: "16:00", type: "stay", title: "那霸歌町大和roynet飯店premier", detail: "Check-in 放置行李", address: "那霸市安里1-1-1", 
+        id: '1-3', time: "16:00", type: "stay", title: "那霸歌町大和Roynet飯店PREMIER", detail: "Check-in 放置行李", address: "那霸市安里1-1-1", 
         content: "飯店位於那霸新都心，地理位置極佳。對面就有百貨公司，周邊購物與餐飲選擇非常豐富。",
         hotelDetails: {
           officialSite: "https://www.daiwaroynet.jp/naha-omoromachi-premier/",
@@ -106,7 +106,7 @@ const ITINERARY_DATA = [
         content: "國際通周邊餐廳選擇眾多，可依喜好分隊行動。",
         hideTime: true,
         top10: {
-          title: "國際通晚餐「非牛/非生魚」Top 10 推薦",
+          title: "國際通晚餐 參考清單",
           items: [
             { name: "暖暮拉麵 (那霸牧志店)", desc: "曾榮獲九州拉麵票選第一名，是國際通的人氣名店。湯頭濃郁卻不膩口，麵條Q彈有勁，非常適合喜愛道地日本拉麵的長輩享用。", url: "https://www.google.com/maps/search/?api=1&query=暖暮拉麵+那霸牧志店" },
             { name: "琉球新麵 通堂", desc: "以獨特的男人麵（豚骨）與女人麵（鹽味）聞名。湯頭層次分明，配料豐富，店內環境溫馨，是體驗沖繩在地麵食文化的絕佳選擇。", url: "https://www.google.com/maps/search/?api=1&query=琉球新麵+通堂+寄宮店" },
@@ -397,11 +397,11 @@ export default function App() {
             <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.9 }} className="w-full max-w-[360px] bg-white rounded-[40px] p-10 shadow-2xl relative text-center">
               <button onClick={() => setShowDeclaration(false)} className="absolute top-6 right-6 text-gray-200"><X size={24} /></button>
               <div className="w-16 h-16 bg-morandi-bg rounded-full flex items-center justify-center mx-auto mb-6 text-morandi-primary"><Users size={32} /></div>
-              <h3 className="text-2xl font-bold text-text-main mb-6">家族旅遊宣言</h3>
+              <h3 className="text-2xl font-bold text-text-main mb-6">【 旅 遊 宣 言 】</h3>
               <div className="space-y-4 text-base text-text-main leading-relaxed">
-                <p>「累了就休息，肚子餓了就吃飯，想上廁所馬上說。」</p>
-                <p>「每天一張合照：留下 7 人的沖繩記憶。」</p>
-                <p>「四大三小，平安出門，快樂回家。」</p>
+                <p>「累了就休息，餓了就吃飯，想上廁所馬上說。」</p>
+                <p>「每天一合照：留下 7 人的沖繩記憶。」</p>
+                <p>「快樂出門，平安回家。」</p>
               </div>
               <button onClick={() => setShowDeclaration(false)} className="mt-10 w-full py-4 bg-morandi-blue text-white rounded-2xl font-bold tracking-widest text-lg">出發！</button>
             </motion.div>
@@ -1233,10 +1233,10 @@ function ShoppingTab({ memo, setMemo }: any) {
   const [predefined, setPredefined] = useState<any[]>(() => {
     const saved = localStorage.getItem('okinawa_prep');
     return saved ? JSON.parse(saved) : [
-      { id: 'p1', text: '護照 & 簽證 (日文譯本)', done: false },
+      { id: 'p1', text: '護照 & 駕照 (日文譯本)', done: false },
       { id: 'p2', text: 'VJW (Visit Japan Web) 截圖', done: false },
       { id: 'p3', text: '網卡 (eSIM) / 漫遊開通', done: false },
-      { id: 'p4', text: '行動電源 & 多國轉接頭', done: false }
+      { id: 'p4', text: '行動電源 & 充電線', done: false }
     ];
   });
 
@@ -1323,7 +1323,7 @@ function ShoppingTab({ memo, setMemo }: any) {
     }
   };
 
-  const categories = ['藥妝', '衣物', '食物', '伴手禮'];
+  const categories = ['藥妝', '食物', '伴手禮', '其他'];
 
   return (
     <div className="space-y-10 pb-20">
@@ -1553,17 +1553,17 @@ function InfoTab() {
           <div className="space-y-4">
             <div className="grid grid-cols-2 gap-3">
               <div className="bg-white/60 p-5 rounded-2xl border border-white/80 shadow-sm flex flex-col items-center justify-center gap-1">
-                <span className="text-[9px] font-bold text-morandi-text-muted uppercase tracking-widest">警察局</span>
+                <span className="text-[11px] font-bold text-morandi-text-muted uppercase tracking-widest">警察局</span>
                 <span style={fontStyleSerif} className="text-3xl font-bold text-red-400/80">110</span>
               </div>
               <div className="bg-white/60 p-5 rounded-2xl border border-white/80 shadow-sm flex flex-col items-center justify-center gap-1">
-                <span className="text-[9px] font-bold text-morandi-text-muted uppercase tracking-widest">救護/火警</span>
+                <span className="text-[11px] font-bold text-morandi-text-muted uppercase tracking-widest">救護/火警</span>
                 <span style={fontStyleSerif} className="text-3xl font-bold text-red-400/80">119</span>
               </div>
             </div>
             <div className="bg-white/60 p-5 rounded-2xl border border-white/80 shadow-sm space-y-3">
               <div className="flex justify-between items-center">
-                <span className="text-[9px] font-bold text-morandi-text-muted uppercase tracking-widest">訪日外國人醫療熱線</span>
+                <span className="text-[11px] font-bold text-morandi-text-muted uppercase tracking-widest">訪日外國人醫療熱線</span>
                 <span className="text-[8px] font-bold bg-morandi-primary/10 text-morandi-primary px-2 py-0.5 rounded-full">24H 中文</span>
               </div>
               <div className="flex items-center justify-between">
@@ -1575,7 +1575,7 @@ function InfoTab() {
             </div>
             <div className="bg-white/60 p-5 rounded-2xl border border-white/80 shadow-sm space-y-3">
               <div className="flex justify-between items-center">
-                <span className="text-[9px] font-bold text-morandi-text-muted uppercase tracking-widest">駐日辦事處那霸分處</span>
+                <span className="text-[11px] font-bold text-morandi-text-muted uppercase tracking-widest">駐日辦事處那霸分處</span>
               </div>
               <div className="flex items-center justify-between">
                 <div className="space-y-0.5">
