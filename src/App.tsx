@@ -1267,11 +1267,32 @@ function BudgetTab({ expenses, setExpenses, rate }: any) {
 }
 
 function ShoppingTab({ memo, setMemo }: any) {
+  const defaultPrepList = [
+    { id: 'p1', text: '護照 🪪', done: false, category: 'carryOn' },
+    { id: 'p2', text: '台灣駕照正本+日文譯本(世睿) 🚗', done: false, category: 'carryOn' },
+    { id: 'p3', text: 'eSIM/漫遊 🌐', done: false, category: 'carryOn' },
+    { id: 'p4', text: '日幣/信用卡 💴', done: false, category: 'carryOn' },
+    { id: 'p5', text: '行動電源 🔋', done: false, category: 'carryOn' },
+    { id: 'p6', text: '薄外套/小孩備用衣 🧥', done: false, category: 'carryOn' },
+    { id: 'p7', text: '換洗衣物 & 睡衣 👕', done: false, category: 'checked' },
+    { id: 'p8', text: '盥洗用品 & 保養品 🧴', done: false, category: 'checked' },
+    { id: 'p9', text: '常用隨身藥品 💊', done: false, category: 'checked' },
+    { id: 'p10', text: '雨傘/雨衣 (沖繩天氣多變) ☔', done: false, category: 'checked' },
+    { id: 'p11', text: '太陽眼鏡 & 防曬乳 🕶️', done: false, category: 'checked' }
+  ];
+
   const [predefined, setPredefined] = useState<any[]>(() => {
     const saved = localStorage.getItem('okinawa_prep');
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
+        // Smart auto-update: if the user doesn't have the newly specified "世睿" in their saved list,
+        // automatically load the updated default list so they get the new carry-on items instantly.
+        const hasLicenseTranslation = parsed.some((item: any) => item.text && item.text.includes('世睿'));
+        if (!hasLicenseTranslation) {
+          return defaultPrepList;
+        }
+
         return parsed.map((item: any) => {
           if (!item.category) {
             // Smart auto-categorization for existing user items during migration
@@ -1284,18 +1305,7 @@ function ShoppingTab({ memo, setMemo }: any) {
         // Fallback to default if JSON parse fails
       }
     }
-    return [
-      { id: 'p1', text: '護照 & 駕照 (日文譯本) 🪪', done: false, category: 'carryOn' },
-      { id: 'p2', text: '實體日幣 & 信用卡 💴', done: false, category: 'carryOn' },
-      { id: 'p3', text: 'VJW (Visit Japan Web) 截圖 📲', done: false, category: 'carryOn' },
-      { id: 'p4', text: '網卡 (eSIM) / 漫遊開通 🌐', done: false, category: 'carryOn' },
-      { id: 'p5', text: '行動電源 & 充電線 🔋', done: false, category: 'carryOn' },
-      { id: 'p6', text: '換洗衣物 & 睡衣 👕', done: false, category: 'checked' },
-      { id: 'p7', text: '盥洗用品 & 保養品 🧴', done: false, category: 'checked' },
-      { id: 'p8', text: '常用隨身藥品 💊', done: false, category: 'checked' },
-      { id: 'p9', text: '雨傘/雨衣 (沖繩天氣多變) ☔', done: false, category: 'checked' },
-      { id: 'p10', text: '太陽眼鏡 & 防曬乳 🕶️', done: false, category: 'checked' }
-    ];
+    return defaultPrepList;
   });
 
   const [shoppingItems, setShoppingItems] = useState<any[]>(() => {
@@ -1397,6 +1407,16 @@ function ShoppingTab({ memo, setMemo }: any) {
           <h3 className="text-lg font-bold text-morandi-text flex items-center gap-2">
             <ListCheck size={18} className="text-morandi-primary" /> 行前準備
           </h3>
+          <button 
+            onClick={() => {
+              if (window.confirm('確定要將行李準備項目重置回預設項目嗎？')) {
+                setPredefined(defaultPrepList);
+              }
+            }}
+            className="text-xs font-bold text-morandi-primary/80 hover:text-morandi-primary bg-morandi-primary/5 hover:bg-morandi-primary/10 px-3 py-1.5 rounded-full transition-all active:scale-95"
+          >
+            重置預設項目
+          </button>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -1433,7 +1453,7 @@ function ShoppingTab({ memo, setMemo }: any) {
                 value={carryOnInput}
                 onChange={(e) => setCarryOnInput(e.target.value)}
                 placeholder="新增隨身項目..."
-                className="flex-1 h-11 bg-white/40 px-4 rounded-2xl text-[13px] outline-none border border-transparent focus:border-morandi-primary/20"
+                className="flex-1 min-w-0 h-11 bg-white/40 px-4 rounded-2xl text-[13px] outline-none border border-transparent focus:border-morandi-primary/20"
                 onKeyPress={(e) => e.key === 'Enter' && addPrep('carryOn')}
               />
               <button onClick={() => addPrep('carryOn')} className="w-11 h-11 bg-morandi-primary text-white rounded-2xl active:scale-90 transition-all flex items-center justify-center shrink-0 shadow-sm">
@@ -1475,7 +1495,7 @@ function ShoppingTab({ memo, setMemo }: any) {
                 value={checkedInput}
                 onChange={(e) => setCheckedInput(e.target.value)}
                 placeholder="新增託運項目..."
-                className="flex-1 h-11 bg-white/40 px-4 rounded-2xl text-[13px] outline-none border border-transparent focus:border-morandi-primary/20"
+                className="flex-1 min-w-0 h-11 bg-white/40 px-4 rounded-2xl text-[13px] outline-none border border-transparent focus:border-morandi-primary/20"
                 onKeyPress={(e) => e.key === 'Enter' && addPrep('checked')}
               />
               <button onClick={() => addPrep('checked')} className="w-11 h-11 bg-[#8C7A6B] text-white rounded-2xl active:scale-90 transition-all flex items-center justify-center shrink-0 shadow-sm">
