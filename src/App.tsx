@@ -11,7 +11,7 @@ import {
   Image as ImageIcon, Smartphone, Users, CheckCircle2, Circle, Clock, Ticket,
   ExternalLink, Sun, Cloud, CloudRain, Utensils, Plane, Car, Upload, Star,
   LayoutGrid, StretchHorizontal, ChevronLeft, ChevronRight as ChevronRightIcon,
-  PhoneCall, PlusCircle, Link, ChevronDown
+  PhoneCall, PlusCircle, Link, ChevronDown, Map
 } from 'lucide-react';
 
 const fontStyleSerif = {
@@ -22,12 +22,21 @@ const fontStyleSans = {
   fontFamily: "'Noto Sans TC', sans-serif",
 };
 
+const getGoogleDriveDirectLink = (url: string): string => {
+  if (!url) return "";
+  const match = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
+  if (match && match[1]) {
+    return `https://lh3.googleusercontent.com/d/${match[1]}`;
+  }
+  return url;
+};
+
 const TYPE_CONFIG: Record<string, { icon: any, label: string, color: string }> = {
   flight: { icon: <Plane size={12} />, label: "航班", color: "#B5B2A6" },
   transport: { icon: <Car size={12} />, label: "交通", color: "#B5B2A6" },
   stay: { icon: <MapPin size={12} />, label: "住宿", color: "#9FBCC0" },
   food: { icon: <Utensils size={12} />, label: "美食", color: "#C2A3A3" },
-  spot: { icon: <MapPin size={12} />, label: "景點", color: "#9aab8c" },
+  spot: { icon: <MapPin size={12} />, label: "景點", color: "#A8BCA1" }
 };
 
 // --- Data ---
@@ -37,28 +46,26 @@ const ITINERARY_DATA = [
     items: [
       { 
         id: '1-1', time: "09:00", type: "transport", title: "桃園機場第一航廈會合", detail: "星宇航空櫃檯集合", address: "桃園市大園區航站南路15號", 
-        content: "各位貴賓早安！我們即將展開期待已久的沖繩之旅。請大家再次確認護照、駕照日文譯本以及最重要的心情都帶齊了嗎？第一站我們先在星宇櫃檯集合辦理登機。", 
+        content: "大家早安！我們即將展開期待已久的沖繩之旅。請大家再次確認護照、駕照日文譯本以及最重要的心情都帶齊了嗎？第一站我們先在星宇櫃檯集合辦理登機。\n\n---\n\n媽媽 高鐵嘉義站07：19－桃園站08：25\n世睿 高鐵嘉義站07：19－桃園站08：25\n姊姊 台北車站搭乘機捷前往", 
+        aboutTitle: "集合說明",
         quickLinks: [
           { label: "機捷時刻表", url: "https://www.tymetro.com.tw/tymetro-new/tw/_pages/travel-guide/timetable.php" }
         ],
         noNav: true
       },
       { 
-        id: '1-1-1', time: "12:00", type: "flight", title: "啟程：星宇航空 JX870", detail: "【飛行時間】約1個小時40分，預計14:40抵達那霸機場", address: "桃園機場 -> 那霸機場", 
+        id: '1-1-1', time: "12:00", type: "flight", title: "啟程：星宇航空 JX870", detail: "【飛行時間】約1小時40分，預計14:40\n抵達沖繩。", address: "桃園機場 -> 那霸機場", 
         content: "搭乘星宇航空 JX870 班機前往那霸。預計 14:40 抵達沖繩。",
         noModal: true
       },
       { 
-        id: '1-2', time: "15:30", type: "transport", title: "抵達那霸空港 & OTS 租車", detail: "預計抵達後分頭行動", address: "那霸機場 OTS 營業所", 
-        content: "抵達後約 15:30 世睿組請搭乘機場接駁車前往租車營業所辦理手續;姐姐組搭乘單軌電車前往飯店。",
+        id: '1-2', time: "15:20", type: "transport", title: "抵達那霸機場&租車", detail: "分頭行動/沖繩行腳租車", address: "〒901-0223 沖繩縣豐見城市翁長537-1", 
+        content: "【接駁指引】\n取行李並出關後，Line通知工作人員即將前往接駁點。\n出境大廳後往外走到國內線1樓大廳外，14C號接駁處。\n到達後，再次通知工作人員。\n\n【注意事項】\n1. 攜帶護照、台灣駕照正本、日文譯本。\n2. 取車時請錄影檢查車身外觀並確認保險內容。\n3. 行腳租車地址：〒901-0223 沖繩縣豐見城市翁長537-1",
         otsInfo: {
-          title: "OTS 接駁資訊",
-          link: "https://www.otsinternational.jp/otsrentacar/cn/okinawa/pickup/naha-airport-international/",
-          mapImage: "https://www.otsinternational.jp/otsrentacar/cn/img/page/okinawa/access/pickup_naha_international/floor-map_2026-cn.png",
-          guide: "1. 抵達那霸機場： 領取行李並通過檢查口。\n2. 右轉前進： 請向右走（國內線方向）走到底。\n3. 上樓右轉： 搭乘電扶梯上二樓後左轉，隨即再向右轉進入長廊直走。\n4. 下樓出站： 搭乘電扶梯下到國內線 1 樓，並前往 4 號出口。\n5. 抵達接駁點： 由 4 號出口出來後穿過人行道，前往左側的「10-A (R-10)」接駁站。"
-        },
-        remarks: "(網友分享)Joy Jungle 夾娃娃機：位於那霸機場國內線，從國際線入境後往單軌電車站方向步行即可經過。)",
-        noNav: true
+          title: "沖繩行腳租車",
+          link: "https://footprint-rentacar.com/tw/airport-shuttle-car-rental-route/",
+          mapImage: "https://drive.google.com/file/d/1FXfhwzzHykeY85guAfZitIl3lJZIcsL8/view?usp=sharing"
+        }
       },
       { 
         id: '1-3', time: "16:00", type: "stay", title: "那霸歌町大和Roynet飯店PREMIER", detail: "Check-in 放置行李", address: "那霸市安里1-1-1", 
@@ -67,7 +74,7 @@ const ITINERARY_DATA = [
           officialSite: "https://www.daiwaroynet.jp/naha-omoromachi-premier/",
           routes: [
             { label: "Omoromachi 站步行", desc: "從單軌電車站步行約 5 分鐘即可抵達。", url: "https://www.google.com/maps/dir/?api=1&origin=Omoromachi+Station&destination=Daiwa+Roynet+Hotel+Naha-Omoromachi+PREMIER" },
-            { label: "OTS 開車", desc: "從 OTS 臨空豐崎營業所開車約 20-30 分鐘。", url: "https://www.google.com/maps/dir/?api=1&origin=OTS+Rent-a-car+Naha+Airport&destination=Daiwa+Roynet+Hotel+Naha-Omoromachi+PREMIER" }
+            { label: "沖繩行腳租車地點", desc: "從沖繩行腳租車地點開車約20分鐘抵達", url: "https://maps.app.goo.gl/LgH52MrqRWyeCEWAA" }
           ],
           shopping: {
             name: "新都心 MAIN PLACE",
@@ -126,38 +133,24 @@ const ITINERARY_DATA = [
   { 
     day: 2, date: "2026-07-14", week: "TUE", 
     items: [
-      { id: '2-0', time: "08:00", type: "food", title: "飯店早餐", detail: "享用飯店美味早餐", content: "開啟活力的一天。", noModal: true },
+      { id: '2-0', time: "08:00", type: "food", title: "早餐", detail: "", content: "開啟活力的一天。", noModal: true },
       { 
-        id: '2-1', time: "08:30", type: "spot", title: "西來院達摩寺", detail: "祈福參拜", address: "那霸市首里赤田町1-5-1", 
-        content: "西來院是首里著名的寺院，環境清幽。",
-        darumaExchange: {
-          title: "口金包兌換",
-          desc: "可選擇沖繩 FUNPASS 的一個額度兌換",
-          image: "https://cdn.fontrip.com/fontour/file/show/MVpj9/360x250.jpg"
-        },
-        links: [
-          { label: "口金包祈願流程", url: "https://drive.google.com/file/d/1zeZ3iD2IRb7WQ9fhaAR-H4KSz1QfOEOF/view", icon: "info" },
-          { label: "飯店至達摩寺導航", url: "https://www.google.com/maps/dir/?api=1&origin=Daiwa+Roynet+Hotel+Naha-Omoromachi+PREMIER&destination=西來院+達摩寺", icon: "map" }
-        ]
-      },
-      { 
-        id: '2-2', time: "10:00", type: "spot", title: "古宇利島", detail: "跨海大橋美景", address: "今歸仁村古宇利", 
+        id: '2-2', time: "09:30", type: "spot", title: "古宇利島", detail: "跨海大橋美景", address: "今歸仁村古宇利", 
         topImage: "https://visitokinawajapan.com/wp-content/themes/visit-okinawa_multi-language/lang/zh-hant/assets/img/destinations/okinawa-main-island/northern-okinawa-main-island/kouri-island/de33_03_kouri-ocean-tower-view.webp",
         content: "古宇利島位於沖繩本島北部，以絕美的「古宇利大橋」聞名。這座橋全長約 1960 公尺，橫跨在清澈的「古宇利藍」海面上，是家族旅行中不可錯過的視覺饗宴。\n\n島上的心形岩（Heart Rock）是必看景點，兩座心形礁石矗立在海中，展現大自然的鬼斧神工。來到這裡，您可以漫步在細軟的沙灘上，感受壯闊的海景與徐徐海風，享受遠離塵囂的寧靜時光。\n\n島上的古宇利海洋塔更能讓您從高處俯瞰整座大橋與周邊海域的絕美全景，非常適合全家大小一同登高望遠，留下美好的旅遊回憶。",
         links: [
-          { label: "達摩寺至古宇利導航", url: "https://www.google.com/maps/dir/?api=1&origin=西來院+達摩寺&destination=古宇利島", icon: "map" }
+          { label: "飯店至古宇利導航", url: "https://www.google.com/maps/dir/?api=1&origin=Daiwa+Roynet+Hotel+Naha-Omoromachi+PREMIER&destination=古宇利島", icon: "map" }
         ]
       },
       { 
-        id: '2-3', time: "12:00", type: "food", title: "午餐：名護周邊美食", detail: "詳見彈跳窗備案", address: "名護市", 
-        content: "名護市區擁有多樣化的美食選擇，從傳統沖繩麵到特色漢堡應有盡有。",
+        id: '2-3', time: "12:00", type: "food", title: "午餐：岸本食堂", detail: "其他備案午餐", address: "本部町伊野波350-1", 
+        content: "傳承多年的沖繩麵名店，堅持使用傳統木灰水製麵，口感獨特且香氣十足。簡單的配料卻能展現出深厚的料理功底，是許多老饕心中的第一名。",
         top10: {
-          title: "名護周邊美食推薦",
+          title: "其他備案午餐",
           items: [
             { name: "百年古家 大家", desc: "以著名的阿古豬料理聞名，餐廳位於擁有百年歷史的古宅內，環境優美且充滿歷史感。在潺潺水聲中享用精緻美食，是極致的視覺與味覺饗宴。", url: "https://www.google.com/maps/search/?api=1&query=百年古家+大家" },
             { name: "幸ちゃんそば", desc: "深受在地人喜愛的沖繩麵店。湯頭清甜不油膩，麵條口感Q彈紮實，配上滷得入味的軟骨肉，每一口都能感受到最純粹的沖繩在地美味。", url: "https://www.google.com/maps/search/?api=1&query=幸ちゃんそば" },
             { name: "名護漁港食堂", desc: "由漁港直營的食堂，保證食材的新鮮度。提供份量十足的炸魚定食與各式海鮮料理，價格實惠且口味地道，是體驗漁村飲食文化的最佳去處。", url: "https://www.google.com/maps/search/?api=1&query=名護漁港食堂" },
-            { name: "岸本食堂", desc: "傳承多年的沖繩麵名店，堅持使用傳統木灰水製麵，口感獨特且香氣十足。簡單的配料卻能展現出深厚的料理功底，是許多老饕心中的第一名。", url: "https://www.google.com/maps/search/?api=1&query=岸本食堂" },
             { name: "Captain Kangaroo", desc: "被譽為沖繩最好吃的漢堡店。漢堡份量驚人，肉排鮮嫩多汁，搭配特製醬料與酥脆麵包，每一口都充滿驚喜，是喜愛美式料理遊客的必訪之地。", url: "https://www.google.com/maps/search/?api=1&query=Captain+Kangaroo+名護" }
           ]
         },
@@ -166,27 +159,15 @@ const ITINERARY_DATA = [
       { 
         id: '2-4', time: "14:00", type: "spot", title: "美麗海水族館", detail: "觀賞黑潮之海", address: "本部町石川424", 
         topImage: "https://churaumi.okinawa/userfiles/images/program/list_005.jpg",
-        content: "【1F 深海世界】探索神祕的深海生物與生態。\n【2F 黑潮之海】世界級巨大水槽，觀賞鯨鯊與鬼蝠魟。\n【3F 珊瑚礁之旅】展示豐富多樣的珊瑚礁生態。\n【4F 大海召喚】俯瞰黑潮之海，感受海洋的壯闊。\n\n【節目時刻表】\n- 黑潮之海餵食秀：15:00 / 17:00\n- 海豚秀 (Okichan)：10:30 / 11:30 / 13:00 / 15:00 / 17:00",
+        content: "【1F 深海世界】探索神祕的深海生物與生態。\n【2F 黑潮之海】世界級巨大水槽，觀賞鯨鯊與鬼蝠魟。\n【3F 珊瑚礁之旅】展示豐富多樣的珊瑚礁生態。\n【4F 大海召喚】俯瞰黑潮之海，感受海洋的壯闊。\n\n【節目時刻表】\n- 黑潮之海餵食秀：15:00 / 17:00\n- 海豚秀 (Okichan)：10:30 / 11:30 / 13:00 / 15:00 / 17:00\n- 海豚餵食體驗\n①13：30～14：00 （受付終了13：50）\n②15：30～16：00 （受付終了15：50）",
         links: [
           { label: "節目時刻表官網", url: "https://churaumi.okinawa/program/", icon: "link" },
           { label: "水族館導航", url: "https://www.google.com/maps/search/?api=1&query=美麗海水族館", icon: "map" }
         ]
       },
       { 
-        id: '2-5', time: "18:00", type: "food", title: "晚餐：名護熟食推薦", detail: "非牛/非生魚片", address: "名護市", 
-        content: "為您挑選名護地區評價極高的熟食餐廳，避開牛肉與生魚片，適合全家享用。",
-        top10: {
-          title: "名護人氣熟食推薦 (非牛/非生魚)",
-          items: [
-            { name: "我那霸豚肉店", desc: "專營優質沖繩豬肉，提供多樣化的豬肉料理。特別推薦外酥內嫩的炸豬排與肉質鮮甜的豬肉涮涮鍋，是喜愛高品質豬肉料理長輩的首選。", url: "https://www.google.com/maps/search/?api=1&query=我那霸豚肉店+名護" },
-            { name: "燒肉五苑 (名護店)", desc: "主打高 CP 值燒肉吃到飽，食材新鮮且空間寬敞，非常適合全家大小一同聚餐。店內提供多樣化的熟食、海鮮與非牛肉選項，讓不吃牛的長輩也能在此盡情享用豐富且高品質的美味佳餚。", url: "https://www.google.com/maps/search/?api=1&query=燒肉五苑+名護店" },
-            { name: "ゆきの (Yukino)", desc: "深受在地人喜愛的居酒屋，氛圍輕鬆愉快。提供豐富多樣的沖繩熟食料理，從炒苦瓜到各式炸物應有盡有，非常適合全家大小一同前來聚餐。", url: "https://www.google.com/maps/search/?api=1&query=居酒屋+ゆきの+名護" },
-            { name: "Cookhal", desc: "農場直營的景觀餐廳，強調食安與在地食材。提供多種以新鮮蔬菜與在地肉類烹調的熟食料理，口味清爽健康，讓您在用餐的同時也能感受大自然的氣息。", url: "https://www.google.com/maps/search/?api=1&query=Cookhal+名護" },
-            { name: "Gusto (ガスト) 名護店", desc: "知名的連鎖家庭餐廳，提供多樣化的熟食選擇。店內環境舒適且對兒童與長輩非常友善，是想要輕鬆享用多樣化餐點時的最佳選擇。", url: "https://www.google.com/maps/search/?api=1&query=Gusto+名護店" },
-            { name: "A&W 名護店", desc: "沖繩獨有的美式速食品牌。除了著名的麥根沙士，這裡的熱狗堡與雞肉餐點也深受好評。充滿懷舊美式風格的店內環境，也是拍照留念的好地方。", url: "https://www.google.com/maps/search/?api=1&query=A%26W+名護店" },
-            { name: "大家 (Ufuya) 晚餐", desc: "晚間提供精緻的阿古豬火鍋定食。在燈光美氣氛佳的百年古宅內，慢火烹煮鮮甜的豬肉與時蔬，讓您在寧靜的夜晚享受一段高品質的味覺旅程。", url: "https://www.google.com/maps/search/?api=1&query=百年古家+大家" }
-          ]
-        },
+        id: '2-5', time: "19:30", type: "food", title: "晚餐：阿古豬火鍋(北谷Chaabu)", detail: "", address: "沖縄県中頭郡北谷町桑江614-1", 
+        content: "享用美味的阿古豬火鍋，為美好的一天劃下完美句點。\n\n---\n\n【店家資訊】\n北谷ダイニング ちゃぁぶ～\n沖縄県中頭郡北谷町桑江614-1",
         noNav: true
       }
     ]
@@ -211,7 +192,7 @@ const ITINERARY_DATA = [
         ]
       },
       { 
-        id: '3-3', time: "13:20", type: "spot", title: "兒童沖繩王國", detail: "動物園與神奇博物館", address: "沖繩市胡屋5-7-1", 
+        id: '3-3', time: "13:30", type: "spot", title: "沖繩兒童王國", detail: "動物園與神奇博物館", address: "沖繩市胡屋5-7-1", 
         content: "【神奇博物館】以「智慧、感性、創造」為主題，提供多樣化的互動科學與藝術體驗，讓孩子在玩樂中學習。\n\n【動物園區】展示琉球群島原生種及世界各地的珍稀動物，強調生態保育與自然教育，是近距離觀察動物的好地方。\n\n【里山體驗】模擬沖繩傳統農村環境，讓遊客體驗在地文化與自然共生的智慧，感受悠閒的田園氣氛。",
         links: [
           { label: "官網資訊", url: "https://www.okzm.jp/", icon: "link" },
@@ -220,11 +201,10 @@ const ITINERARY_DATA = [
         ]
       },
       { 
-        id: '3-4', time: "17:30", type: "food", title: "永旺夢樂城\n(AEON Mall)", detail: "營業時間 10:00 - 22:00", address: "北中城村比嘉", 
-        content: "沖繩最大購物中心，可以先到遊客中心拿優惠券。\n\n【1F 人氣品牌】UNIQLO(1-2F)、GU、寶可夢中心、大創、3COINS、LOFT\n【2F 人氣品牌】mont-bell\n【3F 人氣品牌】ABC-MART、LOWRYS FARM、AEON STYLE(毛線パンドラ)\n【4F 人氣品牌】童裝apres les cours、童裝BREEZE、WEGO、扭蛋、三麗鷗商店、橡子共和國、玩具反斗城",
+        id: '3-4', time: "17:30", type: "food", title: "晚餐：HAMA 壽司 沖繩登川店", detail: "平價迴轉壽司", address: "沖縄県沖縄市登川2-10-1", 
+        content: "日本超人氣連鎖迴轉壽司店，提供豐富多樣、新鮮美味的壽司與各式副餐選擇。使用觸控螢幕點餐非常便利，非常適合全家大小一同享用。",
         links: [
-          { label: "優惠券連結", url: "https://tw.aeonmall.global/mall/okinawarycom/coupons", icon: "ticket" },
-          { label: "AEON Mall 導航", url: "https://www.google.com/maps/search/?api=1&query=AEON+Mall+Okinawa+Rycom", icon: "map" }
+          { label: "HAMA 壽司 沖繩登川店 導航", url: "https://www.google.com/maps/search/?api=1&query=はま寿司+沖縄登川店", icon: "map" }
         ]
       },
       { 
@@ -236,7 +216,7 @@ const ITINERARY_DATA = [
       },
       { 
         id: '3-6', time: "備案", type: "spot", title: "沖宮神社", detail: "御守種類繁多的能量景點", address: "那霸市奧武山町44", 
-        content: "沖宮是琉球八社之一，位於奧武山公園內。這裡以種類繁多且精緻的御守聞名，是許多遊客前來祈福與收集御守的首選之地。\n\n【營業時間】09:00 - 17:00",
+        content: "沖宮是琉球八社之一，位於奧武山公園內。這裡以種類繁多且精緻 of 御守聞名，是許多遊客前來祈福與收集御守的首選之地。\n\n【營業時間】09:00 - 17:00",
         links: [
           { label: "沖宮神社導航", url: "https://www.google.com/maps/search/?api=1&query=沖宮", icon: "map" }
         ]
@@ -257,27 +237,32 @@ const ITINERARY_DATA = [
         ]
       },
       { 
-        id: '4-2', time: "12:00", type: "food", title: "午餐：iiAS 沖繩豐崎", detail: "購物中心用餐", address: "豐見城市豐崎3-35", 
-        content: "iiAS 購物中心與 DMM 水族館相連，提供多樣化的美食街與餐廳選擇，適合放鬆用餐與逛街。\n\n【午餐備案】若擔心晚餐排隊，可考慮先前往奧武島【中本天婦羅】用餐（該店 18:00 關門）。", 
+        id: '4-2', time: "12:30", type: "spot", title: "普天滿宮", detail: "神祕的鐘乳石洞神社", address: "宜野灣市普天間1-27-10", 
+        content: "普天滿宮是琉球八社之一，最特別的是其位於神社後方的鐘乳石洞穴，需向巫女申請方可進入參觀。\n\n【營業時間】09:30 - 18:00",
         links: [
-          { label: "豐崎 iias 官網", url: "https://toyosaki.iias.jp/", icon: "link" }
+          { label: "普天滿宮導航", url: "https://www.google.com/maps/search/?api=1&query=普天滿宮", icon: "map" }
         ]
       },
       { 
-        id: '4-3', time: "14:00", type: "spot", title: "沖繩世界文化王國", detail: "玉泉洞與傳統文化", address: "南城市玉城前川1336", 
-        content: "【玉泉洞】歷經 30 萬年形成的鐘乳石洞，規模日本前茅。洞內石筍與鐘乳石林立，景觀壯麗。\n\n【王國村】重建百年琉球古民家，體驗傳統工藝如織布、藍染等，感受濃厚的琉球歷史氣息。\n\n【毒蛇博物公園】展示沖繩特有的毒蛇與爬蟲類，提供驚險刺激的活蛇表演與教育資訊。\n\n---\n\n【下午表演】\n・14:30 Eisa 太鼓舞\n・15:30 毒蛇表演\n\n【體驗項目】\n・琉裝散步\n・挖珍珠體驗",
+        id: '4-3', time: "13:00", type: "food", title: "午餐：永旺夢樂城(自理)", detail: "美食街與餐廳多樣選擇", address: "北中城村比嘉", 
+        content: "永旺夢樂城內擁有多樣化的美食街與主題餐廳，提供沖繩在地料理、日式拉麵、壽司、西餐等多種選擇，方便大家自由挑選喜愛的午餐。",
         links: [
-          { label: "節目表", url: "https://www.gyokusendo.co.jp/okinawaworld/event/", icon: "clock" },
-          { label: "體驗項目", url: "https://www.gyokusendo.co.jp/okinawaworld/handson/", icon: "ticket" },
-          { label: "沖繩世界導航", url: "https://www.google.com/maps/search/?api=1&query=沖繩世界", icon: "map" }
+          { label: "美食指南", url: "https://tw.aeonmall.global/mall/okinawarycom/floorguide/", icon: "link" }
         ]
       },
       { 
-        id: '4-4', time: "17:00", type: "food", title: "晚餐：中本天婦羅", detail: "營業時間 10:00 - 18:00", address: "南城市玉城奧武9", 
-        content: "奧武島是著名的「貓島」，以美味的天婦羅聞名。用餐方式為先填寫點單後排隊結帳，建議在海邊享用。\n\n【奧武島簡介】環島一圈僅需 5 分鐘，充滿悠閒的漁村氣息。除了天婦羅，這裡的貓咪也是一大亮點。",
+        id: '4-4', time: "14:30", type: "spot", title: "購物：永旺夢樂城", detail: "營業時間 10:00 - 22:00", address: "北中城村比嘉", 
+        content: "沖繩最大購物中心，可以先到遊客中心拿優惠券。\n\n【1F 人氣品牌】UNIQLO(1-2F)、GU、寶可夢中心、大創、3COINS、LOFT\n【2F 人氣品牌】mont-bell\n【3F 人氣品牌】ABC-MART、LOWRYS FARM、AEON STYLE(毛線パンドラ)\n【4F 人氣品牌】童裝apres les cours、童裝BREEZE、WEGO、扭蛋、三麗鷗商店、橡子共和國、玩具反斗城",
         links: [
-          { label: "菜單資訊", url: "https://nakamotosengyoten.com/tw/tenpura/", icon: "image" },
-          { label: "中本天婦羅導航", url: "https://www.google.com/maps/search/?api=1&query=中本天婦羅店", icon: "map" }
+          { label: "優惠券連結", url: "https://tw.aeonmall.global/mall/okinawarycom/coupons", icon: "ticket" },
+          { label: "AEON Mall 導航", url: "https://www.google.com/maps/search/?api=1&query=AEON+Mall+Okinawa+Rycom", icon: "map" }
+        ]
+      },
+      { 
+        id: '4-5', time: "19:00", type: "food", title: "晚餐：燒肉五苑 古島站前店", detail: "超人氣燒肉吃到飽", address: "那霸市古島1丁目26-1", 
+        content: "主打高 CP 值燒肉吃到飽，食材新鮮且空間寬敞，非常適合全家大小一同聚餐。店內提供多樣化的熟食、海鮮與非牛肉選項，讓不吃牛的長輩也能在此盡情享用豐富且高品質的美味佳餚。\n\n【營業時間】16:00 - 23:00",
+        links: [
+          { label: "燒肉五苑 古島站前店 導航", url: "https://www.google.com/maps/search/?api=1&query=焼肉五苑+古島駅前店", icon: "map" }
         ]
       }
     ]
@@ -808,11 +793,11 @@ function GuideModal({ item, onClose }: any) {
                   <div className="space-y-6 pt-2">
                     <div className="flex items-center gap-2 text-morandi-text/60">
                       <Info size={20} />
-                      <span className="text-[18px] font-bold uppercase tracking-widest">關於此處 (ABOUT)</span>
+                      <span className="text-[18px] font-bold uppercase tracking-widest">{item.aboutTitle || "關於此處 (ABOUT)"}</span>
                     </div>
                     {item.content && item.content.split('\n\n').map((paragraph: string, pIdx: number) => {
                       if (paragraph.trim() === '---') {
-                        return <div key={pIdx} className="h-px bg-morandi-primary/10 my-8" />;
+                        return <div key={pIdx} className="w-full border-t border-morandi-primary/60 my-6" />;
                       }
                       return (
                         <SmartParagraph key={pIdx}>
@@ -909,64 +894,116 @@ function GuideModal({ item, onClose }: any) {
                     </button>
                   )}
 
-                  <div className="space-y-6 pt-2">
-                    <div className="flex items-center gap-2 text-morandi-text/60">
-                      <Info size={20} />
-                      <span className="text-[18px] font-bold uppercase tracking-widest">關於此處 (ABOUT)</span>
-                    </div>
-                    {item.content && item.content.split('\n\n').map((paragraph: string, pIdx: number) => {
-                      if (paragraph.trim() === '---') {
-                        return <div key={pIdx} className="h-px bg-morandi-primary/10 my-8" />;
-                      }
-                      return (
-                        <SmartParagraph key={pIdx}>
-                          {paragraph}
-                        </SmartParagraph>
-                      );
-                    })}
-                  </div>
+                  {item.id === '1-2' ? (
+                    <>
+                      {/* otsInfo section on top */}
+                      {item.otsInfo && (
+                        <div className="space-y-6 pt-2">
+                          <div className="flex items-center gap-2 text-morandi-text/60">
+                            <Info size={20} />
+                            <h3 className="text-[18px] font-bold uppercase tracking-widest">{item.otsInfo.title}</h3>
+                            <button 
+                              onClick={() => window.open(item.otsInfo.link)}
+                              className="text-morandi-primary hover:text-morandi-primary-light transition-colors p-1"
+                            >
+                              <ExternalLink size={16} />
+                            </button>
+                          </div>
+                          <div className="rounded-none overflow-hidden border-y border-white/10 -mx-6 shadow-sm">
+                            <img 
+                              src={getGoogleDriveDirectLink(item.otsInfo.mapImage)} 
+                              alt="OTS Map" 
+                              className="w-full h-auto" 
+                              referrerPolicy="no-referrer" 
+                            />
+                          </div>
+                          {item.otsInfo.guide && (
+                            <SmartParagraph noBorder={true}>
+                              {item.otsInfo.guide}
+                            </SmartParagraph>
+                          )}
+                        </div>
+                      )}
 
-                  {item.darumaExchange && (
-                    <div className="space-y-6 pt-2">
-                      <div className="space-y-4">
+                      {/* Content block below, with NO "關於此處 (ABOUT)" header */}
+                      <div className="space-y-6 pt-2">
+                        {item.content && item.content.split('\n\n').map((paragraph: string, pIdx: number) => {
+                          if (paragraph.trim() === '---') {
+                            return <div key={pIdx} className="w-full border-t border-morandi-primary/60 my-6" />;
+                          }
+                          return (
+                            <SmartParagraph key={pIdx}>
+                              {paragraph}
+                            </SmartParagraph>
+                          );
+                        })}
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      {/* Default layout for other non-hotel items */}
+                      <div className="space-y-6 pt-2">
                         <div className="flex items-center gap-2 text-morandi-text/60">
-                          <Ticket size={20} />
-                          <span className="text-[18px] font-bold uppercase tracking-widest">{item.darumaExchange.title}</span>
+                          <Info size={20} />
+                          <span className="text-[18px] font-bold uppercase tracking-widest">{item.aboutTitle || "關於此處 (ABOUT)"}</span>
                         </div>
-                        <SmartParagraph>
-                          {item.darumaExchange.desc}
-                        </SmartParagraph>
-                        <div className="w-1/4 rounded-none overflow-hidden shadow-sm">
-                          <img src={item.darumaExchange.image} alt="Exchange" className="w-full h-auto" referrerPolicy="no-referrer" />
-                        </div>
+                        {item.content && item.content.split('\n\n').map((paragraph: string, pIdx: number) => {
+                          if (paragraph.trim() === '---') {
+                            return <div key={pIdx} className="w-full border-t border-morandi-primary/60 my-6" />;
+                          }
+                          return (
+                            <SmartParagraph key={pIdx}>
+                              {paragraph}
+                            </SmartParagraph>
+                          );
+                        })}
                       </div>
-                    </div>
-                  )}
 
-                  {item.otsInfo && (
-                    <div className="space-y-6 pt-2">
-                      <div className="flex items-center gap-2 text-morandi-text/60">
-                        <Info size={20} />
-                        <h3 className="text-[18px] font-bold uppercase tracking-widest">{item.otsInfo.title}</h3>
-                        <button 
-                          onClick={() => window.open(item.otsInfo.link)}
-                          className="text-morandi-primary hover:text-morandi-primary-light transition-colors p-1"
-                        >
-                          <ExternalLink size={16} />
-                        </button>
-                      </div>
-                      <div className="rounded-none overflow-hidden border-y border-white/10 -mx-6 shadow-sm">
-                        <img 
-                          src={item.otsInfo.mapImage} 
-                          alt="OTS Map" 
-                          className="w-full h-auto" 
-                          referrerPolicy="no-referrer" 
-                        />
-                      </div>
-                      <SmartParagraph noBorder={true}>
-                        {item.otsInfo.guide}
-                      </SmartParagraph>
-                    </div>
+                      {item.darumaExchange && (
+                        <div className="space-y-6 pt-2">
+                          <div className="space-y-4">
+                            <div className="flex items-center gap-2 text-morandi-text/60">
+                              <Ticket size={20} />
+                              <span className="text-[18px] font-bold uppercase tracking-widest">{item.darumaExchange.title}</span>
+                            </div>
+                            <SmartParagraph>
+                              {item.darumaExchange.desc}
+                            </SmartParagraph>
+                            <div className="w-1/4 rounded-none overflow-hidden shadow-sm">
+                              <img src={item.darumaExchange.image} alt="Exchange" className="w-full h-auto" referrerPolicy="no-referrer" />
+                            </div>
+                          </div>
+                        </div>
+                      )}
+
+                      {item.otsInfo && (
+                        <div className="space-y-6 pt-2">
+                          <div className="flex items-center gap-2 text-morandi-text/60">
+                            <Info size={20} />
+                            <h3 className="text-[18px] font-bold uppercase tracking-widest">{item.otsInfo.title}</h3>
+                            <button 
+                              onClick={() => window.open(item.otsInfo.link)}
+                              className="text-morandi-primary hover:text-morandi-primary-light transition-colors p-1"
+                            >
+                              <ExternalLink size={16} />
+                            </button>
+                          </div>
+                          <div className="rounded-none overflow-hidden border-y border-white/10 -mx-6 shadow-sm">
+                            <img 
+                              src={getGoogleDriveDirectLink(item.otsInfo.mapImage)} 
+                              alt="OTS Map" 
+                              className="w-full h-auto" 
+                              referrerPolicy="no-referrer" 
+                            />
+                          </div>
+                          {item.otsInfo.guide && (
+                            <SmartParagraph noBorder={true}>
+                              {item.otsInfo.guide}
+                            </SmartParagraph>
+                          )}
+                        </div>
+                      )}
+                    </>
                   )}
 
                   {item.top10 && (
@@ -1334,7 +1371,7 @@ function ShoppingTab({ memo, setMemo }: any) {
             <ListCheck size={18} className="text-morandi-primary" /> 行前準備
           </h3>
         </div>
-        <div className="bg-white/40 rounded-[32px] p-6 space-y-4 border border-white/60">
+        <div className="bg-white/40 rounded-[32px] p-4 sm:p-6 space-y-4 border border-white/60">
           <div className="space-y-3">
             {predefined.map(item => (
               <div key={item.id} className="flex items-center justify-between group py-1">
@@ -1348,15 +1385,15 @@ function ShoppingTab({ memo, setMemo }: any) {
               </div>
             ))}
           </div>
-          <div className="flex gap-3 pt-4 border-t border-morandi-primary/5">
+          <div className="flex gap-2 sm:gap-3 pt-4 border-t border-morandi-primary/5">
             <input 
               value={prepInput}
               onChange={(e) => setPrepInput(e.target.value)}
               placeholder="新增準備項目..."
-              className="flex-1 bg-white/40 p-4 rounded-2xl text-sm outline-none border border-transparent focus:border-morandi-primary/20"
+              className="flex-1 bg-white/40 p-3 sm:p-4 rounded-2xl text-sm outline-none border border-transparent focus:border-morandi-primary/20"
               onKeyPress={(e) => e.key === 'Enter' && addPrep()}
             />
-            <button onClick={addPrep} className="w-12 h-12 bg-morandi-primary text-white rounded-2xl active:scale-90 transition-all flex items-center justify-center shrink-0 shadow-sm">
+            <button onClick={addPrep} className="w-11 h-11 sm:w-12 sm:h-12 bg-morandi-primary text-white rounded-2xl active:scale-90 transition-all flex items-center justify-center shrink-0 shadow-sm">
               <Plus size={20} />
             </button>
           </div>
@@ -1483,8 +1520,18 @@ function ShoppingTab({ memo, setMemo }: any) {
 
 function InfoTab() {
   const [reservations, setReservations] = useState<any[]>(() => {
+    const defaultReservations = [
+      { id: '1', label: '6/14 19:30 北谷Chaabu', code: 'VGUCF2TSNW' }
+    ];
     const saved = localStorage.getItem('okinawa_reservations');
-    return saved ? JSON.parse(saved) : [];
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      if (!parsed.some((r: any) => r.code === 'VGUCF2TSNW')) {
+        return [...defaultReservations, ...parsed];
+      }
+      return parsed;
+    }
+    return defaultReservations;
   });
   const [resInput, setResInput] = useState({ label: '', code: '' });
   const [openSection, setOpenSection] = useState<string | null>(null);
@@ -1506,16 +1553,30 @@ function InfoTab() {
   return (
     <div className="pb-20 space-y-6">
       {/* 1. Google Map - Top */}
-      <div className="bg-white/40 rounded-[32px] overflow-hidden h-[260px] relative shadow-sm border border-white/60">
-        <iframe 
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d114515.65485459317!2d127.6186847432049!3d26.24174363381014!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x34e5697141879401%3A0x10dba9a8008405e!2z5rKW57iE!5e0!3m2!1szh-TW!2stw!4v1715600000000!5m2!1szh-TW!2stw" 
-          width="100%" 
-          height="100%" 
-          style={{ border: 0 }} 
-          allowFullScreen 
-          loading="lazy"
-          referrerPolicy="no-referrer-when-downgrade"
-        ></iframe>
+      <div className="bg-white/40 rounded-[32px] overflow-hidden h-[320px] relative shadow-sm border border-white/60 flex flex-col">
+        <div className="relative flex-1">
+          <iframe 
+            src="https://www.google.com/maps/d/embed?mid=1x0Iq1Baked2ewy_fMG-xrLxpZzQ_xhI" 
+            width="100%" 
+            height="100%" 
+            style={{ border: 0 }} 
+            allowFullScreen 
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+          ></iframe>
+        </div>
+        <div className="bg-white/60 px-5 py-3 border-t border-white/80 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-bold text-morandi-primary tracking-widest uppercase">沖繩專屬行程地圖</span>
+          </div>
+          <button 
+            onClick={() => window.open('https://www.google.com/maps/d/u/0/edit?mid=1x0Iq1Baked2ewy_fMG-xrLxpZzQ_xhI&usp=sharing')}
+            className="flex items-center gap-1.5 text-xs font-bold text-morandi-primary bg-white px-3 py-1.5 rounded-full hover:bg-morandi-primary/5 active:scale-95 transition-all shadow-sm border border-morandi-primary/10"
+          >
+            <Map size={14} />
+            開啟完整地圖
+          </button>
+        </div>
       </div>
 
       {/* 2. Visit Japan Web - Second */}
@@ -1604,29 +1665,29 @@ function InfoTab() {
               <input 
                 value={resInput.label}
                 onChange={(e) => setResInput({...resInput, label: e.target.value})}
-                placeholder="項目"
-                className="w-[35%] shrink-0 bg-white/40 py-3 px-2 rounded-xl text-[15px] leading-relaxed outline-none border border-transparent focus:border-morandi-primary/20"
+                placeholder="項目/時間"
+                className="flex-1 min-w-0 bg-white/40 py-3 px-3 rounded-xl text-sm leading-relaxed outline-none border border-transparent focus:border-morandi-primary/20"
               />
               <input 
                 value={resInput.code}
                 onChange={(e) => setResInput({...resInput, code: e.target.value})}
-                placeholder="代號"
-                className="w-[35%] shrink-0 bg-white/40 py-3 px-2 rounded-xl text-[15px] leading-relaxed outline-none border border-transparent focus:border-morandi-primary/20 font-mono"
+                placeholder="預約代號"
+                className="w-[40%] min-w-0 bg-white/40 py-3 px-3 rounded-xl text-sm leading-relaxed outline-none border border-transparent focus:border-morandi-primary/20 font-mono"
               />
-              <div className="flex-1 flex justify-end">
-                <button 
-                  onClick={addRes} 
-                  className="w-8 h-8 min-w-[32px] flex items-center justify-center bg-morandi-primary text-white rounded-full active:scale-90 transition-all shadow-sm z-10"
-                >
-                  <Plus size={18} />
-                </button>
-              </div>
+              <button 
+                onClick={addRes} 
+                className="w-9 h-9 min-w-[36px] flex items-center justify-center bg-morandi-primary text-white rounded-xl active:scale-90 transition-all shadow-sm shrink-0"
+              >
+                <Plus size={18} />
+              </button>
             </div>
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {reservations.map(res => (
-                <div key={res.id} className="bg-white/60 p-4 rounded-2xl border border-white/80 relative group shadow-sm">
-                  <p className="text-[10px] text-morandi-text-muted mb-1 truncate pr-5 font-bold uppercase tracking-widest">{res.label}</p>
-                  <p className="text-base font-bold font-mono text-morandi-text">{res.code}</p>
+                <div key={res.id} className="bg-white/60 p-4 rounded-2xl border border-white/80 relative group shadow-sm flex flex-col justify-between">
+                  <div>
+                    <p className="text-[10px] text-morandi-text-muted mb-1 pr-6 font-bold uppercase tracking-widest break-words leading-normal">{res.label}</p>
+                    <p className="text-base font-bold font-mono text-morandi-text select-all break-all">{res.code}</p>
+                  </div>
                   <button onClick={() => removeRes(res.id)} className="absolute top-3 right-3 text-morandi-accent hover:text-red-400 opacity-40 group-hover:opacity-100 transition-opacity">
                     <X size={14} />
                   </button>
@@ -1652,7 +1713,12 @@ function InfoTab() {
             </li>
             <li className="flex gap-4">
               <span className="text-morandi-primary font-bold text-lg opacity-40">02</span>
-              <p><span className="font-bold">自駕規則：</span>沖繩速限較嚴格（一般道路 40-50km/h），切勿違規停車，罰金極高。</p>
+              <div>
+                <span className="font-bold block mb-1">自駕規則：</span>
+                <p>日本道路的行進方向與台灣是相反的，駕駛座是右座，所以雨刷與方向燈也是相反的。</p>
+                <p className="mt-1">謹記靠左線道行駛，過交叉路口時請先看右再看左，還沒有習慣前小心慢開靠左駕駛。</p>
+                <p className="mt-1">還有日本一般不允許亂按喇叭，有時候會引發糾紛。</p>
+              </div>
             </li>
             <li className="flex gap-4">
               <span className="text-morandi-primary font-bold text-lg opacity-40">03</span>
@@ -1681,6 +1747,7 @@ function InfoTab() {
             </div>
             <div className="bg-white/40 p-5 rounded-2xl space-y-2 text-[15px] leading-relaxed text-morandi-text border border-white/60">
               <p>• 可使用現金、Suica, ICOCA 等交通卡。</p>
+              <p>• 可使用感應功能的信用卡，單日扣款上限為日幣800円（無兒童優惠）。</p>
               <p>• 6歲以下兒童免票，6-12歲半價。</p>
               <p>• 飯店位於 <span className="font-bold text-morandi-primary">11 歌町站 (Omoromachi)</span>。</p>
             </div>
