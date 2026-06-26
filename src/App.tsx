@@ -1274,11 +1274,16 @@ function ShoppingTab({ memo, setMemo }: any) {
     { id: 'p4', text: '日幣/信用卡 💴', done: false, category: 'carryOn' },
     { id: 'p5', text: '行動電源 🔋', done: false, category: 'carryOn' },
     { id: 'p6', text: '薄外套/小孩備用衣 🧥', done: false, category: 'carryOn' },
+    { id: 'p12', text: '水壺 💧', done: false, category: 'carryOn' },
     { id: 'p7', text: '換洗衣物 & 睡衣 👕', done: false, category: 'checked' },
     { id: 'p8', text: '盥洗用品 & 保養品 🧴', done: false, category: 'checked' },
     { id: 'p9', text: '常用隨身藥品 💊', done: false, category: 'checked' },
     { id: 'p10', text: '雨傘/雨衣 (沖繩天氣多變) ☔', done: false, category: 'checked' },
-    { id: 'p11', text: '太陽眼鏡 & 防曬乳 🕶️', done: false, category: 'checked' }
+    { id: 'p11', text: '太陽眼鏡 & 防曬乳 🕶️', done: false, category: 'checked' },
+    { id: 'p13', text: '防蚊液 🦟', done: false, category: 'checked' },
+    { id: 'p14', text: '泳衣 🩱', done: false, category: 'checked' },
+    { id: 'p15', text: '充電線 🔌', done: false, category: 'checked' },
+    { id: 'p16', text: '購物袋 🛍️', done: false, category: 'checked' }
   ];
 
   const [predefined, setPredefined] = useState<any[]>(() => {
@@ -1293,7 +1298,7 @@ function ShoppingTab({ memo, setMemo }: any) {
           return defaultPrepList;
         }
 
-        return parsed.map((item: any) => {
+        let updated = parsed.map((item: any) => {
           if (!item.category) {
             // Smart auto-categorization for existing user items during migration
             const isCheckedItem = /衣物|睡衣|鞋|襪|盥洗|保養|沐浴|洗髮|刷|膏|藥|傘|防曬|隱眼|剪刀|指甲/i.test(item.text);
@@ -1301,6 +1306,38 @@ function ShoppingTab({ memo, setMemo }: any) {
           }
           return item;
         });
+
+        // Ensure newly requested items are added dynamically
+        const newCarryOn = [
+          { key: '水壺', text: '水壺 💧', category: 'carryOn', id: 'p12' }
+        ];
+        const newChecked = [
+          { key: '防蚊液', text: '防蚊液 🦟', category: 'checked', id: 'p13' },
+          { key: '泳衣', text: '泳衣 🩱', category: 'checked', id: 'p14' },
+          { key: '充電線', text: '充電線 🔌', category: 'checked', id: 'p15' },
+          { key: '購物袋', text: '購物袋 🛍️', category: 'checked', id: 'p16' }
+        ];
+
+        let hasChanges = false;
+        newCarryOn.forEach(item => {
+          if (!updated.some((r: any) => r.text && r.text.includes(item.key))) {
+            updated.push({ id: item.id, text: item.text, done: false, category: item.category });
+            hasChanges = true;
+          }
+        });
+        newChecked.forEach(item => {
+          if (!updated.some((r: any) => r.text && r.text.includes(item.key))) {
+            updated.push({ id: item.id, text: item.text, done: false, category: item.category });
+            hasChanges = true;
+          }
+        });
+
+        if (hasChanges) {
+          localStorage.setItem('okinawa_prep', JSON.stringify(updated));
+          return updated;
+        }
+
+        return updated;
       } catch (e) {
         // Fallback to default if JSON parse fails
       }
