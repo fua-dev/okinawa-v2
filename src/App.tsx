@@ -1269,11 +1269,32 @@ function BudgetTab({ expenses, setExpenses, rate }: any) {
 function ShoppingTab({ memo, setMemo }: any) {
   const [predefined, setPredefined] = useState<any[]>(() => {
     const saved = localStorage.getItem('okinawa_prep');
-    return saved ? JSON.parse(saved) : [
-      { id: 'p1', text: '護照 & 駕照 (日文譯本)', done: false },
-      { id: 'p2', text: 'VJW (Visit Japan Web) 截圖', done: false },
-      { id: 'p3', text: '網卡 (eSIM) / 漫遊開通', done: false },
-      { id: 'p4', text: '行動電源 & 充電線', done: false }
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        return parsed.map((item: any) => {
+          if (!item.category) {
+            // Smart auto-categorization for existing user items during migration
+            const isCheckedItem = /衣物|睡衣|鞋|襪|盥洗|保養|沐浴|洗髮|刷|膏|藥|傘|防曬|隱眼|剪刀|指甲/i.test(item.text);
+            return { ...item, category: isCheckedItem ? 'checked' : 'carryOn' };
+          }
+          return item;
+        });
+      } catch (e) {
+        // Fallback to default if JSON parse fails
+      }
+    }
+    return [
+      { id: 'p1', text: '護照 & 駕照 (日文譯本) 🪪', done: false, category: 'carryOn' },
+      { id: 'p2', text: '實體日幣 & 信用卡 💴', done: false, category: 'carryOn' },
+      { id: 'p3', text: 'VJW (Visit Japan Web) 截圖 📲', done: false, category: 'carryOn' },
+      { id: 'p4', text: '網卡 (eSIM) / 漫遊開通 🌐', done: false, category: 'carryOn' },
+      { id: 'p5', text: '行動電源 & 充電線 🔋', done: false, category: 'carryOn' },
+      { id: 'p6', text: '換洗衣物 & 睡衣 👕', done: false, category: 'checked' },
+      { id: 'p7', text: '盥洗用品 & 保養品 🧴', done: false, category: 'checked' },
+      { id: 'p8', text: '常用隨身藥品 💊', done: false, category: 'checked' },
+      { id: 'p9', text: '雨傘/雨衣 (沖繩天氣多變) ☔', done: false, category: 'checked' },
+      { id: 'p10', text: '太陽眼鏡 & 防曬乳 🕶️', done: false, category: 'checked' }
     ];
   });
 
@@ -1282,17 +1303,23 @@ function ShoppingTab({ memo, setMemo }: any) {
     return saved ? JSON.parse(saved) : [];
   });
 
-  const [prepInput, setPrepInput] = useState('');
+  const [carryOnInput, setCarryOnInput] = useState('');
+  const [checkedInput, setCheckedInput] = useState('');
   const [viewMode, setViewMode] = useState<'list' | 'grid'>('grid');
   const [shopForm, setShopForm] = useState({ note: '', category: '藥妝', photo: '' });
 
   useEffect(() => { localStorage.setItem('okinawa_prep', JSON.stringify(predefined)); }, [predefined]);
   useEffect(() => { localStorage.setItem('okinawa_shop_v2', JSON.stringify(shoppingItems)); }, [shoppingItems]);
 
-  const addPrep = () => {
-    if (!prepInput.trim()) return;
-    setPredefined([...predefined, { id: Date.now().toString(), text: prepInput, done: false }]);
-    setPrepInput('');
+  const addPrep = (category: 'carryOn' | 'checked') => {
+    const text = category === 'carryOn' ? carryOnInput : checkedInput;
+    if (!text.trim()) return;
+    setPredefined([...predefined, { id: Date.now().toString(), text: text.trim(), done: false, category }]);
+    if (category === 'carryOn') {
+      setCarryOnInput('');
+    } else {
+      setCheckedInput('');
+    }
   };
 
   const removePrep = (id: string) => setPredefined(predefined.filter(i => i.id !== id));
@@ -1371,31 +1398,90 @@ function ShoppingTab({ memo, setMemo }: any) {
             <ListCheck size={18} className="text-morandi-primary" /> 行前準備
           </h3>
         </div>
-        <div className="bg-white/40 rounded-[32px] p-4 sm:p-6 space-y-4 border border-white/60">
-          <div className="space-y-3">
-            {predefined.map(item => (
-              <div key={item.id} className="flex items-center justify-between group py-1">
-                <button onClick={() => togglePrep(item.id)} className="flex items-center gap-4 flex-1 text-left">
-                  {item.done ? <CheckCircle2 size={22} className="text-morandi-primary" /> : <Circle size={22} className="text-morandi-accent/30" />}
-                  <span className={`text-sm ${item.done ? 'text-morandi-accent line-through' : 'text-morandi-text font-medium'}`}>{item.text}</span>
-                </button>
-                <button onClick={() => removePrep(item.id)} className="p-2 text-morandi-accent hover:text-red-400 opacity-40 active:opacity-100 transition-opacity">
-                  <Trash2 size={18} />
-                </button>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* 隨身行李 */}
+          <div className="bg-white/40 rounded-[32px] p-5 sm:p-6 space-y-4 border border-white/60 flex flex-col h-full justify-between">
+            <div className="space-y-4">
+              <div className="flex items-center gap-2 pb-2 border-b border-morandi-primary/10">
+                <span className="w-2.5 h-2.5 rounded-full bg-morandi-primary"></span>
+                <span className="font-bold text-[15px] text-morandi-primary tracking-wider">隨身行李 Carry-on</span>
+                <span className="text-xs text-morandi-accent">({predefined.filter(i => i.category === 'carryOn' && i.done).length}/{predefined.filter(i => i.category === 'carryOn').length})</span>
               </div>
-            ))}
+              
+              <div className="space-y-2 max-h-[300px] overflow-y-auto pr-1">
+                {predefined.filter(i => i.category === 'carryOn').length === 0 ? (
+                  <p className="text-xs text-morandi-accent/60 py-4 text-center">無項目，請在下方新增</p>
+                ) : (
+                  predefined.filter(i => i.category === 'carryOn').map(item => (
+                    <div key={item.id} className="flex items-center justify-between group py-1">
+                      <button onClick={() => togglePrep(item.id)} className="flex items-center gap-3 flex-1 text-left min-w-0 pr-2">
+                        {item.done ? <CheckCircle2 size={20} className="text-morandi-primary shrink-0" /> : <Circle size={20} className="text-morandi-accent/30 shrink-0" />}
+                        <span className={`text-[13px] break-words ${item.done ? 'text-morandi-accent line-through' : 'text-morandi-text font-medium'}`}>{item.text}</span>
+                      </button>
+                      <button onClick={() => removePrep(item.id)} className="p-1 text-morandi-accent hover:text-red-400 opacity-40 group-hover:opacity-100 active:opacity-100 transition-opacity shrink-0">
+                        <Trash2 size={16} />
+                      </button>
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2 pt-4 border-t border-morandi-primary/5 mt-auto">
+              <input 
+                value={carryOnInput}
+                onChange={(e) => setCarryOnInput(e.target.value)}
+                placeholder="新增隨身項目..."
+                className="flex-1 h-11 bg-white/40 px-4 rounded-2xl text-[13px] outline-none border border-transparent focus:border-morandi-primary/20"
+                onKeyPress={(e) => e.key === 'Enter' && addPrep('carryOn')}
+              />
+              <button onClick={() => addPrep('carryOn')} className="w-11 h-11 bg-morandi-primary text-white rounded-2xl active:scale-90 transition-all flex items-center justify-center shrink-0 shadow-sm">
+                <Plus size={18} />
+              </button>
+            </div>
           </div>
-          <div className="flex gap-2 sm:gap-3 pt-4 border-t border-morandi-primary/5">
-            <input 
-              value={prepInput}
-              onChange={(e) => setPrepInput(e.target.value)}
-              placeholder="新增準備項目..."
-              className="flex-1 bg-white/40 p-3 sm:p-4 rounded-2xl text-sm outline-none border border-transparent focus:border-morandi-primary/20"
-              onKeyPress={(e) => e.key === 'Enter' && addPrep()}
-            />
-            <button onClick={addPrep} className="w-11 h-11 sm:w-12 sm:h-12 bg-morandi-primary text-white rounded-2xl active:scale-90 transition-all flex items-center justify-center shrink-0 shadow-sm">
-              <Plus size={20} />
-            </button>
+
+          {/* 託運行李 */}
+          <div className="bg-white/40 rounded-[32px] p-5 sm:p-6 space-y-4 border border-white/60 flex flex-col h-full justify-between">
+            <div className="space-y-4">
+              <div className="flex items-center gap-2 pb-2 border-b border-morandi-primary/10">
+                <span className="w-2.5 h-2.5 rounded-full bg-[#8C7A6B]"></span>
+                <span className="font-bold text-[15px] text-[#8C7A6B] tracking-wider">託運行李 Checked</span>
+                <span className="text-xs text-morandi-accent">({predefined.filter(i => i.category === 'checked' && i.done).length}/{predefined.filter(i => i.category === 'checked').length})</span>
+              </div>
+              
+              <div className="space-y-2 max-h-[300px] overflow-y-auto pr-1">
+                {predefined.filter(i => i.category === 'checked').length === 0 ? (
+                  <p className="text-xs text-morandi-accent/60 py-4 text-center">無項目，請在下方新增</p>
+                ) : (
+                  predefined.filter(i => i.category === 'checked').map(item => (
+                    <div key={item.id} className="flex items-center justify-between group py-1">
+                      <button onClick={() => togglePrep(item.id)} className="flex items-center gap-3 flex-1 text-left min-w-0 pr-2">
+                        {item.done ? <CheckCircle2 size={20} className="text-[#8C7A6B] shrink-0" /> : <Circle size={20} className="text-[#8C7A6B]/30 shrink-0" />}
+                        <span className={`text-[13px] break-words ${item.done ? 'text-morandi-accent line-through' : 'text-morandi-text font-medium'}`}>{item.text}</span>
+                      </button>
+                      <button onClick={() => removePrep(item.id)} className="p-1 text-morandi-accent hover:text-red-400 opacity-40 group-hover:opacity-100 active:opacity-100 transition-opacity shrink-0">
+                        <Trash2 size={16} />
+                      </button>
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2 pt-4 border-t border-morandi-primary/5 mt-auto">
+              <input 
+                value={checkedInput}
+                onChange={(e) => setCheckedInput(e.target.value)}
+                placeholder="新增託運項目..."
+                className="flex-1 h-11 bg-white/40 px-4 rounded-2xl text-[13px] outline-none border border-transparent focus:border-morandi-primary/20"
+                onKeyPress={(e) => e.key === 'Enter' && addPrep('checked')}
+              />
+              <button onClick={() => addPrep('checked')} className="w-11 h-11 bg-[#8C7A6B] text-white rounded-2xl active:scale-90 transition-all flex items-center justify-center shrink-0 shadow-sm">
+                <Plus size={18} />
+              </button>
+            </div>
           </div>
         </div>
       </section>
