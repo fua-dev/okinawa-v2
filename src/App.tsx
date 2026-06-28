@@ -54,7 +54,7 @@ const ITINERARY_DATA = [
         noNav: true
       },
       { 
-        id: '1-1-1', time: "12:00", type: "flight", title: "啟程：星宇航空 JX870", detail: "【飛行時間】約1小時40分，預計14:40\n抵達沖繩。", address: "桃園機場 -> 那霸機場", 
+        id: '1-1-1', time: "12:00", type: "flight", title: "啟程：星宇航空 JX870", detail: "【飛行時間】\n約1小時40分，預計14:40抵達那霸機場", address: "桃園機場 -> 那霸機場", 
         content: "搭乘星宇航空 JX870 班機前往那霸。預計 14:40 抵達沖繩。",
         noModal: true
       },
@@ -167,7 +167,17 @@ const ITINERARY_DATA = [
       },
       { 
         id: '2-5', time: "19:30", type: "food", title: "晚餐：阿古豬火鍋(北谷Chaabu)", detail: "", address: "沖縄県中頭郡北谷町桑江614-1", 
-        content: "享用美味的阿古豬火鍋，為美好的一天劃下完美句點。\n\n---\n\n【店家資訊】\n北谷ダイニング ちゃぁぶ～\n沖縄県中頭郡北谷町桑江614-1",
+        bookingInfo: {
+          dateTime: "7月14日(火) 19:30～",
+          number: "VGUCF2TSNW"
+        },
+        content: "北谷ダイニング ちゃぁぶ～\n\n享用美味的阿古豬火鍋，為美好的一天劃下完美句點。\n\n---\n\n【店家資訊】\n北谷ダイニング ちゃぁぶ～\n沖縄県中頭郡北谷町桑江614-1",
+        links: [
+          { label: "阿古豬火鍋 導航連結", url: "https://www.google.com/maps/search/?api=1&query=沖縄県中頭郡北谷町桑江614-1", icon: "map" }
+        ],
+        quickLinks: [
+          { label: "導航", url: "https://www.google.com/maps/search/?api=1&query=沖縄県中頭郡北谷町桑江614-1" }
+        ],
         noNav: true
       }
     ]
@@ -601,7 +611,7 @@ function ScheduleTab({ currentDay, setCurrentDay, setSelectedItem, weatherForeca
                       </h4>
 
                       <div className="flex items-center gap-3">
-                        <p className={`text-xs leading-relaxed line-clamp-1 opacity-80 ${isNoModal ? 'text-morandi-text-muted/50' : 'text-morandi-text-muted'}`}>
+                        <p className={`text-xs leading-relaxed whitespace-pre-wrap opacity-80 ${isNoModal ? 'text-morandi-text-muted/50' : 'text-morandi-text-muted'}`}>
                           {item.detail}
                         </p>
                         {/* QuickLinks - Moved to Detail Line */}
@@ -703,6 +713,8 @@ function SmartParagraph({ children, className = "", noBorder = false }: { childr
 }
 
 function GuideModal({ item, onClose }: any) {
+  const [copiedBooking, setCopiedBooking] = useState(false);
+
   const getLinkIcon = (iconName: string) => {
     switch (iconName) {
       case 'map': return <MapPin size={20} />;
@@ -951,10 +963,55 @@ function GuideModal({ item, onClose }: any) {
                           if (paragraph.trim() === '---') {
                             return <div key={pIdx} className="w-full border-t border-morandi-primary/60 my-6" />;
                           }
+                          const isStoreInfo = paragraph.includes('【店家資訊】');
+                          if (isStoreInfo) {
+                            return (
+                              <div key={pIdx} className="space-y-6">
+                                {item.bookingInfo && (
+                                  <div className="bg-white/50 border border-morandi-primary/20 rounded-[24px] p-5 space-y-4 shadow-sm backdrop-blur-sm">
+                                    <div className="flex justify-between items-center pb-2 border-b border-morandi-primary/10">
+                                      <span className="text-[13px] font-bold text-morandi-primary flex items-center gap-2">
+                                        <Ticket size={16} />
+                                        <span>預約資訊 (RESERVATION)</span>
+                                      </span>
+                                      <button 
+                                        type="button"
+                                        onClick={() => {
+                                          navigator.clipboard.writeText(item.bookingInfo.number);
+                                          setCopiedBooking(true);
+                                          setTimeout(() => setCopiedBooking(false), 2000);
+                                        }}
+                                        className={`text-[10px] font-bold px-3 py-1 rounded-full transition-all flex items-center gap-1 ${
+                                          copiedBooking 
+                                            ? 'bg-emerald-500 text-white' 
+                                            : 'bg-morandi-primary/10 text-morandi-primary hover:bg-morandi-primary/20'
+                                        }`}
+                                      >
+                                        {copiedBooking ? <Check size={10} /> : <Copy size={10} />}
+                                        <span>{copiedBooking ? '已複製' : '複製代號'}</span>
+                                      </button>
+                                    </div>
+                                    <div className="grid grid-cols-1 gap-3 text-xs text-morandi-text">
+                                      <div className="flex items-start gap-2">
+                                        <span className="font-bold text-morandi-text-muted/70 w-16 shrink-0">■ 予約日時</span>
+                                        <span className="font-medium whitespace-pre-wrap">{item.bookingInfo.dateTime}</span>
+                                      </div>
+                                      <div className="flex items-start gap-2">
+                                        <span className="font-bold text-morandi-text-muted/70 w-16 shrink-0">■ 予約番号</span>
+                                        <span className="font-mono font-black text-morandi-primary tracking-wider bg-white/60 px-2.5 py-1 rounded-md border border-morandi-primary/10">{item.bookingInfo.number}</span>
+                                      </div>
+                                    </div>
+                                  </div>
+                                )}
+                              </div>
+                            );
+                          }
                           return (
-                            <SmartParagraph key={pIdx}>
-                              {paragraph}
-                            </SmartParagraph>
+                            <div key={pIdx} className="space-y-6">
+                              <SmartParagraph>
+                                {paragraph}
+                              </SmartParagraph>
+                            </div>
                           );
                         })}
                       </div>
