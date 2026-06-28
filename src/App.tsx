@@ -11,7 +11,7 @@ import {
   Image as ImageIcon, Smartphone, Users, CheckCircle2, Circle, Clock, Ticket,
   ExternalLink, Sun, Cloud, CloudRain, Utensils, Plane, Car, Upload, Star,
   LayoutGrid, StretchHorizontal, ChevronLeft, ChevronRight as ChevronRightIcon,
-  PhoneCall, PlusCircle, Link, ChevronDown, Map, Copy, Check
+  PhoneCall, PlusCircle, Link, ChevronDown, Map, Copy, Check, QrCode
 } from 'lucide-react';
 
 const fontStyleSerif = {
@@ -418,7 +418,9 @@ export default function App() {
         <NavButton active={activeTab === 'info'} onClick={() => setActiveTab('info')} icon={<Info size={18} />} label="資訊" />
       </nav>
 
-      <AnimatePresence>{selectedItem && <GuideModal item={selectedItem} onClose={() => setSelectedItem(null)} />}</AnimatePresence>
+      <AnimatePresence>
+        {selectedItem && <GuideModal item={selectedItem} onClose={() => setSelectedItem(null)} />}
+      </AnimatePresence>
     </div>
   );
 }
@@ -911,8 +913,10 @@ function GuideModal({ item, onClose }: any) {
                       {/* otsInfo section on top */}
                       {item.otsInfo && (
                         <div className="space-y-6 pt-2">
-                          <div className="flex items-center gap-2 text-morandi-text/60">
-                            <Info size={20} />
+                          <div className="flex items-center gap-2.5 text-morandi-text">
+                            <div className="w-8 h-8 rounded-full flex items-center justify-center font-black text-xs shadow-sm bg-sky-50 border border-sky-100 text-sky-600 shrink-0">
+                              睿
+                            </div>
                             <h3 className="text-[18px] font-bold uppercase tracking-widest">{item.otsInfo.title}</h3>
                             <button 
                               onClick={() => window.open(item.otsInfo.link)}
@@ -1006,6 +1010,68 @@ function GuideModal({ item, onClose }: any) {
                               </div>
                             );
                           }
+                          const isMemberTransports = item.id === '1-1' && (paragraph.includes('媽媽') || paragraph.includes('世睿') || paragraph.includes('姊姊'));
+                          if (isMemberTransports) {
+                            const lines = paragraph.split('\n');
+                            return (
+                              <div key={pIdx} className="space-y-4 bg-white/40 border border-morandi-primary/10 rounded-[28px] p-5 shadow-sm">
+                                <div className="text-[12px] font-black text-morandi-primary/70 tracking-widest uppercase flex items-center gap-1.5 mb-2">
+                                  <span className="w-1.5 h-1.5 rounded-full bg-morandi-primary animate-pulse" />
+                                  <span>成員出發交通資訊</span>
+                                </div>
+                                <div className="space-y-3">
+                                  {lines.map((line, lineIdx) => {
+                                    const match = line.match(/^\s*(媽媽|世睿|姊姊)\s*(.*)$/);
+                                    if (match) {
+                                      const name = match[1];
+                                      const detail = match[2];
+                                      
+                                      let badgeBg = "bg-rose-50 border-rose-100 text-rose-600";
+                                      let dotBg = "bg-rose-400";
+                                      let char = "媽";
+                                      let displayName = name;
+                                      
+                                      if (name === "世睿") {
+                                        badgeBg = "bg-sky-50 border-sky-100 text-sky-600";
+                                        dotBg = "bg-sky-400";
+                                        char = "睿";
+                                        displayName = "世睿・小儷・米果・米寶";
+                                      } else if (name === "姊姊") {
+                                        badgeBg = "bg-emerald-50 border-emerald-100 text-emerald-600";
+                                        dotBg = "bg-emerald-400";
+                                        char = "姊";
+                                        displayName = "姊姊・乖乖";
+                                      }
+                                      
+                                      return (
+                                        <div key={lineIdx} className="flex items-center gap-3 bg-white/80 border border-white/60 p-3 rounded-2xl shadow-[0_1px_2px_rgba(0,0,0,0.01)] transition-transform hover:scale-[1.01]">
+                                          <div className={`w-8 h-8 rounded-full flex items-center justify-center font-black text-xs shadow-sm ${badgeBg} border shrink-0`}>
+                                            {char}
+                                          </div>
+                                          
+                                          <div className="flex-1 min-w-0">
+                                            <div className="flex items-center gap-1.5 mb-0.5">
+                                              <span className="text-sm font-bold text-morandi-text">{displayName}</span>
+                                              <span className={`w-1 h-1 rounded-full ${dotBg}`} />
+                                            </div>
+                                            <p className="text-[13px] text-morandi-text-muted font-medium tracking-tight">
+                                              {detail}
+                                            </p>
+                                          </div>
+                                        </div>
+                                      );
+                                    }
+                                    return (
+                                      <p key={lineIdx} className="text-xs text-morandi-text-muted pl-1">
+                                        {line}
+                                      </p>
+                                    );
+                                  })}
+                                </div>
+                              </div>
+                            );
+                          }
+
                           return (
                             <div key={pIdx} className="space-y-6">
                               <SmartParagraph>
@@ -1738,6 +1804,120 @@ function InfoTab() {
   const [selectedCoupon, setSelectedCoupon] = useState<any>(null);
   const [selectedCouponTab, setSelectedCouponTab] = useState<'all' | 'electronics' | 'cosmetics'>('all');
 
+  // VJW States & Hooks
+  const membersList = ['媽媽', '姊姊', '乖乖', '世睿', '小儷', '米果', '米寶'];
+  const [vjwActiveMember, setVjwActiveMember] = useState('媽媽');
+  const [vjwFilter, setVjwFilter] = useState<'all' | 'mine'>('all');
+  
+  // Responsible members list
+  const [vjwResponsible, setVjwResponsible] = useState<string[]>(() => {
+    try {
+      const saved = localStorage.getItem('vjw_responsible_members');
+      if (saved) {
+        return JSON.parse(saved);
+      }
+    } catch (e) {
+      console.error(e);
+    }
+    return ['媽媽', '姊姊', '世睿'];
+  });
+
+  // Toggle member responsibility
+  const toggleResponsibleMember = (name: string) => {
+    const updated = vjwResponsible.includes(name)
+      ? vjwResponsible.filter(m => m !== name)
+      : [...vjwResponsible, name];
+    setVjwResponsible(updated);
+    localStorage.setItem('vjw_responsible_members', JSON.stringify(updated));
+  };
+
+  // State for storing the images (Base64) to avoid querying localStorage on every render
+  const [vjwImages, setVjwImages] = useState<Record<string, string>>(() => {
+    const imgs: Record<string, string> = {};
+    membersList.forEach(m => {
+      const val = localStorage.getItem(`vjw_img_${m}`);
+      if (val) imgs[m] = val;
+    });
+    return imgs;
+  });
+
+  // Handle image upload
+  const handleVjwImageUpload = (memberName: string, file: File) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const base64 = e.target?.result as string;
+      if (base64) {
+        localStorage.setItem(`vjw_img_${memberName}`, base64);
+        setVjwImages(prev => ({ ...prev, [memberName]: base64 }));
+      }
+    };
+    reader.readAsDataURL(file);
+  };
+
+  // Handle image removal
+  const handleVjwImageRemove = (memberName: string) => {
+    localStorage.removeItem(`vjw_img_${memberName}`);
+    setVjwImages(prev => {
+      const copy = { ...prev };
+      delete copy[memberName];
+      return copy;
+    });
+  };
+
+  // Lightbox State
+  const [lightboxMember, setLightboxMember] = useState<string | null>(null);
+
+  const filteredVjwMembers = useMemo(() => {
+    if (vjwFilter === 'all') return membersList;
+    return membersList.filter(m => vjwResponsible.includes(m));
+  }, [vjwFilter, vjwResponsible]);
+
+  useEffect(() => {
+    if (!filteredVjwMembers.includes(vjwActiveMember)) {
+      if (filteredVjwMembers.length > 0) {
+        setVjwActiveMember(filteredVjwMembers[0]);
+      }
+    }
+  }, [vjwFilter, filteredVjwMembers, vjwActiveMember]);
+
+  const membersWithImagesInFilter = useMemo(() => {
+    return filteredVjwMembers.filter(m => !!vjwImages[m]);
+  }, [filteredVjwMembers, vjwImages]);
+
+  const handleLightboxNext = () => {
+    if (!lightboxMember || membersWithImagesInFilter.length <= 1) return;
+    const currentIndex = membersWithImagesInFilter.indexOf(lightboxMember);
+    const nextIndex = (currentIndex + 1) % membersWithImagesInFilter.length;
+    setLightboxMember(membersWithImagesInFilter[nextIndex]);
+  };
+
+  const handleLightboxPrev = () => {
+    if (!lightboxMember || membersWithImagesInFilter.length <= 1) return;
+    const currentIndex = membersWithImagesInFilter.indexOf(lightboxMember);
+    const prevIndex = (currentIndex - 1 + membersWithImagesInFilter.length) % membersWithImagesInFilter.length;
+    setLightboxMember(membersWithImagesInFilter[prevIndex]);
+  };
+
+   const [touchStartX, setTouchStartX] = useState<number | null>(null);
+  const handleTouchStart = (e: any) => {
+    setTouchStartX(e.touches[0].clientX);
+  };
+  const handleTouchEnd = (e: any, currentIndex: number, list: string[]) => {
+    if (touchStartX === null) return;
+    const touchEndX = e.changedTouches[0].clientX;
+    const diffX = touchStartX - touchEndX;
+    if (Math.abs(diffX) > 50) {
+      if (diffX > 0) {
+        const nextIndex = (currentIndex + 1) % list.length;
+        setLightboxMember(list[nextIndex]);
+      } else {
+        const prevIndex = (currentIndex - 1 + list.length) % list.length;
+        setLightboxMember(list[prevIndex]);
+      }
+    }
+    setTouchStartX(null);
+  };
+
   const couponsData = [
     {
       id: 'bic',
@@ -1903,6 +2083,176 @@ function InfoTab() {
 
       {/* 3. Accordion Sections */}
       <div className="bg-white/40 rounded-[32px] border border-white/60 shadow-sm overflow-hidden divide-y divide-morandi-primary/10">
+        {/* VJW截圖 */}
+        <CollapsibleSection 
+          id="vjw" 
+          title="VJW截圖" 
+          icon={<QrCode size={20} />} 
+          isOpen={openSection === 'vjw'} 
+          onToggle={() => toggleSection('vjw')}
+          color="morandi-primary"
+        >
+          <div className="space-y-6">
+            {/* Filter Toggle / Segmented Control */}
+            <div className="flex bg-morandi-primary/5 p-1 rounded-2xl border border-morandi-primary/10 max-w-[280px] mx-auto shadow-sm">
+              <button
+                type="button"
+                onClick={() => setVjwFilter('all')}
+                className={`flex-1 py-2 rounded-xl text-xs font-black tracking-wider transition-all duration-300 ${
+                  vjwFilter === 'all'
+                    ? 'bg-morandi-primary text-white shadow-sm'
+                    : 'text-morandi-text hover:bg-white/40'
+                }`}
+              >
+                顯示全部
+              </button>
+              <button
+                type="button"
+                onClick={() => setVjwFilter('mine')}
+                className={`flex-1 py-2 rounded-xl text-xs font-black tracking-wider transition-all duration-300 ${
+                  vjwFilter === 'mine'
+                    ? 'bg-morandi-primary text-white shadow-sm'
+                    : 'text-morandi-text hover:bg-white/40'
+                }`}
+              >
+                我負責的
+              </button>
+            </div>
+
+            {/* Customizer Panel for "我負責的" */}
+            {vjwFilter === 'mine' && (
+              <div className="bg-white/50 border border-morandi-primary/10 rounded-[24px] p-4 text-xs space-y-2 mt-2">
+                <div className="font-bold text-morandi-text-muted flex items-center gap-1.5 mb-1.5">
+                  <Users size={14} className="text-morandi-primary" />
+                  <span>設定此手機負責的成員：</span>
+                </div>
+                <div className="flex flex-wrap gap-1.5">
+                  {membersList.map(name => {
+                    const isChecked = vjwResponsible.includes(name);
+                    return (
+                      <button
+                        key={name}
+                        type="button"
+                        onClick={() => toggleResponsibleMember(name)}
+                        className={`px-3 py-1.5 rounded-full border transition-all flex items-center gap-1.5 ${
+                          isChecked 
+                            ? 'bg-morandi-primary/10 border-morandi-primary/30 text-morandi-primary font-bold shadow-sm' 
+                            : 'bg-white/40 border-morandi-primary/5 text-morandi-text-muted'
+                        }`}
+                      >
+                        <div className={`w-3.5 h-3.5 rounded-full border flex items-center justify-center transition-all ${isChecked ? 'border-morandi-primary bg-morandi-primary text-white' : 'border-morandi-primary/30 bg-white'}`}>
+                          {isChecked && <Check size={10} strokeWidth={3} />}
+                        </div>
+                        <span>{name}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
+            {/* Members Selector Row */}
+            {filteredVjwMembers.length === 0 ? (
+              <div className="text-center py-6 text-xs text-morandi-text-muted/60">
+                尚未勾選負責的成員，請先在上方點選設定。
+              </div>
+            ) : (
+              <div className="space-y-4">
+                <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-none snap-x">
+                  {filteredVjwMembers.map(name => {
+                    const hasImg = !!vjwImages[name];
+                    const isActive = vjwActiveMember === name;
+                    return (
+                      <button
+                        key={name}
+                        type="button"
+                        onClick={() => setVjwActiveMember(name)}
+                        className={`px-4 py-2 rounded-2xl text-sm font-bold tracking-wider transition-all duration-300 shrink-0 snap-align-start flex items-center gap-1.5 border ${
+                          isActive
+                            ? 'bg-morandi-primary border-morandi-primary text-white shadow-sm scale-[1.02]'
+                            : hasImg
+                              ? 'bg-white border-morandi-primary/20 text-morandi-text hover:bg-white/85'
+                              : 'bg-white/30 border-morandi-primary/10 text-morandi-text-muted/60'
+                        }`}
+                      >
+                        {hasImg && (
+                          <CheckCircle2 
+                            size={14} 
+                            className={isActive ? 'text-white' : 'text-emerald-500'} 
+                            strokeWidth={2.5} 
+                          />
+                        )}
+                        <span>{name}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {/* Main Content Area based on current member */}
+                {vjwActiveMember && (
+                  <div>
+                    {!vjwImages[vjwActiveMember] ? (
+                      <div className="mt-2">
+                        <input 
+                          type="file" 
+                          accept="image/*" 
+                          id={`vjw-file-${vjwActiveMember}`}
+                          className="hidden" 
+                          onChange={(e) => {
+                            const file = e.target.files?.[0];
+                            if (file) handleVjwImageUpload(vjwActiveMember, file);
+                          }}
+                        />
+                        <label 
+                          htmlFor={`vjw-file-${vjwActiveMember}`}
+                          className="flex flex-col items-center justify-center border-2 border-dashed border-morandi-primary/30 bg-white/40 hover:bg-white/60 transition-all rounded-[28px] p-8 cursor-pointer group text-center min-h-[180px]"
+                        >
+                          <div className="w-12 h-12 bg-morandi-primary/10 text-morandi-primary rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                            <Upload size={22} />
+                          </div>
+                          <p className="text-sm font-black text-morandi-text mb-1">
+                            📷 點此上傳 {vjwActiveMember} 的通關 QR Code
+                          </p>
+                          <p className="text-[11px] text-morandi-text-muted max-w-[240px]">
+                            支援 JPG、PNG 圖片，將安全的離線暫存於此手機中
+                          </p>
+                        </label>
+                      </div>
+                    ) : (
+                      <div className="mt-2 relative">
+                        <div className="bg-white/80 border border-morandi-primary/15 rounded-[28px] p-4 shadow-sm backdrop-blur-sm overflow-hidden flex flex-col items-center">
+                          <p className="text-xs text-morandi-text-muted/80 font-bold mb-3 flex items-center gap-1.5 self-start px-1">
+                            <Smartphone size={13} className="text-morandi-primary" />
+                            <span>{vjwActiveMember} 的通關截圖 (點擊可全螢幕放大)</span>
+                          </p>
+                          <div 
+                            onClick={() => setLightboxMember(vjwActiveMember)}
+                            className="w-full max-h-[320px] rounded-2xl overflow-hidden cursor-zoom-in bg-morandi-bg flex items-center justify-center border border-morandi-primary/5 shadow-inner hover:opacity-95 transition-opacity"
+                          >
+                            <img 
+                              src={vjwImages[vjwActiveMember]} 
+                              alt={`${vjwActiveMember} QR Code`} 
+                              className="w-full h-full object-contain object-top"
+                            />
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => handleVjwImageRemove(vjwActiveMember)}
+                            className="absolute top-3 right-3 w-7 h-7 bg-red-500/10 hover:bg-red-500 text-red-500 hover:text-white rounded-full flex items-center justify-center transition-all shadow-sm"
+                            title="刪除此截圖"
+                          >
+                            <X size={14} strokeWidth={2.5} />
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        </CollapsibleSection>
+
         {/* 緊急聯絡資訊 */}
         <CollapsibleSection 
           id="emergency" 
@@ -2147,6 +2497,98 @@ function InfoTab() {
             coupon={selectedCoupon} 
             onClose={() => setSelectedCoupon(null)} 
           />
+        )}
+        {lightboxMember && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/95 z-[100] flex flex-col justify-between p-4 select-none touch-pan-y"
+            onTouchStart={handleTouchStart}
+            onTouchEnd={(e) => handleTouchEnd(e, membersWithImagesInFilter.indexOf(lightboxMember), membersWithImagesInFilter)}
+          >
+            {/* Header: Title and Close button */}
+            <div className="flex justify-between items-center w-full max-w-md mx-auto pt-4 px-2">
+              <div className="text-white text-left">
+                <p className="text-[10px] text-white/50 font-black tracking-widest uppercase">VJW FAST PASS</p>
+                <h4 className="text-xl font-bold flex items-center gap-2">
+                  <span className="bg-morandi-primary text-white text-[10px] px-2 py-0.5 rounded-full font-bold">✓ 已認證</span>
+                  {lightboxMember}
+                </h4>
+              </div>
+              <button
+                type="button"
+                onClick={() => setLightboxMember(null)}
+                className="w-10 h-10 bg-white/10 hover:bg-white/20 text-white rounded-full flex items-center justify-center active:scale-90 transition-all border border-white/10"
+              >
+                <X size={20} />
+              </button>
+            </div>
+
+            {/* Main Area: Image with arrow buttons on sides */}
+            <div className="flex-1 flex items-center justify-center relative w-full max-w-lg mx-auto py-4">
+              {/* Left Arrow */}
+              {membersWithImagesInFilter.length > 1 && (
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleLightboxPrev();
+                  }}
+                  className="absolute left-2 w-12 h-12 bg-black/40 hover:bg-black/60 border border-white/10 text-white rounded-full flex items-center justify-center active:scale-90 transition-all z-10"
+                >
+                  <ChevronLeft size={24} />
+                </button>
+              )}
+
+              {/* QR Image Container */}
+              <div className="w-full h-full max-h-[70vh] flex items-center justify-center p-2">
+                <img
+                  src={vjwImages[lightboxMember]}
+                  alt={`${lightboxMember} VJW QR`}
+                  className="max-w-full max-h-full object-contain rounded-2xl shadow-2xl border border-white/5 bg-white"
+                  style={{ imageRendering: 'auto' }}
+                />
+              </div>
+
+              {/* Right Arrow */}
+              {membersWithImagesInFilter.length > 1 && (
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleLightboxNext();
+                  }}
+                  className="absolute right-2 w-12 h-12 bg-black/40 hover:bg-black/60 border border-white/10 text-white rounded-full flex items-center justify-center active:scale-90 transition-all z-10"
+                >
+                  <ChevronRightIcon size={24} />
+                </button>
+              )}
+            </div>
+
+            {/* Footer: Slide Indicators / Navigation Helper */}
+            <div className="w-full max-w-md mx-auto pb-6 text-center space-y-3">
+              <p className="text-xs text-white/40 font-mono tracking-widest">
+                左右滑動或點擊箭頭可切換成員 • {membersWithImagesInFilter.indexOf(lightboxMember) + 1} / {membersWithImagesInFilter.length}
+              </p>
+              
+              {/* Bottom Quick Select Dots */}
+              <div className="flex justify-center gap-1.5">
+                {membersWithImagesInFilter.map((m) => (
+                  <button
+                    key={m}
+                    type="button"
+                    onClick={() => setLightboxMember(m)}
+                    className={`h-1.5 rounded-full transition-all duration-300 ${
+                      m === lightboxMember 
+                        ? 'w-6 bg-morandi-primary' 
+                        : 'w-1.5 bg-white/20 hover:bg-white/40'
+                    }`}
+                  />
+                ))}
+              </div>
+            </div>
+          </motion.div>
         )}
       </AnimatePresence>
     </div>
