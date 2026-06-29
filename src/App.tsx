@@ -315,8 +315,20 @@ export default function App() {
   const [selectedItem, setSelectedItem] = useState<any>(null);
   const [showDeclaration, setShowDeclaration] = useState(false);
   const [expenses, setExpenses] = useState<any[]>([]);
-  const [memo, setMemo] = useState('');
+  const [memo, setMemo] = useState(() => {
+    return localStorage.getItem('memo_content') || localStorage.getItem('okinawa_memo') || '';
+  });
   const [exchangeRate, setExchangeRate] = useState(0.21);
+  const [fontSizeLevel, setFontSizeLevel] = useState<number>(() => {
+    const saved = localStorage.getItem('user_font_size');
+    if (saved) {
+      const parsed = parseInt(saved, 10);
+      if (!isNaN(parsed) && parsed >= -1 && parsed <= 3) {
+        return parsed;
+      }
+    }
+    return 0;
+  });
 
   useEffect(() => {
     const fetchRate = async () => {
@@ -336,12 +348,11 @@ export default function App() {
   useEffect(() => {
     const savedExp = localStorage.getItem('okinawa_expenses');
     if (savedExp) setExpenses(JSON.parse(savedExp));
-    const savedMemo = localStorage.getItem('okinawa_memo');
-    if (savedMemo) setMemo(savedMemo);
   }, []);
 
   useEffect(() => { localStorage.setItem('okinawa_expenses', JSON.stringify(expenses)); }, [expenses]);
-  useEffect(() => { localStorage.setItem('okinawa_memo', memo); }, [memo]);
+  useEffect(() => { localStorage.setItem('memo_content', memo); }, [memo]);
+  useEffect(() => { localStorage.setItem('user_font_size', fontSizeLevel.toString()); }, [fontSizeLevel]);
 
   const weatherForecast = useMemo(() => {
     const data = [];
@@ -357,10 +368,13 @@ export default function App() {
     return data;
   }, []);
 
+  const baseFontSize = 16 + fontSizeLevel * 1.5;
+
   return (
     <div style={fontStyleSans} className="max-w-[480px] mx-auto min-h-screen bg-morandi-bg relative pb-36 overflow-x-hidden">
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&family=Noto+Serif+TC:wght@400;700&display=swap');
+        html { font-size: ${baseFontSize}px !important; }
         body { font-family: 'Noto Sans TC', sans-serif; background-color: #e9f2f7; }
         h1, h2, h3, h4, h5, h6, .font-serif { font-family: 'Noto Serif TC', serif !important; color: #4A5568; }
       `}</style>
@@ -368,15 +382,35 @@ export default function App() {
         <div className="absolute top-0 right-0 w-40 h-40 bg-morandi-primary/5 rounded-full -mr-20 -mt-20 blur-3xl" />
         <div className="relative z-10">
           <div className="flex justify-between items-end mb-6">
-            <div className="space-y-1">
+            <div className="space-y-1 pr-2">
               <p className="text-[10px] tracking-[0.6em] text-morandi-primary font-bold uppercase opacity-60">Summer 2026</p>
               <h1 style={fontStyleSerif} className="text-5xl font-black tracking-tighter text-morandi-text leading-none">
                 沖繩之旅
               </h1>
             </div>
-            <button onClick={() => setShowDeclaration(true)} className="w-12 h-12 rounded-full bg-white shadow-sm flex items-center justify-center text-morandi-primary active:scale-95 transition-all border border-morandi-primary/10">
-              <Users size={22} />
-            </button>
+            <div className="flex items-center gap-2 shrink-0">
+              {/* Fine-tune font size */}
+              <div className="flex items-center bg-white/70 backdrop-blur-sm border border-morandi-primary/10 rounded-full p-1 shadow-sm gap-0.5 select-none">
+                <button 
+                  onClick={() => setFontSizeLevel(prev => Math.max(-1, prev - 1))}
+                  className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-serif font-black text-morandi-text/60 hover:text-morandi-text hover:bg-morandi-primary/5 active:scale-90 transition-all"
+                  title="字體縮小 (A-)"
+                >
+                  A-
+                </button>
+                <div className="w-[1px] h-3 bg-morandi-primary/10" />
+                <button 
+                  onClick={() => setFontSizeLevel(prev => Math.min(3, prev + 1))}
+                  className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-serif font-black text-morandi-text/60 hover:text-morandi-text hover:bg-morandi-primary/5 active:scale-90 transition-all"
+                  title="字體放大 (A+)"
+                >
+                  A+
+                </button>
+              </div>
+              <button onClick={() => setShowDeclaration(true)} className="w-11 h-11 rounded-full bg-white shadow-sm flex items-center justify-center text-morandi-primary active:scale-95 transition-all border border-morandi-primary/10 hover:bg-morandi-primary/5">
+                <Users size={20} />
+              </button>
+            </div>
           </div>
           <div className="flex items-center gap-4">
             <div className="h-[1px] flex-1 bg-gradient-to-r from-morandi-primary/30 to-transparent" />
@@ -1986,7 +2020,14 @@ function ShoppingTab({ memo, setMemo }: any) {
         <div className="bg-white/40 rounded-[32px] p-6 border border-white/60">
           <textarea 
             value={memo}
-            onChange={(e) => setMemo(e.target.value)}
+            onChange={(e) => {
+              const val = e.target.value;
+              setMemo(val);
+              localStorage.setItem('memo_content', val);
+            }}
+            onBlur={(e) => {
+              localStorage.setItem('memo_content', e.target.value);
+            }}
             placeholder="輸入個人筆記、連結或重要資訊..."
             className="w-full min-h-[160px] bg-white/40 p-5 rounded-2xl text-sm outline-none resize-none text-morandi-text leading-relaxed border border-transparent focus:border-morandi-primary/10"
           />
