@@ -1044,156 +1044,48 @@ function GuideModal({ item, onClose }: any) {
                                       }
                                       
                                       return (
-                                        <div key={lineIdx} className="flex items-center gap-3 bg-white/80 border border-white/60 p-3 rounded-2xl shadow-[0_1px_2px_rgba(0,0,0,0.01)] transition-transform hover:scale-[1.01]">
-                                          <div className={`w-8 h-8 rounded-full flex items-center justify-center font-black text-xs shadow-sm ${badgeBg} border shrink-0`}>
+                                        <div key={lineIdx} className="flex items-start gap-2.5 bg-white/40 p-2.5 rounded-xl border border-white/60">
+                                          <div className={`flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-black shrink-0 ${dotBg} text-white`}>
                                             {char}
                                           </div>
-                                          
                                           <div className="flex-1 min-w-0">
-                                            <div className="flex items-center gap-1.5 mb-0.5">
-                                              <span className="text-sm font-bold text-morandi-text">{displayName}</span>
-                                              <span className={`w-1 h-1 rounded-full ${dotBg}`} />
+                                            <div className="flex items-center gap-1.5 flex-wrap">
+                                              <span className={`px-2 py-0.5 rounded-md border text-[10px] font-bold ${badgeBg}`}>
+                                                {displayName}
+                                              </span>
                                             </div>
-                                            <p className="text-[13px] text-morandi-text-muted font-medium tracking-tight">
-                                              {detail}
-                                            </p>
+                                            <p className="text-xs text-morandi-text mt-1 leading-relaxed">{detail}</p>
                                           </div>
                                         </div>
                                       );
                                     }
-                                    return (
-                                      <p key={lineIdx} className="text-xs text-morandi-text-muted pl-1">
-                                        {line}
-                                      </p>
-                                    );
+                                    return <p key={lineIdx} className="text-xs text-morandi-text-muted">{line}</p>;
                                   })}
                                 </div>
                               </div>
                             );
                           }
-
                           return (
-                            <div key={pIdx} className="space-y-6">
-                              <SmartParagraph>
-                                {paragraph}
-                              </SmartParagraph>
-                            </div>
+                            <SmartParagraph key={pIdx}>
+                              {paragraph}
+                            </SmartParagraph>
                           );
                         })}
                       </div>
-
-                      {item.darumaExchange && (
-                        <div className="space-y-6 pt-2">
-                          <div className="space-y-4">
-                            <div className="flex items-center gap-2 text-morandi-text/60">
-                              <Ticket size={20} />
-                              <span className="text-[18px] font-bold uppercase tracking-widest">{item.darumaExchange.title}</span>
-                            </div>
-                            <SmartParagraph>
-                              {item.darumaExchange.desc}
-                            </SmartParagraph>
-                            <div className="w-1/4 rounded-none overflow-hidden shadow-sm">
-                              <img src={item.darumaExchange.image} alt="Exchange" className="w-full h-auto" referrerPolicy="no-referrer" />
-                            </div>
-                          </div>
-                        </div>
-                      )}
-
-                      {item.otsInfo && (
-                        <div className="space-y-6 pt-2">
-                          <div className="flex items-center gap-2 text-morandi-text/60">
-                            <Info size={20} />
-                            <h3 className="text-[18px] font-bold uppercase tracking-widest">{item.otsInfo.title}</h3>
-                            <button 
-                              onClick={() => window.open(item.otsInfo.link)}
-                              className="text-morandi-primary hover:text-morandi-primary-light transition-colors p-1"
-                            >
-                              <ExternalLink size={16} />
-                            </button>
-                          </div>
-                          <div className="rounded-none overflow-hidden border-y border-white/10 -mx-6 shadow-sm">
-                            <img 
-                              src={getGoogleDriveDirectLink(item.otsInfo.mapImage)} 
-                              alt="OTS Map" 
-                              className="w-full h-auto" 
-                              referrerPolicy="no-referrer" 
-                            />
-                          </div>
-                          {item.otsInfo.guide && (
-                            <SmartParagraph noBorder={true}>
-                              {item.otsInfo.guide}
-                            </SmartParagraph>
-                          )}
-                        </div>
-                      )}
                     </>
                   )}
+                </div>
+              )}
 
-                  {item.top10 && (
-                    <div className="space-y-6 pt-2">
-                      <h3 className="text-[18px] font-bold text-morandi-text/60 uppercase tracking-widest flex items-center gap-2">
-                        <Star size={20} /> {item.top10.title}
-                      </h3>
-                      <div className="divide-y divide-morandi-primary/10">
-                        {item.top10.items.map((t: any, idx: number) => {
-                          const [isOpen, setIsOpen] = useState(false);
-                          return (
-                            <div key={idx} className="py-4">
-                              <div 
-                                className="flex items-center justify-between gap-4 cursor-pointer group"
-                                onClick={() => setIsOpen(!isOpen)}
-                              >
-                                <p className="text-[15px] font-bold text-morandi-text group-hover:text-morandi-primary transition-colors">{t.name}</p>
-                                <div className="flex items-center gap-3 shrink-0">
-                                  <button 
-                                    onClick={(e) => {
-                                      e.stopPropagation();
-                                      window.open(t.url);
-                                    }}
-                                    className="p-2 text-morandi-text/40 hover:text-morandi-primary transition-colors"
-                                  >
-                                    <Navigation size={18} />
-                                  </button>
-                                  <ChevronDown 
-                                    size={18} 
-                                    className={`text-morandi-text/20 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} 
-                                  />
-                                </div>
-                              </div>
-                              <AnimatePresence>
-                                {isOpen && (
-                                  <motion.div
-                                    initial={{ height: 0, opacity: 0 }}
-                                    animate={{ height: 'auto', opacity: 1 }}
-                                    exit={{ height: 0, opacity: 0 }}
-                                    className="overflow-hidden"
-                                  >
-                                    <div className="pt-3">
-                                      <SmartParagraph className="!py-0" noBorder={true}>
-                                        {t.desc}
-                                      </SmartParagraph>
-                                    </div>
-                                  </motion.div>
-                                )}
-                              </AnimatePresence>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  )}
-
-                  {item.remarks && (
-                    <div className="space-y-3 pt-2">
-                      <div className="flex items-center gap-2 text-morandi-text/60">
-                        <Info size={20} />
-                        <span className="text-[18px] font-bold uppercase tracking-widest">備註</span>
-                      </div>
-                      <SmartParagraph>
-                        {item.remarks}
-                      </SmartParagraph>
-                    </div>
-                  )}
+              {item.remarks && (
+                <div className="space-y-3 pt-2">
+                  <div className="flex items-center gap-2 text-morandi-text/60">
+                    <Info size={20} />
+                    <span className="text-[18px] font-bold uppercase tracking-widest">備註</span>
+                  </div>
+                  <SmartParagraph>
+                    {item.remarks}
+                  </SmartParagraph>
                 </div>
               )}
             </div>
@@ -1226,9 +1118,13 @@ function BudgetTab({ expenses, setExpenses, rate }: any) {
   const [title, setTitle] = useState('');
   const [amount, setAmount] = useState('');
   const [calcInput, setCalcInput] = useState('');
+  const [expenseType, setExpenseType] = useState<'public' | 'private'>('public');
+  const [payer, setPayer] = useState<string>('媽媽');
+  const [copied, setCopied] = useState(false);
 
-  const totalJPY = expenses.reduce((sum: number, e: any) => sum + e.amount, 0);
-  const totalTWD = Math.round(totalJPY * rate);
+  // Fallbacks for backward compatibility
+  const totalJPY = expenses.reduce((sum: number, e: any) => sum + (typeof e.amountJPY === 'number' ? e.amountJPY : e.amount), 0);
+  const totalTWD = expenses.reduce((sum: number, e: any) => sum + (typeof e.amountTWD === 'number' ? e.amountTWD : Math.round(e.amount * rate)), 0);
 
   const calcResult = useMemo(() => {
     try {
@@ -1243,17 +1139,126 @@ function BudgetTab({ expenses, setExpenses, rate }: any) {
 
   const addExpense = () => {
     if (!title || !amount) return;
-    setExpenses([{ 
-      id: Date.now().toString(), 
-      title, 
-      amount: parseFloat(amount), 
-      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) 
-    }, ...expenses]);
-    setTitle(''); setAmount('');
+    const numericAmount = parseFloat(amount);
+    if (isNaN(numericAmount) || numericAmount <= 0) return;
+
+    const newExpense = {
+      id: Date.now().toString(),
+      title,
+      amount: numericAmount, // for backward compatibility
+      amountJPY: numericAmount,
+      amountTWD: Math.round(numericAmount * rate),
+      type: expenseType, // 'public' or 'private'
+      payer: expenseType === 'public' ? payer : '自己',
+      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    };
+
+    setExpenses([newExpense, ...expenses]);
+    setTitle('');
+    setAmount('');
   };
 
   const removeExpense = (id: string) => {
     setExpenses(expenses.filter((e: any) => e.id !== id));
+  };
+
+  // Group split calculations
+  const publicExpenses = expenses.filter((e: any) => (e.type || 'public') === 'public');
+  const privateExpenses = expenses.filter((e: any) => (e.type || 'public') === 'private');
+
+  const publicTotalTWD = publicExpenses.reduce((sum: number, e: any) => {
+    const amtTWD = typeof e.amountTWD === 'number' ? e.amountTWD : Math.round(e.amount * rate);
+    return sum + amtTWD;
+  }, 0);
+
+  const averageShareTWD = Math.round(publicTotalTWD / 7);
+
+  const paidMama = publicExpenses
+    .filter((e: any) => (e.payer || '媽媽') === '媽媽')
+    .reduce((sum: number, e: any) => sum + (typeof e.amountTWD === 'number' ? e.amountTWD : Math.round(e.amount * rate)), 0);
+
+  const paidShirui = publicExpenses
+    .filter((e: any) => e.payer === '世睿')
+    .reduce((sum: number, e: any) => sum + (typeof e.amountTWD === 'number' ? e.amountTWD : Math.round(e.amount * rate)), 0);
+
+  const paidSister = publicExpenses
+    .filter((e: any) => e.payer === '姊姊')
+    .reduce((sum: number, e: any) => sum + (typeof e.amountTWD === 'number' ? e.amountTWD : Math.round(e.amount * rate)), 0);
+
+  const privateTotalTWD = privateExpenses.reduce((sum: number, e: any) => {
+    const amtTWD = typeof e.amountTWD === 'number' ? e.amountTWD : Math.round(e.amount * rate);
+    return sum + amtTWD;
+  }, 0);
+
+  const actualTotalTWD = averageShareTWD + privateTotalTWD;
+
+  // proportional splits for families:
+  // 媽媽 group has 1 person -> share is averageShareTWD * 1
+  // 世睿 group has 4 people -> share is averageShareTWD * 4
+  // 姊姊 group has 2 people -> sisterShare is publicTotalTWD - mamaShare - shiruiShare (remaining)
+  const mamaShare = Math.round(publicTotalTWD * 1 / 7);
+  const shiruiShare = Math.round(publicTotalTWD * 4 / 7);
+  const sisterShare = publicTotalTWD - mamaShare - shiruiShare;
+
+  const balances = [
+    { name: '媽媽', bal: paidMama - mamaShare, count: 1 },
+    { name: '世睿', bal: paidShirui - shiruiShare, count: 4 },
+    { name: '姊姊', bal: paidSister - sisterShare, count: 2 }
+  ];
+
+  const getSettlementSuggestions = () => {
+    if (publicTotalTWD === 0) return "無公費支出，無需結算。";
+    
+    const debtors = balances.filter(b => b.bal < -0.5).map(b => ({ ...b, bal: Math.abs(b.bal) }));
+    const creditors = balances.filter(b => b.bal > 0.5).map(b => ({ ...b }));
+    
+    const suggestions: string[] = [];
+    
+    // Greedy matching to settle debts
+    let dIdx = 0;
+    let cIdx = 0;
+    while (dIdx < debtors.length && cIdx < creditors.length) {
+      const d = debtors[dIdx];
+      const c = creditors[cIdx];
+      const amountToTransfer = Math.min(d.bal, c.bal);
+      
+      if (amountToTransfer >= 0.5) {
+        suggestions.push(`【${d.name}】需轉帳給【${c.name}】NT$ ${Math.round(amountToTransfer).toLocaleString()}`);
+        d.bal -= amountToTransfer;
+        c.bal -= amountToTransfer;
+      }
+      if (d.bal < 0.5) dIdx++;
+      if (c.bal < 0.5) cIdx++;
+    }
+    
+    if (suggestions.length === 0) return "大家的分擔均等，不需轉帳！";
+    return suggestions.join('\n');
+  };
+
+  const handleCopyReport = () => {
+    const suggestionsText = getSettlementSuggestions();
+    const reportText = `✈️ 沖繩旅遊記帳結算報告
+全家公費總支出：NT$ ${publicTotalTWD.toLocaleString()} (每人應分擔：NT$ ${averageShareTWD.toLocaleString()})
+
+【分擔比例說明】
+- 媽媽：1 人分擔 (應付 NT$ ${mamaShare.toLocaleString()})
+- 世睿：4 人分擔 (應付 NT$ ${shiruiShare.toLocaleString()})
+- 姊姊：2 人分擔 (應付 NT$ ${sisterShare.toLocaleString()})
+
+【各方代墊明細】
+- 媽媽已代墊：NT$ ${paidMama.toLocaleString()}
+- 世睿已代墊：NT$ ${paidShirui.toLocaleString()}
+- 姊姊已代墊：NT$ ${paidSister.toLocaleString()}
+
+【最終拆帳建議】
+${suggestionsText}
+
+報告產出時間：${new Date().toLocaleString()}`;
+
+    navigator.clipboard.writeText(reportText).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    });
   };
 
   return (
@@ -1332,6 +1337,67 @@ function BudgetTab({ expenses, setExpenses, rate }: any) {
           </div>
         </div>
 
+        {/* 費用類型與付款人連動選單 */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-2">
+          {/* 費用類型 */}
+          <div className="space-y-2">
+            <label className="text-xs font-bold text-morandi-text-muted uppercase tracking-widest ml-1 flex items-center gap-1">
+              <span>費用類型</span>
+            </label>
+            <div className="flex bg-white/40 p-1.5 rounded-2xl border border-morandi-primary/5 shadow-inner">
+              <button
+                type="button"
+                onClick={() => setExpenseType('public')}
+                className={`flex-1 py-3 px-4 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 ${
+                  expenseType === 'public'
+                    ? 'bg-morandi-primary text-white shadow-sm'
+                    : 'text-morandi-text-muted hover:bg-white/40'
+                }`}
+              >
+                <span>👥 全家</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setExpenseType('private')}
+                className={`flex-1 py-3 px-4 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 ${
+                  expenseType === 'private'
+                    ? 'bg-morandi-primary text-white shadow-sm'
+                    : 'text-morandi-text-muted hover:bg-white/40'
+                }`}
+              >
+                <span>👤 個人</span>
+              </button>
+            </div>
+          </div>
+
+          {/* 付款人 */}
+          <div className={`space-y-2 transition-all duration-300 ${expenseType === 'public' ? 'opacity-100' : 'opacity-40 pointer-events-none'}`}>
+            <label className="text-xs font-bold text-morandi-text-muted uppercase tracking-widest ml-1">
+              付款人 {expenseType === 'private' && <span className="text-morandi-primary/60 font-medium">(預設為自己)</span>}
+            </label>
+            {expenseType === 'public' ? (
+              <div className="relative">
+                <select
+                  value={payer}
+                  onChange={(e) => setPayer(e.target.value)}
+                  className="w-full bg-white/40 p-4 rounded-2xl text-base font-bold outline-none text-morandi-text border border-transparent focus:border-morandi-primary/20 transition-all appearance-none cursor-pointer"
+                >
+                  <option value="媽媽">媽媽</option>
+                  <option value="世睿">世睿</option>
+                  <option value="姊姊">姊姊</option>
+                </select>
+                <div className="pointer-events-none absolute inset-y-0 right-4 flex items-center text-morandi-text-muted">
+                  <ChevronDown size={18} />
+                </div>
+              </div>
+            ) : (
+              <div className="w-full bg-white/20 p-4 rounded-2xl text-base font-bold text-morandi-text-muted/60 border border-dashed border-morandi-primary/10 select-none">
+                自己
+              </div>
+            )}
+          </div>
+        </div>
+
         <button 
           onClick={addExpense}
           className="w-full py-4 bg-morandi-primary text-white rounded-2xl font-bold text-sm shadow-lg shadow-morandi-primary/10 active:scale-95 transition-all"
@@ -1365,24 +1431,158 @@ function BudgetTab({ expenses, setExpenses, rate }: any) {
               <p className="text-sm text-morandi-text-muted">尚無支出紀錄</p>
             </div>
           ) : (
-            expenses.map((ex: any) => (
-              <div key={ex.id} className="bg-white rounded-[24px] p-5 shadow-sm border border-white/80 flex items-center justify-between group">
-                <div className="flex-1 min-w-0 pr-4">
-                  <h5 style={fontStyleSerif} className="text-base font-bold text-morandi-text truncate">{ex.title}</h5>
-                  <p className="text-[10px] text-morandi-text-muted font-mono mt-0.5 opacity-60">{ex.time}</p>
-                </div>
-                <div className="flex items-center gap-4">
-                  <div className="text-right">
-                    <p className="font-mono text-lg font-bold text-morandi-text">¥{ex.amount.toLocaleString()}</p>
-                    <p className="text-[10px] text-morandi-primary/60 font-bold mt-0.5">≈ ${Math.round(ex.amount * rate)}</p>
+            expenses.map((ex: any) => {
+              const type = ex.type || 'public';
+              const epayer = ex.payer || '媽媽';
+              const amountJPY = typeof ex.amountJPY === 'number' ? ex.amountJPY : ex.amount;
+              const amountTWD = typeof ex.amountTWD === 'number' ? ex.amountTWD : Math.round(ex.amount * rate);
+
+              return (
+                <div key={ex.id} className="bg-white rounded-[24px] p-5 shadow-sm border border-white/80 flex items-center justify-between group">
+                  <div className="flex-1 min-w-0 pr-4 space-y-1">
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <span className={`text-[10px] px-2 py-0.5 rounded-full border shrink-0 font-bold ${
+                        type === 'public' 
+                          ? 'bg-morandi-primary/10 border-morandi-primary/20 text-morandi-primary' 
+                          : 'bg-orange-50 border-orange-100 text-orange-600'
+                      }`}>
+                        {type === 'public' ? '👥 公費' : '👤 個人'}
+                      </span>
+                      <h5 style={fontStyleSerif} className="text-base font-bold text-morandi-text truncate">{ex.title}</h5>
+                    </div>
+                    <p className="text-[10px] text-morandi-text-muted font-mono opacity-65 flex items-center gap-1.5 flex-wrap">
+                      <span>{ex.time}</span>
+                      {type === 'public' && (
+                        <>
+                          <span className="w-1.5 h-1.5 rounded-full bg-morandi-text-muted/30" />
+                          <span className="bg-morandi-bg px-1.5 py-0.5 rounded text-morandi-primary border border-morandi-primary/5 font-bold">付款: {epayer}</span>
+                        </>
+                      )}
+                    </p>
                   </div>
-                  <button onClick={() => removeExpense(ex.id)} className="text-morandi-accent hover:text-red-400 transition-colors p-1 opacity-40 group-hover:opacity-100">
-                    <Trash2 size={16} />
-                  </button>
+                  <div className="flex items-center gap-4 shrink-0">
+                    <div className="text-right">
+                      <p className="font-mono text-lg font-bold text-morandi-text">¥{amountJPY.toLocaleString()}</p>
+                      <p className="text-[10px] text-morandi-primary/60 font-bold mt-0.5">≈ ${amountTWD.toLocaleString()}</p>
+                    </div>
+                    <button onClick={() => removeExpense(ex.id)} className="text-morandi-accent hover:text-red-400 transition-colors p-1 opacity-40 group-hover:opacity-100">
+                      <Trash2 size={16} />
+                    </button>
+                  </div>
+                </div>
+              );
+            })
+          )}
+        </div>
+      </div>
+
+      {/* 旅程帳目看板 */}
+      <div className="bg-white/60 rounded-[32px] p-8 border border-white/80 shadow-sm space-y-6">
+        <div className="flex items-center gap-3">
+          <div className="w-8 h-8 bg-morandi-primary/10 rounded-full flex items-center justify-center text-morandi-primary">
+            <LayoutGrid size={16} />
+          </div>
+          <h3 className="text-lg font-bold text-morandi-text">旅程帳目看板</h3>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* 左區塊：全家公費統計 */}
+          <div className="bg-morandi-primary/5 border border-morandi-primary/10 rounded-2xl p-6 flex flex-col justify-between space-y-4">
+            <div>
+              <div className="flex items-center justify-between mb-3">
+                <h4 className="text-xs font-black text-morandi-primary tracking-widest uppercase flex items-center gap-1.5">
+                  <Users size={14} />
+                  <span>全家公費統計</span>
+                </h4>
+                <span className="text-[10px] font-bold bg-morandi-primary/10 text-morandi-primary px-2 py-0.5 rounded-full">
+                  共 7 人分擔
+                </span>
+              </div>
+              
+              <div className="space-y-4">
+                <div>
+                  <p className="text-[10px] text-morandi-text-muted uppercase tracking-widest font-bold">全家公費總計</p>
+                  <p className="text-2xl font-mono font-bold text-morandi-text">NT$ {publicTotalTWD.toLocaleString()}</p>
+                </div>
+
+                <div className="bg-white/50 border border-morandi-primary/5 rounded-xl p-3.5 space-y-1">
+                  <p className="text-[10px] text-morandi-text-muted uppercase tracking-widest font-bold">每人平均應分擔 (1/7)</p>
+                  <p className="text-lg font-mono font-bold text-morandi-primary">NT$ {averageShareTWD.toLocaleString()}</p>
                 </div>
               </div>
-            ))
-          )}
+            </div>
+
+            <div className="pt-3 border-t border-morandi-primary/10 space-y-2">
+              <p className="text-[10px] text-morandi-text-muted font-bold uppercase tracking-wider mb-2">各方公費代墊明細：</p>
+              <div className="grid grid-cols-1 gap-2 text-xs">
+                <div className="flex justify-between items-center bg-white/40 p-2 rounded-lg border border-white/60">
+                  <span className="font-bold text-morandi-text">媽媽代墊：</span>
+                  <span className="font-mono text-morandi-text font-bold">NT$ {paidMama.toLocaleString()}</span>
+                </div>
+                <div className="flex justify-between items-center bg-white/40 p-2 rounded-lg border border-white/60">
+                  <span className="font-bold text-morandi-text">世睿代墊：</span>
+                  <span className="font-mono text-morandi-text font-bold">NT$ {paidShirui.toLocaleString()}</span>
+                </div>
+                <div className="flex justify-between items-center bg-white/40 p-2 rounded-lg border border-white/60">
+                  <span className="font-bold text-morandi-text">姊姊代墊：</span>
+                  <span className="font-mono text-morandi-text font-bold">NT$ {paidSister.toLocaleString()}</span>
+                </div>
+              </div>
+            </div>
+
+            {/* 家族結算報告按鈕 */}
+            <div className="pt-2">
+              <button 
+                onClick={handleCopyReport}
+                className="w-full py-3 px-4 bg-morandi-primary hover:bg-morandi-primary/95 text-white rounded-xl font-bold text-xs shadow-sm flex items-center justify-center gap-2 active:scale-95 transition-all"
+              >
+                {copied ? <Check size={14} strokeWidth={2.5} /> : <Copy size={14} />}
+                <span>{copied ? '已複製結算報告！' : '📋 複製結算報告'}</span>
+              </button>
+            </div>
+          </div>
+
+          {/* 右區塊：您的實際總花費 */}
+          <div className="bg-orange-50/40 border border-orange-100 rounded-2xl p-6 flex flex-col justify-between space-y-4">
+            <div>
+              <div className="flex items-center justify-between mb-3">
+                <h4 className="text-xs font-black text-orange-600 tracking-widest uppercase flex items-center gap-1.5">
+                  <Smartphone size={14} />
+                  <span>您的實際總花費</span>
+                </h4>
+                <span className="text-[10px] font-bold bg-orange-100 text-orange-700 px-2 py-0.5 rounded-full">
+                  雙軌統計
+                </span>
+              </div>
+
+              <div className="space-y-4">
+                <div>
+                  <p className="text-[10px] text-morandi-text-muted uppercase tracking-widest font-bold">您個人的花費總計</p>
+                  <p className="text-xl font-mono font-bold text-morandi-text">NT$ {privateTotalTWD.toLocaleString()}</p>
+                </div>
+
+                <div className="bg-white/80 border border-orange-100 rounded-xl p-4 shadow-sm flex flex-col gap-1">
+                  <span className="text-[10px] text-orange-600 uppercase tracking-widest font-black flex items-center gap-1">
+                    <span>本次旅程實際總花費</span>
+                  </span>
+                  <span className="text-xs text-morandi-text-muted">(公費分擔 + 個人私費)</span>
+                  <div className="flex items-baseline gap-1 mt-1">
+                    <span className="text-lg text-orange-600 font-mono font-bold">$</span>
+                    <span className="text-3xl font-mono font-black text-orange-600">
+                      {actualTotalTWD.toLocaleString()}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="pt-3 border-t border-orange-100 space-y-2 text-xs text-morandi-text-muted/80">
+              <p className="font-bold text-[10px] text-orange-600/80 uppercase tracking-wider mb-1">💡 計算說明：</p>
+              <p className="leading-relaxed">
+                您的旅程總花費包含您在全家公費中應分擔的 1/7 額度 (NT$ {averageShareTWD.toLocaleString()})，加上您自己登記的個人私費支出 (NT$ {privateTotalTWD.toLocaleString()})。
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
