@@ -8,7 +8,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { 
   Calendar, Wallet, ListCheck, Info, MapPin, 
   CloudSun, Plus, Trash2, ChevronRight, Navigation, X, 
-  Image as ImageIcon, Smartphone, Users, CheckCircle2, Circle, Clock, Ticket,
+  Image as ImageIcon, Smartphone, Users, User, CheckCircle2, Circle, Clock, Ticket,
   ExternalLink, Sun, Cloud, CloudRain, Utensils, Plane, Car, Upload, Star,
   LayoutGrid, StretchHorizontal, ChevronLeft, ChevronRight as ChevronRightIcon,
   PhoneCall, PlusCircle, Link, ChevronDown, Map, Copy, Check, QrCode
@@ -1354,7 +1354,8 @@ ${suggestionsText}
                     : 'text-morandi-text-muted hover:bg-white/40'
                 }`}
               >
-                <span>👥 全家</span>
+                <Users size={15} />
+                <span>全家</span>
               </button>
               <button
                 type="button"
@@ -1365,7 +1366,8 @@ ${suggestionsText}
                     : 'text-morandi-text-muted hover:bg-white/40'
                 }`}
               >
-                <span>👤 個人</span>
+                <User size={15} />
+                <span>個人</span>
               </button>
             </div>
           </div>
@@ -1441,12 +1443,22 @@ ${suggestionsText}
                 <div key={ex.id} className="bg-white rounded-[24px] p-5 shadow-sm border border-white/80 flex items-center justify-between group">
                   <div className="flex-1 min-w-0 pr-4 space-y-1">
                     <div className="flex items-center gap-2 flex-wrap">
-                      <span className={`text-[10px] px-2 py-0.5 rounded-full border shrink-0 font-bold ${
+                      <span className={`text-[10px] px-2 py-0.5 rounded-full border shrink-0 font-bold flex items-center gap-1 ${
                         type === 'public' 
                           ? 'bg-morandi-primary/10 border-morandi-primary/20 text-morandi-primary' 
                           : 'bg-orange-50 border-orange-100 text-orange-600'
                       }`}>
-                        {type === 'public' ? '👥 公費' : '👤 個人'}
+                        {type === 'public' ? (
+                          <>
+                            <Users size={10} />
+                            <span>公費</span>
+                          </>
+                        ) : (
+                          <>
+                            <User size={10} />
+                            <span>個人</span>
+                          </>
+                        )}
                       </span>
                       <h5 style={fontStyleSerif} className="text-base font-bold text-morandi-text truncate">{ex.title}</h5>
                     </div>
@@ -1476,13 +1488,13 @@ ${suggestionsText}
         </div>
       </div>
 
-      {/* 旅程帳目看板 */}
+      {/* 旅行帳目總結 */}
       <div className="bg-white/60 rounded-[32px] p-8 border border-white/80 shadow-sm space-y-6">
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 bg-morandi-primary/10 rounded-full flex items-center justify-center text-morandi-primary">
             <LayoutGrid size={16} />
           </div>
-          <h3 className="text-lg font-bold text-morandi-text">旅程帳目看板</h3>
+          <h3 className="text-lg font-bold text-morandi-text">旅行帳目總結</h3>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -1543,14 +1555,14 @@ ${suggestionsText}
           </div>
 
           {/* 右區塊：您的實際總花費 */}
-          <div className="bg-orange-50/40 border border-orange-100 rounded-2xl p-6 flex flex-col justify-between space-y-4">
+          <div className="bg-[#967AA1]/5 border border-[#967AA1]/20 rounded-2xl p-6 flex flex-col justify-between space-y-4">
             <div>
               <div className="flex items-center justify-between mb-3">
-                <h4 className="text-xs font-black text-orange-600 tracking-widest uppercase flex items-center gap-1.5">
+                <h4 className="text-xs font-black text-[#967AA1] tracking-widest uppercase flex items-center gap-1.5">
                   <Smartphone size={14} />
                   <span>您的實際總花費</span>
                 </h4>
-                <span className="text-[10px] font-bold bg-orange-100 text-orange-700 px-2 py-0.5 rounded-full">
+                <span className="text-[10px] font-bold bg-[#967AA1]/10 text-[#967AA1] px-2 py-0.5 rounded-full">
                   雙軌統計
                 </span>
               </div>
@@ -1561,14 +1573,14 @@ ${suggestionsText}
                   <p className="text-xl font-mono font-bold text-morandi-text">NT$ {privateTotalTWD.toLocaleString()}</p>
                 </div>
 
-                <div className="bg-white/80 border border-orange-100 rounded-xl p-4 shadow-sm flex flex-col gap-1">
-                  <span className="text-[10px] text-orange-600 uppercase tracking-widest font-black flex items-center gap-1">
+                <div className="bg-white/80 border border-[#967AA1]/20 rounded-xl p-4 shadow-sm flex flex-col gap-1">
+                  <span className="text-[10px] text-[#967AA1] uppercase tracking-widest font-black flex items-center gap-1">
                     <span>本次旅程實際總花費</span>
                   </span>
                   <span className="text-xs text-morandi-text-muted">(公費分擔 + 個人私費)</span>
                   <div className="flex items-baseline gap-1 mt-1">
-                    <span className="text-lg text-orange-600 font-mono font-bold">$</span>
-                    <span className="text-3xl font-mono font-black text-orange-600">
+                    <span className="text-lg text-[#967AA1] font-mono font-bold">$</span>
+                    <span className="text-3xl font-mono font-black text-[#967AA1]">
                       {actualTotalTWD.toLocaleString()}
                     </span>
                   </div>
@@ -1576,8 +1588,8 @@ ${suggestionsText}
               </div>
             </div>
 
-            <div className="pt-3 border-t border-orange-100 space-y-2 text-xs text-morandi-text-muted/80">
-              <p className="font-bold text-[10px] text-orange-600/80 uppercase tracking-wider mb-1">💡 計算說明：</p>
+            <div className="pt-3 border-t border-[#967AA1]/20 space-y-2 text-xs text-morandi-text-muted/80">
+              <p className="font-bold text-[10px] text-[#967AA1]/80 uppercase tracking-wider mb-1">💡 計算說明：</p>
               <p className="leading-relaxed">
                 您的旅程總花費包含您在全家公費中應分擔的 1/7 額度 (NT$ {averageShareTWD.toLocaleString()})，加上您自己登記的個人私費支出 (NT$ {privateTotalTWD.toLocaleString()})。
               </p>
