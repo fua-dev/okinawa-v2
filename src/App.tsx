@@ -314,11 +314,21 @@ export default function App() {
   const [currentDay, setCurrentDay] = useState(1);
   const [selectedItem, setSelectedItem] = useState<any>(null);
   const [showDeclaration, setShowDeclaration] = useState(false);
-  const [expenses, setExpenses] = useState<any[]>([]);
+  const [expenses, setExpenses] = useState<any[]>(() => {
+    const saved = localStorage.getItem('expense_tracker_data') || localStorage.getItem('okinawa_expenses');
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch (e) {
+        return [];
+      }
+    }
+    return [];
+  });
   const [memo, setMemo] = useState(() => {
     return localStorage.getItem('memo_content') || localStorage.getItem('okinawa_memo') || '';
   });
-  const [exchangeRate, setExchangeRate] = useState(0.21);
+  const [exchangeRate, setExchangeRate] = useState(0.215);
   const [fontSizeLevel, setFontSizeLevel] = useState<number>(() => {
     const saved = localStorage.getItem('user_font_size');
     if (saved) {
@@ -336,7 +346,9 @@ export default function App() {
         const response = await fetch('https://open.er-api.com/v6/latest/JPY');
         const data = await response.json();
         if (data && data.rates && data.rates.TWD) {
-          setExchangeRate(data.rates.TWD);
+          // 現金賣出匯率通常為即期/中間匯率加上約 1.5% 的現金手續費價差
+          const cashSellingRate = data.rates.TWD * 1.015;
+          setExchangeRate(Number(cashSellingRate.toFixed(4)));
         }
       } catch (error) {
         console.error('Failed to fetch exchange rate:', error);
@@ -346,11 +358,9 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    const savedExp = localStorage.getItem('okinawa_expenses');
-    if (savedExp) setExpenses(JSON.parse(savedExp));
-  }, []);
-
-  useEffect(() => { localStorage.setItem('okinawa_expenses', JSON.stringify(expenses)); }, [expenses]);
+    localStorage.setItem('expense_tracker_data', JSON.stringify(expenses));
+    localStorage.setItem('okinawa_expenses', JSON.stringify(expenses));
+  }, [expenses]);
   useEffect(() => { localStorage.setItem('memo_content', memo); }, [memo]);
   useEffect(() => { localStorage.setItem('user_font_size', fontSizeLevel.toString()); }, [fontSizeLevel]);
 
@@ -389,6 +399,9 @@ export default function App() {
               </h1>
             </div>
             <div className="flex items-center gap-2 shrink-0">
+              <button onClick={() => setShowDeclaration(true)} className="w-11 h-11 rounded-full bg-white shadow-sm flex items-center justify-center text-morandi-primary active:scale-95 transition-all border border-morandi-primary/10 hover:bg-morandi-primary/5">
+                <Users size={20} />
+              </button>
               {/* Fine-tune font size */}
               <div className="flex items-center bg-white/70 backdrop-blur-sm border border-morandi-primary/10 rounded-full p-1 shadow-sm gap-0.5 select-none">
                 <button 
@@ -407,9 +420,6 @@ export default function App() {
                   A+
                 </button>
               </div>
-              <button onClick={() => setShowDeclaration(true)} className="w-11 h-11 rounded-full bg-white shadow-sm flex items-center justify-center text-morandi-primary active:scale-95 transition-all border border-morandi-primary/10 hover:bg-morandi-primary/5">
-                <Users size={20} />
-              </button>
             </div>
           </div>
           <div className="flex items-center gap-4">
@@ -1156,7 +1166,11 @@ function BudgetTab({ expenses, setExpenses, rate }: any) {
   const [payer, setPayer] = useState<string>('媽媽');
   const [copied, setCopied] = useState(false);
 
-  // Fallbacks for backward compatibility
+  // New state variables for split bill customization
+  const [splitType, setSplitType] = useState<'all' | 'custom'>('all');
+  const [splitTargets, setSplitTargets] = useState<string[]>(['媽媽', '姊姊', '世睿']);
+
+  // JPY/TWD Total Expenses (all records)
   const totalJPY = expenses.reduce((sum: number, e: any) => sum + (typeof e.amountJPY === 'number' ? e.amountJPY : e.amount), 0);
   const totalTWD = expenses.reduce((sum: number, e: any) => sum + (typeof e.amountTWD === 'number' ? e.amountTWD : Math.round(e.amount * rate)), 0);
 
@@ -1171,6 +1185,53 @@ function BudgetTab({ expenses, setExpenses, rate }: any) {
     }
   }, [calcInput]);
 
+  // Helper to calculate individual expense split shares
+  const getExpenseShares = (ex: any) => {
+    const amtTWD = typeof ex.amountTWD === 'number' ? ex.amountTWD : Math.round(ex.amount * rate);
+    let mama = 0;
+    let sister = 0;
+    let shirui = 0;
+
+    if (ex.type === 'private') {
+      // Private expenses are paid 100% by "自己" (媽媽)
+      mama = amtTWD;
+    } else {
+      // Public expense
+      const typeOfSplit = ex.splitType || 'all';
+      if (typeOfSplit === 'all') {
+        // 全家平分: 媽媽：1 人分擔, 世睿家：4 人分擔, 姊姊家：2人分擔 (共 7 人)
+        mama = Math.round(amtTWD * 1 / 7);
+        sister = Math.round(amtTWD * 2 / 7);
+        shirui = amtTWD - mama - sister; // shirui gets the remainder to keep sum perfectly matching amtTWD
+      } else {
+        // 自訂成員: 按勾選家庭數均分
+        const targets = ex.splitTargets || ['媽媽', '姊姊', '世睿'];
+        if (targets.length === 0) {
+          // fallback
+          mama = Math.round(amtTWD * 1 / 7);
+          sister = Math.round(amtTWD * 2 / 7);
+          shirui = amtTWD - mama - sister;
+        } else {
+          const share = Math.round(amtTWD / targets.length);
+          let sum = 0;
+          targets.forEach((t: string, idx: number) => {
+            let currentShare = share;
+            if (idx === targets.length - 1) {
+              currentShare = amtTWD - sum; // adjust the last one to preserve the exact sum
+            }
+            sum += currentShare;
+
+            if (t === '媽媽') mama = currentShare;
+            else if (t === '姊姊') sister = currentShare;
+            else if (t === '世睿') shirui = currentShare;
+          });
+        }
+      }
+    }
+
+    return { mama, sister, shirui };
+  };
+
   const addExpense = () => {
     if (!title || !amount) return;
     const numericAmount = parseFloat(amount);
@@ -1184,12 +1245,16 @@ function BudgetTab({ expenses, setExpenses, rate }: any) {
       amountTWD: Math.round(numericAmount * rate),
       type: expenseType, // 'public' or 'private'
       payer: expenseType === 'public' ? payer : '自己',
+      splitType: expenseType === 'public' ? splitType : 'all',
+      splitTargets: expenseType === 'public' ? (splitType === 'custom' ? splitTargets : ['媽媽', '姊姊', '世睿']) : ['媽媽'],
       time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     };
 
     setExpenses([newExpense, ...expenses]);
     setTitle('');
     setAmount('');
+    setSplitType('all');
+    setSplitTargets(['媽媽', '姊姊', '世睿']);
   };
 
   const removeExpense = (id: string) => {
@@ -1205,8 +1270,7 @@ function BudgetTab({ expenses, setExpenses, rate }: any) {
     return sum + amtTWD;
   }, 0);
 
-  const averageShareTWD = Math.round(publicTotalTWD / 7);
-
+  // Paid/Advancement amounts for each person (only public expenses)
   const paidMama = publicExpenses
     .filter((e: any) => (e.payer || '媽媽') === '媽媽')
     .reduce((sum: number, e: any) => sum + (typeof e.amountTWD === 'number' ? e.amountTWD : Math.round(e.amount * rate)), 0);
@@ -1219,20 +1283,25 @@ function BudgetTab({ expenses, setExpenses, rate }: any) {
     .filter((e: any) => e.payer === '姊姊')
     .reduce((sum: number, e: any) => sum + (typeof e.amountTWD === 'number' ? e.amountTWD : Math.round(e.amount * rate)), 0);
 
+  // Total shares calculated dynamically per-item
+  let mamaShare = 0;
+  let shiruiShare = 0;
+  let sisterShare = 0;
+
+  publicExpenses.forEach((ex: any) => {
+    const shares = getExpenseShares(ex);
+    mamaShare += shares.mama;
+    shiruiShare += shares.shirui;
+    sisterShare += shares.sister;
+  });
+
   const privateTotalTWD = privateExpenses.reduce((sum: number, e: any) => {
     const amtTWD = typeof e.amountTWD === 'number' ? e.amountTWD : Math.round(e.amount * rate);
     return sum + amtTWD;
   }, 0);
 
-  const actualTotalTWD = averageShareTWD + privateTotalTWD;
-
-  // proportional splits for families:
-  // 媽媽 group has 1 person -> share is averageShareTWD * 1
-  // 世睿 group has 4 people -> share is averageShareTWD * 4
-  // 姊姊 group has 2 people -> sisterShare is publicTotalTWD - mamaShare - shiruiShare (remaining)
-  const mamaShare = Math.round(publicTotalTWD * 1 / 7);
-  const shiruiShare = Math.round(publicTotalTWD * 4 / 7);
-  const sisterShare = publicTotalTWD - mamaShare - shiruiShare;
+  // Real Actual Expenses for '自己' (媽媽) = her public share + her private total
+  const actualTotalTWD = mamaShare + privateTotalTWD;
 
   const balances = [
     { name: '媽媽', bal: paidMama - mamaShare, count: 1 },
@@ -1272,12 +1341,12 @@ function BudgetTab({ expenses, setExpenses, rate }: any) {
   const handleCopyReport = () => {
     const suggestionsText = getSettlementSuggestions();
     const reportText = `✈️ 沖繩旅遊記帳結算報告
-全家公費總支出：NT$ ${publicTotalTWD.toLocaleString()} (每人應分擔：NT$ ${averageShareTWD.toLocaleString()})
+全家公費總支出：NT$ ${publicTotalTWD.toLocaleString()}
 
-【分擔比例說明】
-- 媽媽：1 人分擔 (應付 NT$ ${mamaShare.toLocaleString()})
-- 世睿：4 人分擔 (應付 NT$ ${shiruiShare.toLocaleString()})
-- 姊姊：2 人分擔 (應付 NT$ ${sisterShare.toLocaleString()})
+【各方應付總額（含分攤與自訂明細）】
+- 媽媽 (1人)：總應付 NT$ ${mamaShare.toLocaleString()}
+- 世睿家 (4人)：總應付 NT$ ${shiruiShare.toLocaleString()}
+- 姊姊家 (2人)：總應付 NT$ ${sisterShare.toLocaleString()}
 
 【各方代墊明細】
 - 媽媽已代墊：NT$ ${paidMama.toLocaleString()}
@@ -1306,7 +1375,7 @@ ${suggestionsText}
             </div>
             <h3 className="text-lg font-bold text-morandi-text">即時匯率換算</h3>
           </div>
-          <span className="text-[10px] font-bold text-morandi-primary/60 tracking-widest uppercase">1 JPY ≈ {rate.toFixed(4)} TWD</span>
+          <span className="text-[10px] font-bold text-[#967AA1] tracking-widest uppercase">1 JPY ≈ {rate.toFixed(4)} TWD</span>
         </div>
 
         <div className="space-y-6">
@@ -1434,6 +1503,85 @@ ${suggestionsText}
           </div>
         </div>
 
+        {/* Dynamic fields when selecting "全家" (public expense) */}
+        {expenseType === 'public' && (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2 animate-fade-in">
+            {/* 分攤方式 toggle button */}
+            <div className="space-y-2 col-span-1 md:col-span-2">
+              <label className="text-xs font-bold text-morandi-text-muted uppercase tracking-widest ml-1 flex items-center gap-1">
+                <span>分攤方式</span>
+              </label>
+              <div className="flex bg-white/40 p-1.5 rounded-2xl border border-morandi-primary/5 shadow-inner">
+                <button
+                  type="button"
+                  onClick={() => setSplitType('all')}
+                  className={`flex-1 py-3 px-4 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 ${
+                    splitType === 'all'
+                      ? 'bg-morandi-primary text-white shadow-sm'
+                      : 'text-morandi-text-muted hover:bg-white/40'
+                  }`}
+                >
+                  <Users size={15} />
+                  <span>全家平分</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setSplitType('custom')}
+                  className={`flex-1 py-3 px-4 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 ${
+                    splitType === 'custom'
+                      ? 'bg-morandi-primary text-white shadow-sm'
+                      : 'text-morandi-text-muted hover:bg-white/40'
+                  }`}
+                >
+                  <PlusCircle size={15} />
+                  <span>自訂成員</span>
+                </button>
+              </div>
+            </div>
+
+            {/* If自訂成員 is selected, expand checkboxes */}
+            {splitType === 'custom' && (
+              <div className="space-y-2 col-span-1 md:col-span-2 bg-white/40 p-4 rounded-2xl border border-morandi-primary/10 animate-fade-in">
+                <label className="text-xs font-bold text-morandi-text-muted uppercase tracking-widest block mb-2">
+                  選擇分攤家庭單位 (至少選擇一家)
+                </label>
+                <div className="grid grid-cols-3 gap-3">
+                  {[
+                    { key: '媽媽', label: '媽媽' },
+                    { key: '姊姊', label: '姊姊家' },
+                    { key: '世睿', label: '世睿家' }
+                  ].map(item => {
+                    const checked = splitTargets.includes(item.key);
+                    return (
+                      <button
+                        key={item.key}
+                        type="button"
+                        onClick={() => {
+                          if (checked) {
+                            if (splitTargets.length > 1) {
+                              setSplitTargets(splitTargets.filter(t => t !== item.key));
+                            }
+                          } else {
+                            setSplitTargets([...splitTargets, item.key]);
+                          }
+                        }}
+                        className={`flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-xs font-bold transition-all border ${
+                          checked
+                            ? 'bg-morandi-primary/10 border-morandi-primary/30 text-morandi-primary shadow-sm'
+                            : 'bg-transparent border-morandi-primary/10 text-morandi-text-muted hover:bg-white/20'
+                        }`}
+                      >
+                        {checked ? <CheckCircle2 size={14} className="text-morandi-primary" /> : <Circle size={14} className="text-morandi-primary/30" />}
+                        <span>{item.label}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
         <button 
           onClick={addExpense}
           className="w-full py-4 bg-morandi-primary text-white rounded-2xl font-bold text-sm shadow-lg shadow-morandi-primary/10 active:scale-95 transition-all"
@@ -1502,6 +1650,12 @@ ${suggestionsText}
                         <>
                           <span className="w-1.5 h-1.5 rounded-full bg-morandi-text-muted/30" />
                           <span className="bg-morandi-bg px-1.5 py-0.5 rounded text-morandi-primary border border-morandi-primary/5 font-bold">付款: {epayer}</span>
+                          <span className="w-1.5 h-1.5 rounded-full bg-morandi-text-muted/30" />
+                          <span className="bg-[#967AA1]/10 px-1.5 py-0.5 rounded text-[#967AA1] border border-[#967AA1]/20 font-bold">
+                            {ex.splitType === 'custom' 
+                              ? `分攤: ${(ex.splitTargets || []).map((t: string) => t === '姊姊' ? '姊姊家' : t === '世睿' ? '世睿家' : t).join('+')}`
+                              : '分攤: 全家平分'}
+                          </span>
                         </>
                       )}
                     </p>
@@ -1552,26 +1706,52 @@ ${suggestionsText}
                 </div>
 
                 <div className="bg-white/50 border border-morandi-primary/5 rounded-xl p-3.5 space-y-1">
-                  <p className="text-[10px] text-morandi-text-muted uppercase tracking-widest font-bold">每人平均應分擔 (1/7)</p>
-                  <p className="text-lg font-mono font-bold text-morandi-primary">NT$ {averageShareTWD.toLocaleString()}</p>
+                  <p className="text-[10px] text-morandi-text-muted uppercase tracking-widest font-bold">每人平均公費 (全家平分時 1/7)</p>
+                  <p className="text-lg font-mono font-bold text-morandi-primary">NT$ {Math.round(publicTotalTWD / 7).toLocaleString()}</p>
                 </div>
               </div>
             </div>
 
             <div className="pt-3 border-t border-morandi-primary/10 space-y-2">
-              <p className="text-[10px] text-morandi-text-muted font-bold uppercase tracking-wider mb-2">各方公費代墊明細：</p>
+              <p className="text-[10px] text-morandi-text-muted font-bold uppercase tracking-wider mb-2">各家應付 & 代墊明細：</p>
               <div className="grid grid-cols-1 gap-2 text-xs">
-                <div className="flex justify-between items-center bg-white/40 p-2 rounded-lg border border-white/60">
-                  <span className="font-bold text-morandi-text">媽媽代墊：</span>
-                  <span className="font-mono text-morandi-text font-bold">NT$ {paidMama.toLocaleString()}</span>
+                <div className="bg-white/40 p-3 rounded-lg border border-white/60 space-y-1">
+                  <div className="flex justify-between items-center font-bold text-morandi-text">
+                    <span>媽媽 (1人)：</span>
+                    <span className="font-mono text-morandi-text">應付 NT$ {mamaShare.toLocaleString()}</span>
+                  </div>
+                  <div className="flex justify-between items-center text-xs text-morandi-text-muted">
+                    <span>已代墊： NT$ {paidMama.toLocaleString()}</span>
+                    <span className={`font-mono font-bold ${paidMama - mamaShare >= 0 ? 'text-green-600' : 'text-red-500'}`}>
+                      {paidMama - mamaShare >= 0 ? `多退 +NT$ ${(paidMama - mamaShare).toLocaleString()}` : `補繳 -NT$ ${Math.abs(paidMama - mamaShare).toLocaleString()}`}
+                    </span>
+                  </div>
                 </div>
-                <div className="flex justify-between items-center bg-white/40 p-2 rounded-lg border border-white/60">
-                  <span className="font-bold text-morandi-text">世睿代墊：</span>
-                  <span className="font-mono text-morandi-text font-bold">NT$ {paidShirui.toLocaleString()}</span>
+                
+                <div className="bg-white/40 p-3 rounded-lg border border-white/60 space-y-1">
+                  <div className="flex justify-between items-center font-bold text-morandi-text">
+                    <span>世睿家 (4人)：</span>
+                    <span className="font-mono text-morandi-text">應付 NT$ {shiruiShare.toLocaleString()}</span>
+                  </div>
+                  <div className="flex justify-between items-center text-xs text-morandi-text-muted">
+                    <span>已代墊： NT$ {paidShirui.toLocaleString()}</span>
+                    <span className={`font-mono font-bold ${paidShirui - shiruiShare >= 0 ? 'text-green-600' : 'text-red-500'}`}>
+                      {paidShirui - shiruiShare >= 0 ? `多退 +NT$ ${(paidShirui - shiruiShare).toLocaleString()}` : `補繳 -NT$ ${Math.abs(paidShirui - shiruiShare).toLocaleString()}`}
+                    </span>
+                  </div>
                 </div>
-                <div className="flex justify-between items-center bg-white/40 p-2 rounded-lg border border-white/60">
-                  <span className="font-bold text-morandi-text">姊姊代墊：</span>
-                  <span className="font-mono text-morandi-text font-bold">NT$ {paidSister.toLocaleString()}</span>
+
+                <div className="bg-white/40 p-3 rounded-lg border border-white/60 space-y-1">
+                  <div className="flex justify-between items-center font-bold text-morandi-text">
+                    <span>姊姊家 (2人)：</span>
+                    <span className="font-mono text-morandi-text">應付 NT$ {sisterShare.toLocaleString()}</span>
+                  </div>
+                  <div className="flex justify-between items-center text-xs text-morandi-text-muted">
+                    <span>已代墊： NT$ {paidSister.toLocaleString()}</span>
+                    <span className={`font-mono font-bold ${paidSister - sisterShare >= 0 ? 'text-green-600' : 'text-red-500'}`}>
+                      {paidSister - sisterShare >= 0 ? `多退 +NT$ ${(paidSister - sisterShare).toLocaleString()}` : `補繳 -NT$ ${Math.abs(paidSister - sisterShare).toLocaleString()}`}
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1611,7 +1791,7 @@ ${suggestionsText}
                   <span className="text-[10px] text-[#967AA1] uppercase tracking-widest font-black flex items-center gap-1">
                     <span>本次旅程實際總花費</span>
                   </span>
-                  <span className="text-xs text-morandi-text-muted">(公費分擔 + 個人私費)</span>
+                  <span className="text-xs text-morandi-text-muted">(公費自擔/分擔 + 個人私費)</span>
                   <div className="flex items-baseline gap-1 mt-1">
                     <span className="text-lg text-[#967AA1] font-mono font-bold">$</span>
                     <span className="text-3xl font-mono font-black text-[#967AA1]">
@@ -1625,7 +1805,7 @@ ${suggestionsText}
             <div className="pt-3 border-t border-[#967AA1]/20 space-y-2 text-xs text-morandi-text-muted/80">
               <p className="font-bold text-[10px] text-[#967AA1]/80 uppercase tracking-wider mb-1">💡 計算說明：</p>
               <p className="leading-relaxed">
-                您的旅程總花費包含您在全家公費中應分擔的 1/7 額度 (NT$ {averageShareTWD.toLocaleString()})，加上您自己登記的個人私費支出 (NT$ {privateTotalTWD.toLocaleString()})。
+                您的旅程總花費包含您在全家公費中實際應分擔的額度 (NT$ {mamaShare.toLocaleString()})，加上您自己登記的個人私費支出 (NT$ {privateTotalTWD.toLocaleString()})。
               </p>
             </div>
           </div>
@@ -1715,8 +1895,15 @@ function ShoppingTab({ memo, setMemo }: any) {
   });
 
   const [shoppingItems, setShoppingItems] = useState<any[]>(() => {
-    const saved = localStorage.getItem('okinawa_shop_v2');
-    return saved ? JSON.parse(saved) : [];
+    const saved = localStorage.getItem('shopping_list_data') || localStorage.getItem('okinawa_shop_v2');
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch (e) {
+        return [];
+      }
+    }
+    return [];
   });
 
   const [carryOnInput, setCarryOnInput] = useState('');
@@ -1724,8 +1911,46 @@ function ShoppingTab({ memo, setMemo }: any) {
   const [viewMode, setViewMode] = useState<'list' | 'grid'>('grid');
   const [shopForm, setShopForm] = useState({ note: '', category: '藥妝', photo: '' });
 
+  // Refactored Personal Memo State (stored in memo_list_data)
+  const [memoList, setMemoList] = useState<any[]>(() => {
+    const saved = localStorage.getItem('memo_list_data');
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch (e) {
+        console.error('Failed to parse memo_list_data', e);
+      }
+    }
+    const legacy = localStorage.getItem('memo_content') || localStorage.getItem('okinawa_memo') || '';
+    if (legacy.trim()) {
+      return [
+        {
+          id: 'legacy-memo',
+          title: '個人舊備忘錄',
+          content: legacy,
+          isOpen: true
+        }
+      ];
+    }
+    return [];
+  });
+
+  const [memoTitleInput, setMemoTitleInput] = useState('');
+  const [memoContentInput, setMemoContentInput] = useState('');
+  const [editingMemoId, setEditingMemoId] = useState<string | null>(null);
+  const [editingTitle, setEditingTitle] = useState('');
+  const [editingContent, setEditingContent] = useState('');
+  const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
+
+  useEffect(() => {
+    localStorage.setItem('memo_list_data', JSON.stringify(memoList));
+  }, [memoList]);
+
   useEffect(() => { localStorage.setItem('okinawa_prep', JSON.stringify(predefined)); }, [predefined]);
-  useEffect(() => { localStorage.setItem('okinawa_shop_v2', JSON.stringify(shoppingItems)); }, [shoppingItems]);
+  useEffect(() => {
+    localStorage.setItem('shopping_list_data', JSON.stringify(shoppingItems));
+    localStorage.setItem('okinawa_shop_v2', JSON.stringify(shoppingItems));
+  }, [shoppingItems]);
 
   const addPrep = (category: 'carryOn' | 'checked') => {
     const text = category === 'carryOn' ? carryOnInput : checkedInput;
@@ -2017,20 +2242,206 @@ function ShoppingTab({ memo, setMemo }: any) {
             <Smartphone size={18} className="text-morandi-primary" /> 個人備忘錄
           </h3>
         </div>
-        <div className="bg-white/40 rounded-[32px] p-6 border border-white/60">
-          <textarea 
-            value={memo}
-            onChange={(e) => {
-              const val = e.target.value;
-              setMemo(val);
-              localStorage.setItem('memo_content', val);
+
+        {/* 新增備忘錄區域 */}
+        <div className="bg-white/40 rounded-[32px] p-5 sm:p-6 border border-white/60 space-y-4 shadow-sm">
+          <div className="space-y-3">
+            <div>
+              <label className="block text-xs font-bold text-morandi-text-muted mb-1 ml-1 uppercase tracking-wider">備忘錄標題</label>
+              <input 
+                type="text"
+                value={memoTitleInput}
+                onChange={(e) => setMemoTitleInput(e.target.value)}
+                placeholder="星宇登機注意事項..."
+                className="w-full bg-white/50 px-4 py-3 rounded-xl text-sm outline-none text-morandi-text border border-morandi-primary/10 focus:border-morandi-primary/30 transition-all placeholder-morandi-text-muted/60"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-bold text-morandi-text-muted mb-1 ml-1 uppercase tracking-wider">詳細內容</label>
+              <textarea 
+                value={memoContentInput}
+                onChange={(e) => setMemoContentInput(e.target.value)}
+                placeholder="輸入詳細筆記、連結或重要資訊..."
+                rows={3}
+                className="w-full bg-white/50 p-4 rounded-xl text-sm outline-none resize-none text-morandi-text leading-relaxed border border-morandi-primary/10 focus:border-morandi-primary/30 transition-all placeholder-morandi-text-muted/60"
+              />
+            </div>
+          </div>
+          
+          <button 
+            onClick={() => {
+              if (!memoTitleInput.trim() && !memoContentInput.trim()) return;
+              const newMemo = {
+                id: Date.now().toString(),
+                title: memoTitleInput.trim() || '未命名備忘錄',
+                content: memoContentInput.trim(),
+                isOpen: false
+              };
+              setMemoList([...memoList, newMemo]);
+              setMemoTitleInput('');
+              setMemoContentInput('');
             }}
-            onBlur={(e) => {
-              localStorage.setItem('memo_content', e.target.value);
-            }}
-            placeholder="輸入個人筆記、連結或重要資訊..."
-            className="w-full min-h-[160px] bg-white/40 p-5 rounded-2xl text-sm outline-none resize-none text-morandi-text leading-relaxed border border-transparent focus:border-morandi-primary/10"
-          />
+            className="w-full py-3.5 bg-morandi-primary text-white rounded-xl font-bold text-sm shadow-md hover:bg-morandi-primary/95 active:scale-[0.98] transition-all flex items-center justify-center gap-1.5"
+          >
+            <Plus size={16} />
+            <span>新增備忘錄</span>
+          </button>
+        </div>
+
+        {/* 備忘錄摺疊清單 */}
+        <div className="space-y-3">
+          {memoList.length === 0 ? (
+            <div className="bg-white/20 rounded-[24px] p-8 text-center border border-white/40">
+              <p className="text-xs text-morandi-text-muted">尚無備忘錄，請在上方新增！</p>
+            </div>
+          ) : (
+            memoList.map((item) => {
+              const isExpanded = item.isOpen;
+              const isEditing = editingMemoId === item.id;
+              const isConfirmDelete = confirmDeleteId === item.id;
+
+              return (
+                <div 
+                  key={item.id} 
+                  className={`bg-white/40 rounded-[24px] border border-white/60 transition-all duration-300 overflow-hidden ${
+                    isExpanded ? 'shadow-md border-morandi-primary/15' : 'hover:bg-white/50 shadow-sm'
+                  }`}
+                >
+                  {/* Card Header (Title & Toggle Arrow) */}
+                  <div 
+                    onClick={() => {
+                      if (isEditing) return; // Disable toggle during edit mode
+                      setMemoList(memoList.map(m => m.id === item.id ? { ...m, isOpen: !m.isOpen } : m));
+                    }}
+                    className="flex justify-between items-center p-4 cursor-pointer select-none"
+                  >
+                    {isEditing ? (
+                      <input 
+                        type="text"
+                        value={editingTitle}
+                        onClick={(e) => e.stopPropagation()} // Prevent card toggling
+                        onChange={(e) => setEditingTitle(e.target.value)}
+                        className="flex-1 bg-white/70 px-3 py-1.5 rounded-lg text-sm font-bold outline-none text-morandi-text border border-morandi-primary/20 focus:border-morandi-primary"
+                      />
+                    ) : (
+                      <h4 className="text-sm font-bold text-morandi-text break-words pr-4 flex-1">
+                        {item.title}
+                      </h4>
+                    )}
+                    
+                    <div className="flex items-center shrink-0">
+                      <ChevronDown 
+                        size={18} 
+                        className={`text-morandi-text-muted transition-transform duration-300 ${
+                          isExpanded ? 'rotate-180 text-morandi-primary' : ''
+                        }`}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Card Expanded Content */}
+                  <AnimatePresence initial={false}>
+                    {isExpanded && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.25, ease: 'easeInOut' }}
+                      >
+                        <div className="px-4 pb-4 border-t border-morandi-primary/5 pt-3 space-y-3">
+                          {isEditing ? (
+                            <textarea
+                              value={editingContent}
+                              onChange={(e) => setEditingContent(e.target.value)}
+                              rows={4}
+                              className="w-full bg-white/70 p-3 rounded-xl text-sm outline-none resize-none text-morandi-text leading-relaxed border border-morandi-primary/20 focus:border-morandi-primary"
+                            />
+                          ) : (
+                            <p className="text-xs sm:text-sm text-morandi-text leading-relaxed whitespace-pre-wrap break-words">
+                              {item.content || <span className="text-morandi-text-muted/60 italic">無詳細內容</span>}
+                            </p>
+                          )}
+
+                          {/* Control Buttons (Modify / Delete) */}
+                          <div className="flex justify-end items-center gap-2 pt-2">
+                            {isEditing ? (
+                              <>
+                                <button
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    setMemoList(memoList.map(m => m.id === item.id ? { ...m, title: editingTitle.trim() || '未命名備忘錄', content: editingContent } : m));
+                                    setEditingMemoId(null);
+                                  }}
+                                  className="px-3 py-1.5 bg-morandi-primary text-white text-xs font-bold rounded-lg shadow-sm hover:bg-morandi-primary/95 transition-all"
+                                >
+                                  確認
+                                </button>
+                                <button
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    setEditingMemoId(null);
+                                  }}
+                                  className="px-3 py-1.5 bg-morandi-text-muted/10 text-morandi-text hover:bg-morandi-text-muted/20 text-xs font-bold rounded-lg transition-all"
+                                >
+                                  取消
+                                </button>
+                              </>
+                            ) : isConfirmDelete ? (
+                              <div className="flex items-center gap-1.5 bg-red-50 px-2 py-1.5 rounded-lg border border-red-200">
+                                <span className="text-[10px] font-bold text-red-500 mr-1">確定刪除此備忘錄？</span>
+                                <button
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    setMemoList(memoList.filter(m => m.id !== item.id));
+                                    setConfirmDeleteId(null);
+                                  }}
+                                  className="px-2 py-1 bg-red-500 text-white text-[10px] font-bold rounded hover:bg-red-600 transition-all"
+                                >
+                                  確定
+                                </button>
+                                <button
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    setConfirmDeleteId(null);
+                                  }}
+                                  className="px-2 py-1 bg-gray-200 text-gray-700 text-[10px] font-bold rounded hover:bg-gray-300 transition-all"
+                                >
+                                  取消
+                                </button>
+                              </div>
+                            ) : (
+                              <>
+                                <button
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    setEditingMemoId(item.id);
+                                    setEditingTitle(item.title);
+                                    setEditingContent(item.content);
+                                  }}
+                                  className="px-3 py-1.5 text-xs font-bold text-morandi-primary hover:bg-morandi-primary/10 rounded-lg transition-all border border-morandi-primary/20"
+                                >
+                                  修改
+                                </button>
+                                <button
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    setConfirmDeleteId(item.id);
+                                  }}
+                                  className="px-3 py-1.5 text-xs font-bold text-red-500 hover:bg-red-50 rounded-lg transition-all border border-red-200"
+                                >
+                                  刪除
+                                </button>
+                              </>
+                            )}
+                          </div>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              );
+            })
+          )}
         </div>
       </section>
     </div>
