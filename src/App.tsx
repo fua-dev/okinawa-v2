@@ -1763,7 +1763,7 @@ ${suggestionsText}
                 className="w-full py-3 px-4 bg-morandi-primary hover:bg-morandi-primary/95 text-white rounded-xl font-bold text-xs shadow-sm flex items-center justify-center gap-2 active:scale-95 transition-all"
               >
                 {copied ? <Check size={14} strokeWidth={2.5} /> : <Copy size={14} />}
-                <span>{copied ? '已複製結算報告！' : '📋 複製結算報告'}</span>
+                <span>{copied ? '已複製結算報告！' : '複製結算報告'}</span>
               </button>
             </div>
           </div>
@@ -1816,82 +1816,108 @@ ${suggestionsText}
 }
 
 function ShoppingTab({ memo, setMemo }: any) {
-  const defaultPrepList = [
-    { id: 'p1', text: '護照 🪪', done: false, category: 'carryOn' },
-    { id: 'p2', text: '台灣駕照正本+日文譯本(世睿) 🚗', done: false, category: 'carryOn' },
-    { id: 'p3', text: 'eSIM/漫遊 🌐', done: false, category: 'carryOn' },
-    { id: 'p4', text: '日幣/信用卡 💴', done: false, category: 'carryOn' },
-    { id: 'p5', text: '行動電源 🔋', done: false, category: 'carryOn' },
-    { id: 'p6', text: '薄外套/小孩備用衣 🧥', done: false, category: 'carryOn' },
-    { id: 'p12', text: '水壺 💧', done: false, category: 'carryOn' },
-    { id: 'p7', text: '換洗衣物 & 睡衣 👕', done: false, category: 'checked' },
-    { id: 'p8', text: '盥洗用品 & 保養品 🧴', done: false, category: 'checked' },
-    { id: 'p9', text: '常用隨身藥品 💊', done: false, category: 'checked' },
-    { id: 'p10', text: '雨傘/雨衣 (沖繩天氣多變) ☔', done: false, category: 'checked' },
-    { id: 'p11', text: '太陽眼鏡 & 防曬乳 🕶️', done: false, category: 'checked' },
-    { id: 'p13', text: '防蚊液 🦟', done: false, category: 'checked' },
-    { id: 'p14', text: '泳衣 🩱', done: false, category: 'checked' },
-    { id: 'p15', text: '充電線 🔌', done: false, category: 'checked' },
-    { id: 'p16', text: '購物袋 🛍️', done: false, category: 'checked' }
+  const stripEmojis = (text: string): string => {
+    if (!text) return '';
+    return text.replace(/[\uD83C-\uDBFF\uDC00-\uDFFF]|[\u2600-\u27BF]|[\u200D\uFE0F]/g, '').trim();
+  };
+
+  // Default baggage lists
+  const defaultCarryOnList = [
+    { id: 'p1', text: '護照', done: false },
+    { id: 'p2', text: '台灣駕照正本+日文譯本(世睿)', done: false },
+    { id: 'p3', text: 'eSIM/漫遊', done: false },
+    { id: 'p4', text: '日幣/信用卡', done: false },
+    { id: 'p5', text: '行動電源', done: false },
+    { id: 'p6', text: '薄外套/小孩備用衣', done: false },
+    { id: 'p12', text: '水壺', done: false }
   ];
 
-  const [predefined, setPredefined] = useState<any[]>(() => {
-    const saved = localStorage.getItem('okinawa_prep');
+  const defaultCheckedList = [
+    { id: 'p7', text: '換洗衣物 & 睡衣', done: false },
+    { id: 'p8', text: '盥洗用品 & 保養品', done: false },
+    { id: 'p9', text: '常用隨身藥品', done: false },
+    { id: 'p10', text: '雨傘/雨衣 (沖繩天氣多變)', done: false },
+    { id: 'p11', text: '太陽眼鏡 & 防曬乳', done: false },
+    { id: 'p13', text: '防蚊液', done: false },
+    { id: 'p14', text: '泳衣', done: false },
+    { id: 'p15', text: '充電線', done: false },
+    { id: 'p16', text: '購物袋', done: false }
+  ];
+
+  // Initialize Hand Luggage (Carry-on)
+  const [carryOnList, setCarryOnList] = useState<any[]>(() => {
+    const saved = localStorage.getItem('hand_luggage_data');
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
-        // Smart auto-update: if the user doesn't have the newly specified "世睿" in their saved list,
-        // automatically load the updated default list so they get the new carry-on items instantly.
-        const hasLicenseTranslation = parsed.some((item: any) => item.text && item.text.includes('世睿'));
-        if (!hasLicenseTranslation) {
-          return defaultPrepList;
-        }
-
-        let updated = parsed.map((item: any) => {
-          if (!item.category) {
-            // Smart auto-categorization for existing user items during migration
-            const isCheckedItem = /衣物|睡衣|鞋|襪|盥洗|保養|沐浴|洗髮|刷|膏|藥|傘|防曬|隱眼|剪刀|指甲/i.test(item.text);
-            return { ...item, category: isCheckedItem ? 'checked' : 'carryOn' };
-          }
-          return item;
-        });
-
-        // Ensure newly requested items are added dynamically
-        const newCarryOn = [
-          { key: '水壺', text: '水壺 💧', category: 'carryOn', id: 'p12' }
-        ];
-        const newChecked = [
-          { key: '防蚊液', text: '防蚊液 🦟', category: 'checked', id: 'p13' },
-          { key: '泳衣', text: '泳衣 🩱', category: 'checked', id: 'p14' },
-          { key: '充電線', text: '充電線 🔌', category: 'checked', id: 'p15' },
-          { key: '購物袋', text: '購物袋 🛍️', category: 'checked', id: 'p16' }
-        ];
-
-        let hasChanges = false;
-        newCarryOn.forEach(item => {
-          if (!updated.some((r: any) => r.text && r.text.includes(item.key))) {
-            updated.push({ id: item.id, text: item.text, done: false, category: item.category });
-            hasChanges = true;
-          }
-        });
-        newChecked.forEach(item => {
-          if (!updated.some((r: any) => r.text && r.text.includes(item.key))) {
-            updated.push({ id: item.id, text: item.text, done: false, category: item.category });
-            hasChanges = true;
-          }
-        });
-
-        if (hasChanges) {
-          localStorage.setItem('okinawa_prep', JSON.stringify(updated));
-          return updated;
-        }
-
-        return updated;
+        return parsed.map((item: any) => ({ ...item, text: stripEmojis(item.text) }));
       } catch (e) {
-        // Fallback to default if JSON parse fails
+        console.error('Failed to parse hand_luggage_data', e);
       }
     }
-    return defaultPrepList;
+
+    // Try migrating from legacy okinawa_prep
+    const legacy = localStorage.getItem('okinawa_prep');
+    if (legacy) {
+      try {
+        const parsed = JSON.parse(legacy);
+        const filtered = parsed.filter((item: any) => {
+          if (item.category === 'carryOn') return true;
+          if (!item.category) {
+            const isCheckedItem = /衣物|睡衣|鞋|襪|盥洗|保養|沐浴|洗髮|刷|膏|藥|傘|防曬|隱眼|剪刀|指甲/i.test(item.text);
+            return !isCheckedItem;
+          }
+          return false;
+        });
+        if (filtered.length > 0) {
+          return filtered.map((item: any) => ({
+            id: item.id || Date.now().toString() + Math.random(),
+            text: stripEmojis(item.text),
+            done: !!item.done
+          }));
+        }
+      } catch (e) {}
+    }
+
+    return defaultCarryOnList;
+  });
+
+  // Initialize Checked Luggage
+  const [checkedList, setCheckedList] = useState<any[]>(() => {
+    const saved = localStorage.getItem('checked_luggage_data');
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        return parsed.map((item: any) => ({ ...item, text: stripEmojis(item.text) }));
+      } catch (e) {
+        console.error('Failed to parse checked_luggage_data', e);
+      }
+    }
+
+    // Try migrating from legacy okinawa_prep
+    const legacy = localStorage.getItem('okinawa_prep');
+    if (legacy) {
+      try {
+        const parsed = JSON.parse(legacy);
+        const filtered = parsed.filter((item: any) => {
+          if (item.category === 'checked') return true;
+          if (!item.category) {
+            const isCheckedItem = /衣物|睡衣|鞋|襪|盥洗|保養|沐浴|洗髮|刷|膏|藥|傘|防曬|隱眼|剪刀|指甲/i.test(item.text);
+            return isCheckedItem;
+          }
+          return false;
+        });
+        if (filtered.length > 0) {
+          return filtered.map((item: any) => ({
+            id: item.id || Date.now().toString() + Math.random(),
+            text: stripEmojis(item.text),
+            done: !!item.done
+          }));
+        }
+      } catch (e) {}
+    }
+
+    return defaultCheckedList;
   });
 
   const [shoppingItems, setShoppingItems] = useState<any[]>(() => {
@@ -1946,25 +1972,50 @@ function ShoppingTab({ memo, setMemo }: any) {
     localStorage.setItem('memo_list_data', JSON.stringify(memoList));
   }, [memoList]);
 
-  useEffect(() => { localStorage.setItem('okinawa_prep', JSON.stringify(predefined)); }, [predefined]);
+  useEffect(() => {
+    localStorage.setItem('hand_luggage_data', JSON.stringify(carryOnList));
+  }, [carryOnList]);
+
+  useEffect(() => {
+    localStorage.setItem('checked_luggage_data', JSON.stringify(checkedList));
+  }, [checkedList]);
+
   useEffect(() => {
     localStorage.setItem('shopping_list_data', JSON.stringify(shoppingItems));
     localStorage.setItem('okinawa_shop_v2', JSON.stringify(shoppingItems));
   }, [shoppingItems]);
 
   const addPrep = (category: 'carryOn' | 'checked') => {
-    const text = category === 'carryOn' ? carryOnInput : checkedInput;
-    if (!text.trim()) return;
-    setPredefined([...predefined, { id: Date.now().toString(), text: text.trim(), done: false, category }]);
+    const rawText = category === 'carryOn' ? carryOnInput : checkedInput;
+    if (!rawText.trim()) return;
+    const cleanText = stripEmojis(rawText.trim());
+    if (!cleanText) return;
+    
+    const newItem = { id: Date.now().toString(), text: cleanText, done: false };
     if (category === 'carryOn') {
+      setCarryOnList([...carryOnList, newItem]);
       setCarryOnInput('');
     } else {
+      setCheckedList([...checkedList, newItem]);
       setCheckedInput('');
     }
   };
 
-  const removePrep = (id: string) => setPredefined(predefined.filter(i => i.id !== id));
-  const togglePrep = (id: string) => setPredefined(predefined.map(i => i.id === id ? { ...i, done: !i.done } : i));
+  const removePrep = (id: string, category: 'carryOn' | 'checked') => {
+    if (category === 'carryOn') {
+      setCarryOnList(carryOnList.filter(i => i.id !== id));
+    } else {
+      setCheckedList(checkedList.filter(i => i.id !== id));
+    }
+  };
+
+  const togglePrep = (id: string, category: 'carryOn' | 'checked') => {
+    if (category === 'carryOn') {
+      setCarryOnList(carryOnList.map(i => i.id === id ? { ...i, done: !i.done } : i));
+    } else {
+      setCheckedList(checkedList.map(i => i.id === id ? { ...i, done: !i.done } : i));
+    }
+  };
 
   const handlePhotoUpload = (e: any) => {
     const file = e.target.files[0];
@@ -2041,7 +2092,8 @@ function ShoppingTab({ memo, setMemo }: any) {
           <button 
             onClick={() => {
               if (window.confirm('確定要將行李準備項目重置回預設項目嗎？')) {
-                setPredefined(defaultPrepList);
+                setCarryOnList(defaultCarryOnList);
+                setCheckedList(defaultCheckedList);
               }
             }}
             className="text-xs font-bold text-morandi-primary/80 hover:text-morandi-primary bg-morandi-primary/5 hover:bg-morandi-primary/10 px-3 py-1.5 rounded-full transition-all active:scale-95"
@@ -2057,20 +2109,20 @@ function ShoppingTab({ memo, setMemo }: any) {
               <div className="flex items-center gap-2 pb-2 border-b border-morandi-primary/10">
                 <span className="w-2.5 h-2.5 rounded-full bg-morandi-primary"></span>
                 <span className="font-bold text-[15px] text-morandi-primary tracking-wider">隨身行李 Carry-on</span>
-                <span className="text-xs text-morandi-accent">({predefined.filter(i => i.category === 'carryOn' && i.done).length}/{predefined.filter(i => i.category === 'carryOn').length})</span>
+                <span className="text-xs text-morandi-accent">({carryOnList.filter(i => i.done).length}/{carryOnList.length})</span>
               </div>
               
               <div className="space-y-2 max-h-[300px] overflow-y-auto pr-1">
-                {predefined.filter(i => i.category === 'carryOn').length === 0 ? (
+                {carryOnList.length === 0 ? (
                   <p className="text-xs text-morandi-accent/60 py-4 text-center">無項目，請在下方新增</p>
                 ) : (
-                  predefined.filter(i => i.category === 'carryOn').map(item => (
+                  carryOnList.map(item => (
                     <div key={item.id} className="flex items-center justify-between group py-1">
-                      <button onClick={() => togglePrep(item.id)} className="flex items-center gap-3 flex-1 text-left min-w-0 pr-2">
+                      <button onClick={() => togglePrep(item.id, 'carryOn')} className="flex items-center gap-3 flex-1 text-left min-w-0 pr-2">
                         {item.done ? <CheckCircle2 size={20} className="text-morandi-primary shrink-0" /> : <Circle size={20} className="text-morandi-accent/30 shrink-0" />}
                         <span className={`text-[13px] break-words ${item.done ? 'text-morandi-accent line-through' : 'text-morandi-text font-medium'}`}>{item.text}</span>
                       </button>
-                      <button onClick={() => removePrep(item.id)} className="p-1 text-morandi-accent hover:text-red-400 opacity-40 group-hover:opacity-100 active:opacity-100 transition-opacity shrink-0">
+                      <button onClick={() => removePrep(item.id, 'carryOn')} className="p-1 text-morandi-accent hover:text-red-400 opacity-40 group-hover:opacity-100 active:opacity-100 transition-opacity shrink-0">
                         <Trash2 size={16} />
                       </button>
                     </div>
@@ -2099,20 +2151,20 @@ function ShoppingTab({ memo, setMemo }: any) {
               <div className="flex items-center gap-2 pb-2 border-b border-morandi-primary/10">
                 <span className="w-2.5 h-2.5 rounded-full bg-[#8C7A6B]"></span>
                 <span className="font-bold text-[15px] text-[#8C7A6B] tracking-wider">託運行李 Checked</span>
-                <span className="text-xs text-morandi-accent">({predefined.filter(i => i.category === 'checked' && i.done).length}/{predefined.filter(i => i.category === 'checked').length})</span>
+                <span className="text-xs text-morandi-accent">({checkedList.filter(i => i.done).length}/{checkedList.length})</span>
               </div>
               
               <div className="space-y-2 max-h-[300px] overflow-y-auto pr-1">
-                {predefined.filter(i => i.category === 'checked').length === 0 ? (
+                {checkedList.length === 0 ? (
                   <p className="text-xs text-morandi-accent/60 py-4 text-center">無項目，請在下方新增</p>
                 ) : (
-                  predefined.filter(i => i.category === 'checked').map(item => (
+                  checkedList.map(item => (
                     <div key={item.id} className="flex items-center justify-between group py-1">
-                      <button onClick={() => togglePrep(item.id)} className="flex items-center gap-3 flex-1 text-left min-w-0 pr-2">
+                      <button onClick={() => togglePrep(item.id, 'checked')} className="flex items-center gap-3 flex-1 text-left min-w-0 pr-2">
                         {item.done ? <CheckCircle2 size={20} className="text-[#8C7A6B] shrink-0" /> : <Circle size={20} className="text-[#8C7A6B]/30 shrink-0" />}
                         <span className={`text-[13px] break-words ${item.done ? 'text-morandi-accent line-through' : 'text-morandi-text font-medium'}`}>{item.text}</span>
                       </button>
-                      <button onClick={() => removePrep(item.id)} className="p-1 text-morandi-accent hover:text-red-400 opacity-40 group-hover:opacity-100 active:opacity-100 transition-opacity shrink-0">
+                      <button onClick={() => removePrep(item.id, 'checked')} className="p-1 text-morandi-accent hover:text-red-400 opacity-40 group-hover:opacity-100 active:opacity-100 transition-opacity shrink-0">
                         <Trash2 size={16} />
                       </button>
                     </div>
