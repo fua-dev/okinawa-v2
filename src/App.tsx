@@ -46,7 +46,7 @@ const ITINERARY_DATA = [
     items: [
       { 
         id: '1-1', time: "09:00", type: "transport", title: "桃園機場第一航廈會合", detail: "星宇航空櫃檯集合", address: "桃園市大園區航站南路15號", 
-        content: "大家早安！我們即將展開期待已久的沖繩之旅。請大家再次確認護照、駕照日文譯本以及最重要的心情都帶齊了嗎？第一站我們先在星宇櫃檯集合辦理登機。\n\n---\n\n媽媽 高鐵嘉義站07：19－桃園站08：25\n世睿 高鐵嘉義站07：19－桃園站08：25\n姊姊 台北車站搭乘機捷前往", 
+        content: "大家早安！我們即將展開期待已久的沖繩之旅。請大家再次確認護照、駕照日文譯本以及最重要的心情都帶齊了嗎？第一站我們先在星宇櫃檯集合辦理登機。\n\n---\n\n媽媽 高鐵嘉義站07：19－桃園站08：25\n世睿 高鐵台中站07：53－桃園站08：25\n姊姊 台北車站搭乘機捷前往", 
         aboutTitle: "集合說明",
         quickLinks: [
           { label: "機捷時刻表", url: "https://www.tymetro.com.tw/tymetro-new/tw/_pages/travel-guide/timetable.php" }
@@ -148,10 +148,10 @@ const ITINERARY_DATA = [
         top10: {
           title: "其他備案午餐",
           items: [
-            { name: "百年古家 大家", desc: "以著名的阿古豬料理聞名，餐廳位於擁有百年歷史的古宅內，環境優美且充滿歷史感。在潺潺水聲中享用精緻美食，是極致的視覺與味覺饗宴。", url: "https://www.google.com/maps/search/?api=1&query=百年古家+大家" },
-            { name: "幸ちゃんそば", desc: "深受在地人喜愛的沖繩麵店。湯頭清甜不油膩，麵條口感Q彈紮實，配上滷得入味的軟骨肉，每一口都能感受到最純粹的沖繩在地美味。", url: "https://www.google.com/maps/search/?api=1&query=幸ちゃんそば" },
-            { name: "名護漁港食堂", desc: "由漁港直營的食堂，保證食材的新鮮度。提供份量十足的炸魚定食與各式海鮮料理，價格實惠且口味地道，是體驗漁村飲食文化的最佳去處。", url: "https://www.google.com/maps/search/?api=1&query=名護漁港食堂" },
-            { name: "Captain Kangaroo", desc: "被譽為沖繩最好吃的漢堡店。漢堡份量驚人，肉排鮮嫩多汁，搭配特製醬料與酥脆麵包，每一口都充滿驚喜，是喜愛美式料理遊客的必訪之地。", url: "https://www.google.com/maps/search/?api=1&query=Captain+Kangaroo+名護" }
+            { name: "岸本(きしもと)食堂 八重岳店", desc: "きしもと食堂 八重岳店。寬敞、好停車，味道與本店一樣地道美味，是開車自駕避開排隊人潮的最佳選擇。", url: "https://www.google.com/maps/search/?api=1&query=きしもと食堂+八重岳店" },
+            { name: "沖縄そば 龍仁", desc: "Google 評價極高的人氣沖繩麵店，湯頭香醇濃郁，軟骨肉燉煮至極致軟嫩、入口即化，非常值得一試。", url: "https://www.google.com/maps/search/?api=1&query=沖縄そば+龍仁" },
+            { name: "沖縄そば 今帰仁いち藤", desc: "座落於今歸仁村的精緻沖繩麵館，以清澈鮮甜、層次豐富的高雅湯頭著稱，自家製手擀麵條口感Q彈飽滿。", url: "https://www.google.com/maps/search/?api=1&query=沖縄そば+今帰仁いち藤" },
+            { name: "沖縄そばうっちや〜", desc: "在地溫馨的家庭式蕎麥麵店，口味地道純樸，軟骨與三層肉滷得入味多汁，深受自駕旅客喜愛。", url: "https://www.google.com/maps/search/?api=1&query=沖縄そばうっちや〜" }
           ]
         },
         noNav: true
@@ -1116,6 +1116,36 @@ function GuideModal({ item, onClose }: any) {
                           );
                         })}
                       </div>
+
+                      {/* Render top10 list if present */}
+                      {item.top10 && (
+                        <div className="space-y-6 pt-6 border-t border-morandi-primary/10">
+                          <div className="flex items-center gap-2 text-morandi-text/60">
+                            <Utensils size={20} />
+                            <span className="text-[18px] font-bold uppercase tracking-widest">{item.top10.title}</span>
+                          </div>
+                          <div className="space-y-4">
+                            {item.top10.items.map((subItem: any, subIdx: number) => (
+                              <div key={subIdx} className="bg-white/40 border border-morandi-primary/10 rounded-[20px] p-4 space-y-2 shadow-sm relative group">
+                                <div className="flex justify-between items-start gap-4">
+                                  <h4 className="text-[14px] font-bold text-morandi-text">{subItem.name}</h4>
+                                  {subItem.url && (
+                                    <button 
+                                      onClick={() => window.open(subItem.url)}
+                                      className="flex items-center gap-1 px-2.5 py-1 bg-morandi-primary/10 text-morandi-primary hover:bg-morandi-primary/20 rounded-full text-[10px] font-bold transition-all shrink-0"
+                                    >
+                                      <MapPin size={10} /> <span>地圖</span>
+                                    </button>
+                                  )}
+                                </div>
+                                {subItem.desc && (
+                                  <p className="text-xs text-morandi-text/80 leading-relaxed font-serif">{subItem.desc}</p>
+                                )}
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
                     </>
                   )}
                 </div>
