@@ -1248,18 +1248,17 @@ function BudgetTab({ expenses, setExpenses, rate }: any) {
       // Public expense
       const typeOfSplit = ex.splitType || 'all';
       if (typeOfSplit === 'all') {
-        // 全家平分: 媽媽：1 人分擔, 世睿家：4 人分擔, 姊姊家：2人分擔 (共 7 人)
-        mama = Math.round(amtTWD * 1 / 7);
-        sister = Math.round(amtTWD * 2 / 7);
-        shirui = amtTWD - mama - sister; // shirui gets the remainder to keep sum perfectly matching amtTWD
+        // 全家平分: 媽媽 2.5/7, 姊姊家 1.5/7, 世睿家 3.5/7
+        mama = Math.round(amtTWD * 2.5 / 7);
+        sister = Math.round(amtTWD * 1.5 / 7);
+        shirui = Math.round(amtTWD * 3.5 / 7);
       } else {
         // 自訂成員: 按勾選家庭數均分
         const targets = ex.splitTargets || ['媽媽', '姊姊', '世睿'];
         if (targets.length === 0) {
-          // fallback
-          mama = Math.round(amtTWD * 1 / 7);
-          sister = Math.round(amtTWD * 2 / 7);
-          shirui = amtTWD - mama - sister;
+          mama = Math.round(amtTWD * 2.5 / 7);
+          sister = Math.round(amtTWD * 1.5 / 7);
+          shirui = Math.round(amtTWD * 3.5 / 7);
         } else {
           const share = Math.round(amtTWD / targets.length);
           let sum = 0;
@@ -1338,29 +1337,54 @@ function BudgetTab({ expenses, setExpenses, rate }: any) {
     return sum + amtTWD;
   }, 0);
 
-  // Paid/Advancement amounts for each person (only public expenses)
-  const paidMama = publicExpenses
-    .filter((e: any) => (e.payer || '媽媽') === '媽媽')
-    .reduce((sum: number, e: any) => sum + (typeof e.amountTWD === 'number' ? e.amountTWD : Math.round(e.amount * rateToUse)), 0);
+  // Paid/Advancement amounts and shares for each person/family calculated using the exact requested algorithm
+  let paidMama = 0;
+  let paidShirui = 0;
+  let paidSister = 0;
 
-  const paidShirui = publicExpenses
-    .filter((e: any) => e.payer === '世睿')
-    .reduce((sum: number, e: any) => sum + (typeof e.amountTWD === 'number' ? e.amountTWD : Math.round(e.amount * rateToUse)), 0);
-
-  const paidSister = publicExpenses
-    .filter((e: any) => e.payer === '姊姊')
-    .reduce((sum: number, e: any) => sum + (typeof e.amountTWD === 'number' ? e.amountTWD : Math.round(e.amount * rateToUse)), 0);
-
-  // Total shares calculated dynamically per-item
   let mamaShare = 0;
   let shiruiShare = 0;
   let sisterShare = 0;
 
   publicExpenses.forEach((ex: any) => {
-    const shares = getExpenseShares(ex);
-    mamaShare += shares.mama;
-    shiruiShare += shares.shirui;
-    sisterShare += shares.sister;
+    const amtTWD = typeof ex.amountTWD === 'number' ? ex.amountTWD : Math.round(ex.amount * rateToUse);
+    
+    // A. 累加付款人的【已代墊金額】
+    const epayer = ex.payer || '媽媽';
+    if (epayer === '世睿') {
+      paidShirui += amtTWD;
+    } else if (epayer === '姊姊') {
+      paidSister += amtTWD;
+    } else {
+      paidMama += amtTWD;
+    }
+
+    // B. 依據分攤方式，精準計算各家的【應付金額】
+    const typeOfSplit = ex.splitType || 'all';
+    if (typeOfSplit === 'all') {
+      // 全家平分: 媽媽 2.5/7, 姊姊家 1.5/7, 世睿家 3.5/7
+      mamaShare += Math.round(amtTWD * 2.5 / 7);
+      sisterShare += Math.round(amtTWD * 1.5 / 7);
+      shiruiShare += Math.round(amtTWD * 3.5 / 7);
+    } else {
+      // 自訂成員
+      const targets = ex.splitTargets || ['媽媽', '姊姊', '世睿'];
+      if (targets.length > 0) {
+        const share = Math.round(amtTWD / targets.length);
+        let sum = 0;
+        targets.forEach((t: string, idx: number) => {
+          let currentShare = share;
+          if (idx === targets.length - 1) {
+            currentShare = amtTWD - sum; // adjust the last one to preserve the exact sum
+          }
+          sum += currentShare;
+
+          if (t === '媽媽') mamaShare += currentShare;
+          else if (t === '姊姊') sisterShare += currentShare;
+          else if (t === '世睿') shiruiShare += currentShare;
+        });
+      }
+    }
   });
 
   // Calculation of private expenses & actual total per selected viewer perspective
