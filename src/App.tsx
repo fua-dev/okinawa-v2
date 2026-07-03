@@ -1201,6 +1201,19 @@ function BudgetTab({ expenses, setExpenses, rate }: any) {
   const [splitType, setSplitType] = useState<'all' | 'custom'>('all');
   const [splitTargets, setSplitTargets] = useState<string[]>(['媽媽', '姊姊', '世睿']);
 
+  // Viewer perspective state and helper
+  const [currentViewer, setCurrentViewer] = useState<string>(() => {
+    return localStorage.getItem('current_viewer_perspective') || '媽媽';
+  });
+
+  const getPrivateExpenseOwner = (ex: any) => {
+    const owner = ex.payer || '媽媽';
+    if (owner === '自己') return '媽媽';
+    if (owner === '世睿' || owner === '世睿家') return '世睿';
+    if (owner === '姊姊' || owner === '姊姊家') return '姊姊';
+    return owner;
+  };
+
   const rateToUse = rate || 0.197;
 
   // JPY/TWD Total Expenses (all records)
@@ -1226,8 +1239,11 @@ function BudgetTab({ expenses, setExpenses, rate }: any) {
     let shirui = 0;
 
     if (ex.type === 'private') {
-      // Private expenses are paid 100% by "自己" (媽媽)
-      mama = amtTWD;
+      // Private expenses are paid 100% by the owner (媽媽, 姊姊, or 世睿)
+      const owner = getPrivateExpenseOwner(ex);
+      if (owner === '媽媽') mama = amtTWD;
+      else if (owner === '姊姊') sister = amtTWD;
+      else if (owner === '世睿') shirui = amtTWD;
     } else {
       // Public expense
       const typeOfSplit = ex.splitType || 'all';
@@ -1289,9 +1305,9 @@ function BudgetTab({ expenses, setExpenses, rate }: any) {
       amountTWD: finalAmountTWD,
       originalCurrency: amountCurrency,
       type: expenseType, // 'public' or 'private'
-      payer: expenseType === 'public' ? payer : '自己',
+      payer: payer, // Save the actual payer/owner
       splitType: expenseType === 'public' ? splitType : 'all',
-      splitTargets: expenseType === 'public' ? (splitType === 'custom' ? splitTargets : ['媽媽', '姊姊', '世睿']) : ['媽媽'],
+      splitTargets: expenseType === 'public' ? (splitType === 'custom' ? splitTargets : ['媽媽', '姊姊', '世睿']) : [payer],
       time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     };
 
@@ -1347,13 +1363,19 @@ function BudgetTab({ expenses, setExpenses, rate }: any) {
     sisterShare += shares.sister;
   });
 
-  const privateTotalTWD = privateExpenses.reduce((sum: number, e: any) => {
-    const amtTWD = typeof e.amountTWD === 'number' ? e.amountTWD : Math.round(e.amount * rateToUse);
-    return sum + amtTWD;
-  }, 0);
+  // Calculation of private expenses & actual total per selected viewer perspective
+  const currentViewerOwner = currentViewer === '姊姊家' ? '姊姊' : currentViewer === '世睿家' ? '世睿' : '媽媽';
 
-  // Real Actual Expenses for '自己' (媽媽) = her public share + her private total
-  const actualTotalTWD = mamaShare + privateTotalTWD;
+  const privateTotalForViewer = privateExpenses
+    .filter((e: any) => getPrivateExpenseOwner(e) === currentViewerOwner)
+    .reduce((sum: number, e: any) => {
+      const amtTWD = typeof e.amountTWD === 'number' ? e.amountTWD : Math.round(e.amount * rateToUse);
+      return sum + amtTWD;
+    }, 0);
+
+  const publicShareForViewer = currentViewer === '姊姊家' ? sisterShare : currentViewer === '世睿家' ? shiruiShare : mamaShare;
+
+  const actualTotalTWD = publicShareForViewer + privateTotalForViewer;
 
   const balances = [
     { name: '媽媽', bal: paidMama - mamaShare, count: 1 },
@@ -1569,31 +1591,25 @@ ${suggestionsText}
             </div>
           </div>
 
-          {/* 付款人 */}
-          <div className={`space-y-2 transition-all duration-300 ${expenseType === 'public' ? 'opacity-100' : 'opacity-40 pointer-events-none'}`}>
+          {/* 付款人 / 擁有者 */}
+          <div className="space-y-2">
             <label className="text-xs font-bold text-morandi-text-muted uppercase tracking-widest ml-1">
-              付款人 {expenseType === 'private' && <span className="text-morandi-primary/60 font-medium">(預設為自己)</span>}
+              {expenseType === 'public' ? '付款人' : '擁有者'}
             </label>
-            {expenseType === 'public' ? (
-              <div className="relative">
-                <select
-                  value={payer}
-                  onChange={(e) => setPayer(e.target.value)}
-                  className="w-full bg-white/40 p-4 rounded-2xl text-base font-bold outline-none text-morandi-text border border-transparent focus:border-morandi-primary/20 transition-all appearance-none cursor-pointer"
-                >
-                  <option value="媽媽">媽媽</option>
-                  <option value="世睿">世睿</option>
-                  <option value="姊姊">姊姊</option>
-                </select>
-                <div className="pointer-events-none absolute inset-y-0 right-4 flex items-center text-morandi-text-muted">
-                  <ChevronDown size={18} />
-                </div>
+            <div className="relative">
+              <select
+                value={payer}
+                onChange={(e) => setPayer(e.target.value)}
+                className="w-full bg-white/40 p-4 rounded-2xl text-base font-bold outline-none text-morandi-text border border-transparent focus:border-morandi-primary/20 transition-all appearance-none cursor-pointer"
+              >
+                <option value="媽媽">媽媽</option>
+                <option value="世睿">世睿</option>
+                <option value="姊姊">姊姊</option>
+              </select>
+              <div className="pointer-events-none absolute inset-y-0 right-4 flex items-center text-morandi-text-muted">
+                <ChevronDown size={18} />
               </div>
-            ) : (
-              <div className="w-full bg-white/20 p-4 rounded-2xl text-base font-bold text-morandi-text-muted/60 border border-dashed border-morandi-primary/10 select-none">
-                自己
-              </div>
-            )}
+            </div>
           </div>
         </div>
 
@@ -1749,7 +1765,7 @@ ${suggestionsText}
                     </div>
                     <p className="text-[10px] text-morandi-text-muted font-mono opacity-65 flex items-center gap-1.5 flex-wrap">
                       <span>{ex.time}</span>
-                      {type === 'public' && (
+                      {type === 'public' ? (
                         <>
                           <span className="w-1.5 h-1.5 rounded-full bg-morandi-text-muted/30" />
                           <span className="bg-morandi-bg px-1.5 py-0.5 rounded text-morandi-primary border border-morandi-primary/5 font-bold">付款: {epayer}</span>
@@ -1758,6 +1774,13 @@ ${suggestionsText}
                             {ex.splitType === 'custom' 
                               ? `分攤: ${(ex.splitTargets || []).map((t: string) => t === '姊姊' ? '姊姊家' : t === '世睿' ? '世睿家' : t).join('+')}`
                               : '分攤: 全家平分'}
+                          </span>
+                        </>
+                      ) : (
+                        <>
+                          <span className="w-1.5 h-1.5 rounded-full bg-morandi-text-muted/30" />
+                          <span className="bg-orange-50 px-1.5 py-0.5 rounded text-orange-600 border border-orange-100 font-bold">
+                            登記人: {getPrivateExpenseOwner(ex) === '姊姊' ? '姊姊家' : getPrivateExpenseOwner(ex) === '世睿' ? '世睿家' : '媽媽'}
                           </span>
                         </>
                       )}
@@ -1806,11 +1829,6 @@ ${suggestionsText}
                 <div>
                   <p className="text-[10px] text-morandi-text-muted uppercase tracking-widest font-bold">全家公費總計</p>
                   <p className="text-2xl font-mono font-bold text-morandi-text">NT$ {publicTotalTWD.toLocaleString()}</p>
-                </div>
-
-                <div className="bg-white/50 border border-morandi-primary/5 rounded-xl p-3.5 space-y-1">
-                  <p className="text-[10px] text-morandi-text-muted uppercase tracking-widest font-bold">每人平均公費 (全家平分時 1/7)</p>
-                  <p className="text-lg font-mono font-bold text-morandi-primary">NT$ {Math.round(publicTotalTWD / 7).toLocaleString()}</p>
                 </div>
               </div>
             </div>
@@ -1874,25 +1892,43 @@ ${suggestionsText}
           {/* 右區塊：您的實際總花費 */}
           <div className="bg-[#967AA1]/5 border border-[#967AA1]/20 rounded-2xl p-6 flex flex-col justify-between space-y-4">
             <div>
-              <div className="flex items-center justify-between mb-3">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3 pb-3 border-b border-[#967AA1]/15">
                 <h4 className="text-xs font-black text-[#967AA1] tracking-widest uppercase flex items-center gap-1.5">
                   <Smartphone size={14} />
-                  <span>您的實際總花費</span>
+                  <span>實際總花費 ({currentViewer})</span>
                 </h4>
-                <span className="text-[10px] font-bold bg-[#967AA1]/10 text-[#967AA1] px-2 py-0.5 rounded-full">
-                  雙軌統計
-                </span>
+                
+                {/* 檢視者切換選單 */}
+                <div className="relative flex items-center gap-1 bg-white/80 border border-[#967AA1]/20 px-2.5 py-1 rounded-xl shadow-sm text-[11px] text-[#967AA1] font-bold">
+                  <span className="whitespace-nowrap text-[#967AA1]/80">目前檢視者：</span>
+                  <select
+                    value={currentViewer}
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      setCurrentViewer(val);
+                      localStorage.setItem('current_viewer_perspective', val);
+                    }}
+                    className="bg-transparent outline-none cursor-pointer font-black text-[#967AA1] appearance-none pr-3"
+                  >
+                    <option value="媽媽">媽媽</option>
+                    <option value="姊姊家">姊姊家</option>
+                    <option value="世睿家">世睿家</option>
+                  </select>
+                  <ChevronDown size={10} className="absolute right-2.5 pointer-events-none text-[#967AA1]" />
+                </div>
               </div>
 
               <div className="space-y-4">
                 <div>
-                  <p className="text-[10px] text-morandi-text-muted uppercase tracking-widest font-bold">您個人的花費總計</p>
-                  <p className="text-xl font-mono font-bold text-morandi-text">NT$ {privateTotalTWD.toLocaleString()}</p>
+                  <p className="text-[10px] text-morandi-text-muted uppercase tracking-widest font-bold">
+                    {currentViewer === '媽媽' ? '您' : currentViewer}個人的花費總計
+                  </p>
+                  <p className="text-xl font-mono font-bold text-morandi-text">NT$ {privateTotalForViewer.toLocaleString()}</p>
                 </div>
 
                 <div className="bg-white/80 border border-[#967AA1]/20 rounded-xl p-4 shadow-sm flex flex-col gap-1">
                   <span className="text-[10px] text-[#967AA1] uppercase tracking-widest font-black flex items-center gap-1">
-                    <span>本次旅程實際總花費</span>
+                    <span>{currentViewer}旅程實際總花費</span>
                   </span>
                   <span className="text-xs text-morandi-text-muted">(公費自擔/分擔 + 個人私費)</span>
                   <div className="flex items-baseline gap-1 mt-1">
@@ -1908,7 +1944,7 @@ ${suggestionsText}
             <div className="pt-3 border-t border-[#967AA1]/20 space-y-2 text-xs text-morandi-text-muted/80">
               <p className="font-bold text-[10px] text-[#967AA1]/80 uppercase tracking-wider mb-1">💡 計算說明：</p>
               <p className="leading-relaxed">
-                您的旅程總花費包含您在全家公費中實際應分擔的額度 (NT$ {mamaShare.toLocaleString()})，加上您自己登記的個人私費支出 (NT$ {privateTotalTWD.toLocaleString()})。
+                {currentViewer}的旅程總花費包含其在全家公費中實際應分擔的額度 (NT$ {publicShareForViewer.toLocaleString()})，加上其個人私費支出 (NT$ {privateTotalForViewer.toLocaleString()})。
               </p>
             </div>
           </div>
