@@ -1191,6 +1191,7 @@ function GuideModal({ item, onClose }: any) {
 function BudgetTab({ expenses, setExpenses, rate }: any) {
   const [title, setTitle] = useState('');
   const [amount, setAmount] = useState('');
+  const [amountCurrency, setAmountCurrency] = useState<'JPY' | 'TWD'>('JPY');
   const [calcInput, setCalcInput] = useState('');
   const [expenseType, setExpenseType] = useState<'public' | 'private'>('public');
   const [payer, setPayer] = useState<string>('媽媽');
@@ -1200,9 +1201,11 @@ function BudgetTab({ expenses, setExpenses, rate }: any) {
   const [splitType, setSplitType] = useState<'all' | 'custom'>('all');
   const [splitTargets, setSplitTargets] = useState<string[]>(['媽媽', '姊姊', '世睿']);
 
+  const rateToUse = rate || 0.197;
+
   // JPY/TWD Total Expenses (all records)
   const totalJPY = expenses.reduce((sum: number, e: any) => sum + (typeof e.amountJPY === 'number' ? e.amountJPY : e.amount), 0);
-  const totalTWD = expenses.reduce((sum: number, e: any) => sum + (typeof e.amountTWD === 'number' ? e.amountTWD : Math.round(e.amount * rate)), 0);
+  const totalTWD = expenses.reduce((sum: number, e: any) => sum + (typeof e.amountTWD === 'number' ? e.amountTWD : Math.round(e.amount * rateToUse)), 0);
 
   const calcResult = useMemo(() => {
     try {
@@ -1217,7 +1220,7 @@ function BudgetTab({ expenses, setExpenses, rate }: any) {
 
   // Helper to calculate individual expense split shares
   const getExpenseShares = (ex: any) => {
-    const amtTWD = typeof ex.amountTWD === 'number' ? ex.amountTWD : Math.round(ex.amount * rate);
+    const amtTWD = typeof ex.amountTWD === 'number' ? ex.amountTWD : Math.round(ex.amount * rateToUse);
     let mama = 0;
     let sister = 0;
     let shirui = 0;
@@ -1267,12 +1270,24 @@ function BudgetTab({ expenses, setExpenses, rate }: any) {
     const numericAmount = parseFloat(amount);
     if (isNaN(numericAmount) || numericAmount <= 0) return;
 
+    let finalAmountJPY = 0;
+    let finalAmountTWD = 0;
+
+    if (amountCurrency === 'JPY') {
+      finalAmountJPY = numericAmount;
+      finalAmountTWD = Math.round(numericAmount * rateToUse);
+    } else {
+      finalAmountTWD = numericAmount;
+      finalAmountJPY = Math.round(numericAmount / rateToUse);
+    }
+
     const newExpense = {
       id: Date.now().toString(),
       title,
-      amount: numericAmount, // for backward compatibility
-      amountJPY: numericAmount,
-      amountTWD: Math.round(numericAmount * rate),
+      amount: finalAmountJPY, // keep for backward compatibility so older functions still run smoothly
+      amountJPY: finalAmountJPY,
+      amountTWD: finalAmountTWD,
+      originalCurrency: amountCurrency,
       type: expenseType, // 'public' or 'private'
       payer: expenseType === 'public' ? payer : '自己',
       splitType: expenseType === 'public' ? splitType : 'all',
@@ -1280,7 +1295,11 @@ function BudgetTab({ expenses, setExpenses, rate }: any) {
       time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     };
 
-    setExpenses([newExpense, ...expenses]);
+    const updatedExpenses = [newExpense, ...expenses];
+    setExpenses(updatedExpenses);
+    localStorage.setItem('expense_tracker_data', JSON.stringify(updatedExpenses));
+    localStorage.setItem('okinawa_expenses', JSON.stringify(updatedExpenses));
+
     setTitle('');
     setAmount('');
     setSplitType('all');
@@ -1288,7 +1307,10 @@ function BudgetTab({ expenses, setExpenses, rate }: any) {
   };
 
   const removeExpense = (id: string) => {
-    setExpenses(expenses.filter((e: any) => e.id !== id));
+    const updatedExpenses = expenses.filter((e: any) => e.id !== id);
+    setExpenses(updatedExpenses);
+    localStorage.setItem('expense_tracker_data', JSON.stringify(updatedExpenses));
+    localStorage.setItem('okinawa_expenses', JSON.stringify(updatedExpenses));
   };
 
   // Group split calculations
@@ -1296,22 +1318,22 @@ function BudgetTab({ expenses, setExpenses, rate }: any) {
   const privateExpenses = expenses.filter((e: any) => (e.type || 'public') === 'private');
 
   const publicTotalTWD = publicExpenses.reduce((sum: number, e: any) => {
-    const amtTWD = typeof e.amountTWD === 'number' ? e.amountTWD : Math.round(e.amount * rate);
+    const amtTWD = typeof e.amountTWD === 'number' ? e.amountTWD : Math.round(e.amount * rateToUse);
     return sum + amtTWD;
   }, 0);
 
   // Paid/Advancement amounts for each person (only public expenses)
   const paidMama = publicExpenses
     .filter((e: any) => (e.payer || '媽媽') === '媽媽')
-    .reduce((sum: number, e: any) => sum + (typeof e.amountTWD === 'number' ? e.amountTWD : Math.round(e.amount * rate)), 0);
+    .reduce((sum: number, e: any) => sum + (typeof e.amountTWD === 'number' ? e.amountTWD : Math.round(e.amount * rateToUse)), 0);
 
   const paidShirui = publicExpenses
     .filter((e: any) => e.payer === '世睿')
-    .reduce((sum: number, e: any) => sum + (typeof e.amountTWD === 'number' ? e.amountTWD : Math.round(e.amount * rate)), 0);
+    .reduce((sum: number, e: any) => sum + (typeof e.amountTWD === 'number' ? e.amountTWD : Math.round(e.amount * rateToUse)), 0);
 
   const paidSister = publicExpenses
     .filter((e: any) => e.payer === '姊姊')
-    .reduce((sum: number, e: any) => sum + (typeof e.amountTWD === 'number' ? e.amountTWD : Math.round(e.amount * rate)), 0);
+    .reduce((sum: number, e: any) => sum + (typeof e.amountTWD === 'number' ? e.amountTWD : Math.round(e.amount * rateToUse)), 0);
 
   // Total shares calculated dynamically per-item
   let mamaShare = 0;
@@ -1326,7 +1348,7 @@ function BudgetTab({ expenses, setExpenses, rate }: any) {
   });
 
   const privateTotalTWD = privateExpenses.reduce((sum: number, e: any) => {
-    const amtTWD = typeof e.amountTWD === 'number' ? e.amountTWD : Math.round(e.amount * rate);
+    const amtTWD = typeof e.amountTWD === 'number' ? e.amountTWD : Math.round(e.amount * rateToUse);
     return sum + amtTWD;
   }, 0);
 
@@ -1456,16 +1478,58 @@ ${suggestionsText}
           </div>
 
           <div className="space-y-2">
-            <label className="text-sm font-bold text-morandi-text-muted uppercase tracking-widest ml-1">金額 (JPY)</label>
-            <div className="flex items-center gap-3 bg-white/40 p-4 rounded-2xl border border-transparent focus-within:border-morandi-primary/20 transition-all">
-              <input 
-                type="number"
-                inputMode="decimal"
-                value={amount}
-                onChange={(e) => setAmount(e.target.value)}
-                placeholder="0" 
-                className="flex-1 bg-transparent text-2xl font-mono font-bold outline-none text-morandi-text"
-              />
+            <div className="flex justify-between items-center px-1">
+              <label className="text-sm font-bold text-morandi-text-muted uppercase tracking-widest">
+                金額 ({amountCurrency})
+              </label>
+              <div className="flex bg-white/50 p-0.5 rounded-lg border border-morandi-primary/5 shadow-inner scale-90 origin-right">
+                <button
+                  type="button"
+                  onClick={() => setAmountCurrency('JPY')}
+                  className={`px-2 py-1 rounded-md text-[10px] font-black transition-all ${
+                    amountCurrency === 'JPY'
+                      ? 'bg-morandi-primary text-white shadow-sm'
+                      : 'text-morandi-text-muted hover:bg-white/40'
+                  }`}
+                >
+                  ¥ JPY
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setAmountCurrency('TWD')}
+                  className={`px-2 py-1 rounded-md text-[10px] font-black transition-all ${
+                    amountCurrency === 'TWD'
+                      ? 'bg-morandi-primary text-white shadow-sm'
+                      : 'text-morandi-text-muted hover:bg-white/40'
+                  }`}
+                >
+                  $ TWD
+                </button>
+              </div>
+            </div>
+            <div className="relative bg-white/40 p-4 rounded-2xl border border-transparent focus-within:border-morandi-primary/20 transition-all">
+              <div className="flex items-center gap-3">
+                <span className="text-xl font-mono font-bold text-morandi-primary/50">
+                  {amountCurrency === 'JPY' ? '¥' : '$'}
+                </span>
+                <input 
+                  type="number"
+                  inputMode="decimal"
+                  value={amount}
+                  onChange={(e) => setAmount(e.target.value)}
+                  placeholder="0" 
+                  className="flex-1 bg-transparent text-2xl font-mono font-bold outline-none text-morandi-text"
+                />
+              </div>
+              {amount && !isNaN(parseFloat(amount)) && (
+                <div className="absolute right-4 bottom-1.5 text-[10px] font-mono font-bold text-morandi-primary/60">
+                  {amountCurrency === 'JPY' ? (
+                    <span>≈ NT$ {Math.round(parseFloat(amount) * rateToUse).toLocaleString()}</span>
+                  ) : (
+                    <span>≈ JPY {Math.round(parseFloat(amount) / rateToUse).toLocaleString()}</span>
+                  )}
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -1649,7 +1713,7 @@ ${suggestionsText}
               const type = ex.type || 'public';
               const epayer = ex.payer || '媽媽';
               const amountJPY = typeof ex.amountJPY === 'number' ? ex.amountJPY : ex.amount;
-              const amountTWD = typeof ex.amountTWD === 'number' ? ex.amountTWD : Math.round(ex.amount * rate);
+              const amountTWD = typeof ex.amountTWD === 'number' ? ex.amountTWD : Math.round(ex.amount * rateToUse);
 
               return (
                 <div key={ex.id} className="bg-white rounded-[24px] p-5 shadow-sm border border-white/80 flex items-center justify-between group">
@@ -1672,6 +1736,15 @@ ${suggestionsText}
                           </>
                         )}
                       </span>
+                      {ex.originalCurrency && (
+                        <span className={`text-[9px] px-1.5 py-0.5 rounded-md font-mono font-bold border shrink-0 ${
+                          ex.originalCurrency === 'JPY'
+                            ? 'bg-amber-50 border-amber-200 text-amber-700'
+                            : 'bg-indigo-50 border-indigo-200 text-indigo-700'
+                        }`}>
+                          {ex.originalCurrency}
+                        </span>
+                      )}
                       <h5 style={fontStyleSerif} className="text-base font-bold text-morandi-text truncate">{ex.title}</h5>
                     </div>
                     <p className="text-[10px] text-morandi-text-muted font-mono opacity-65 flex items-center gap-1.5 flex-wrap">
