@@ -137,9 +137,11 @@ const ITINERARY_DATA = [
       { 
         id: '2-2', time: "09:30", type: "spot", title: "古宇利島", detail: "跨海大橋美景", address: "今歸仁村古宇利", 
         topImage: "https://visitokinawajapan.com/wp-content/themes/visit-okinawa_multi-language/lang/zh-hant/assets/img/destinations/okinawa-main-island/northern-okinawa-main-island/kouri-island/de33_03_kouri-ocean-tower-view.webp",
-        content: "古宇利島位於沖繩本島北部，以絕美的「古宇利大橋」聞名。這座橋全長約 1960 公尺，橫跨在清澈的「古宇利藍」海面上，是家族旅行中不可錯過的視覺饗宴。\n\n島上的心形岩（Heart Rock）是必看景點，兩座心形礁石矗立在海中，展現大自然的鬼斧神工。來到這裡，您可以漫步在細軟的沙灘上，感受壯闊的海景與徐徐海風，享受遠離塵囂的寧靜時光。\n\n島上的古宇利海洋塔更能讓您從高處俯瞰整座大橋與周邊海域的絕美全景，非常適合全家大小一同登高望遠，留下美好的旅遊回憶。",
+        content: "古宇利島位於沖繩本島北部，以絕美的「古宇利大橋」聞名。這座橋全長約 1960 公尺，橫跨在清澈的「古宇利藍」海面上，是家族旅行中不可錯過的視覺饗宴。\n\n【島上推薦景點】\n1. 古宇利海灘\n大橋兩側的沙灘細軟、海水清澈，非常適合漫步與玩水。可以近距離感受壯闊大橋與蒂芬妮藍海景的獨特魅力。\n\n2. 古宇利海洋塔\n搭乘有趣的無人自動駕駛高爾夫球車登塔，能從高處俯瞰整座大橋與周邊海域的絕美全貌，留下難忘的旅遊回憶。\n- 營業時間：10:00 - 18:00 (最後入館 17:30)\n- 門票：成人 1,000 日圓 / 中高學生 600 日圓 / 小學生 300 日圓 / 幼兒免費",
         links: [
-          { label: "飯店至古宇利導航", url: "https://www.google.com/maps/dir/?api=1&origin=Daiwa+Roynet+Hotel+Naha-Omoromachi+PREMIER&destination=古宇利島", icon: "map" }
+          { label: "飯店至古宇利導航", url: "https://www.google.com/maps/dir/?api=1&origin=Daiwa+Roynet+Hotel+Naha-Omoromachi+PREMIER&destination=古宇利島", icon: "map" },
+          { label: "古宇利海灘 停車場導航", url: "https://www.google.com/maps/search/?api=1&query=古宇利海灘+停車場", icon: "map" },
+          { label: "古宇利海洋塔 導航", url: "https://www.google.com/maps/search/?api=1&query=古宇利海洋塔", icon: "map" }
         ]
       },
       { 
@@ -163,6 +165,13 @@ const ITINERARY_DATA = [
         links: [
           { label: "節目時刻表官網", url: "https://churaumi.okinawa/program/", icon: "link" },
           { label: "水族館導航", url: "https://www.google.com/maps/search/?api=1&query=美麗海水族館", icon: "map" }
+        ]
+      },
+      {
+        id: '2-4-5', time: "18:00", type: "spot", title: "許田休息站", detail: "沖繩人氣第一道路驛站", address: "名護市許田17-1",
+        content: "許田休息站（道の駅「許田」）是沖繩最受歡迎的道路驛站。這裡匯集了各式沖繩特色小吃、土產，以及划算的美麗海水族館與其他景點優惠門票。\n\n【推薦必吃】\n- 炸饅頭（サーターアンダギー）：外酥內軟的沖繩傳統甜甜圈。\n- 蒜味牛排鐵板燒：香氣四溢的人氣美食。\n- 鮮美冰淇淋與水果：品嚐在地新鮮芒果與鳳梨等風味。\n\n【營業時間】08:30 - 19:00",
+        links: [
+          { label: "許田休息站 導航連結", url: "https://www.google.com/maps/search/?api=1&query=道の駅+許田", icon: "map" }
         ]
       },
       { 
@@ -218,10 +227,11 @@ const ITINERARY_DATA = [
         ]
       },
       { 
-        id: '3-5', time: "備案", type: "spot", title: "普天滿宮", detail: "神祕的鐘乳石洞神社", address: "宜野灣市普天間1-27-10", 
-        content: "普天滿宮是琉球八社之一，最特別的是其位於神社後方的鐘乳石洞穴，需向巫女申請方可進入參觀。\n\n【營業時間】09:30 - 18:00",
+        id: '3-5', time: "備案", type: "spot", title: "釣熱帶魚尋寶冒險之地", detail: "釣って見つけるぼうけんの国", address: "沖縄県うるま市石川赤崎2-20-1", 
+        content: "「釣熱帶魚尋寶冒險之地」（釣って見つけるぼうけんの国）是一個超受歡迎的室內親子冒險樂園！不受天氣影響，大人小孩都能在這裡體驗各種有趣的探索活動。\n\n【主要體驗亮點】\n- 釣熱帶魚：在室內大水池中挑戰釣起色彩繽紛的熱帶魚！\n- 寶石與水晶尋寶：在沙土與小河中篩選、發掘出屬於自己的美麗礦石或寶石！\n- 恐龍化石挖掘：扮演考古學家，動手挖掘神秘的隱藏化石。\n\n適合全家大小一起動手體驗，探索未知樂趣！",
         links: [
-          { label: "普天滿宮導航", url: "https://www.google.com/maps/search/?api=1&query=普天滿宮", icon: "map" }
+          { label: "官方網站", url: "https://boukennokuni.com", icon: "link" },
+          { label: "冒險之地導航", url: "https://www.google.com/maps/search/?api=1&query=釣って見つけるぼうけんの国+沖縄", icon: "map" }
         ]
       },
       { 
