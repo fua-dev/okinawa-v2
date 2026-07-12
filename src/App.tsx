@@ -2753,6 +2753,74 @@ function InfoTab() {
     });
   };
 
+  // FunPass States & Hooks
+  const funpassLabels = ['成人1', '成人2', '兒童1', '兒童2'];
+  const [funpassActiveLabel, setFunpassActiveLabel] = useState('成人1');
+  const [lightboxFunpassLabel, setLightboxFunpassLabel] = useState<string | null>(null);
+  const [funpassImages, setFunpassImages] = useState<Record<string, string>>(() => {
+    const imgs: Record<string, string> = {};
+    ['成人1', '成人2', '兒童1', '兒童2'].forEach(lbl => {
+      const val = localStorage.getItem(`funpass_img_${lbl}`);
+      if (val) imgs[lbl] = val;
+    });
+    return imgs;
+  });
+
+  const handleFunpassImageUpload = (label: string, file: File) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const base64 = e.target?.result as string;
+      if (base64) {
+        localStorage.setItem(`funpass_img_${label}`, base64);
+        setFunpassImages(prev => ({ ...prev, [label]: base64 }));
+      }
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleFunpassImageRemove = (label: string) => {
+    localStorage.removeItem(`funpass_img_${label}`);
+    setFunpassImages(prev => {
+      const copy = { ...prev };
+      delete copy[label];
+      return copy;
+    });
+  };
+
+  const labelsWithImages = useMemo(() => {
+    return ['成人1', '成人2', '兒童1', '兒童2'].filter(lbl => !!funpassImages[lbl]);
+  }, [funpassImages]);
+
+  const handleFunpassLightboxNext = () => {
+    if (!lightboxFunpassLabel || labelsWithImages.length <= 1) return;
+    const currentIndex = labelsWithImages.indexOf(lightboxFunpassLabel);
+    const nextIndex = (currentIndex + 1) % labelsWithImages.length;
+    setLightboxFunpassLabel(labelsWithImages[nextIndex]);
+  };
+
+  const handleFunpassLightboxPrev = () => {
+    if (!lightboxFunpassLabel || labelsWithImages.length <= 1) return;
+    const currentIndex = labelsWithImages.indexOf(lightboxFunpassLabel);
+    const prevIndex = (currentIndex - 1 + labelsWithImages.length) % labelsWithImages.length;
+    setLightboxFunpassLabel(labelsWithImages[prevIndex]);
+  };
+
+  const handleFunpassTouchEnd = (e: any, currentIndex: number, list: string[]) => {
+    if (touchStartX === null) return;
+    const touchEndX = e.changedTouches[0].clientX;
+    const diffX = touchStartX - touchEndX;
+    if (Math.abs(diffX) > 50) {
+      if (diffX > 0) {
+        const nextIndex = (currentIndex + 1) % list.length;
+        setLightboxFunpassLabel(list[nextIndex]);
+      } else {
+        const prevIndex = (currentIndex - 1 + list.length) % list.length;
+        setLightboxFunpassLabel(list[prevIndex]);
+      }
+    }
+    setTouchStartX(null);
+  };
+
   // Lightbox State
   const [lightboxMember, setLightboxMember] = useState<string | null>(null);
 
@@ -3142,6 +3210,120 @@ function InfoTab() {
           </div>
         </CollapsibleSection>
 
+        {/* 沖繩 FUNPASS */}
+        <CollapsibleSection 
+          id="funpass" 
+          title="沖繩 FUNPASS" 
+          icon={<Ticket size={20} />} 
+          isOpen={openSection === 'funpass'} 
+          onToggle={() => toggleSection('funpass')}
+          color="morandi-primary"
+        >
+          <div className="space-y-6">
+            <div className="flex items-center justify-between bg-white/40 p-4 rounded-2xl border border-white/60">
+              <div className="space-y-0.5">
+                <p className="text-sm font-bold text-morandi-text">一票玩遍沖繩熱門景點！</p>
+                <p className="text-[10px] text-morandi-text-muted font-bold uppercase tracking-widest">7 大景點通行證官方網站</p>
+              </div>
+              <a href="https://okinawa.funpass.app/" target="_blank" rel="noreferrer" className="w-10 h-10 bg-morandi-primary text-white rounded-xl flex items-center justify-center shadow-sm active:scale-90 transition-all">
+                <ExternalLink size={16} />
+              </a>
+            </div>
+
+            {/* Labels Selector Row */}
+            <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-none snap-x">
+              {funpassLabels.map(label => {
+                const hasImg = !!funpassImages[label];
+                const isActive = funpassActiveLabel === label;
+                return (
+                  <button
+                    key={label}
+                    type="button"
+                    onClick={() => setFunpassActiveLabel(label)}
+                    className={`px-4 py-2 rounded-2xl text-sm font-bold tracking-wider transition-all duration-300 shrink-0 snap-align-start flex items-center gap-1.5 border ${
+                      isActive
+                        ? 'bg-morandi-primary border-morandi-primary text-white shadow-sm scale-[1.02]'
+                        : hasImg
+                          ? 'bg-white border-morandi-primary/20 text-morandi-text hover:bg-white/85'
+                          : 'bg-white/30 border-morandi-primary/10 text-morandi-text-muted/60'
+                    }`}
+                  >
+                    {hasImg && (
+                      <CheckCircle2 
+                        size={14} 
+                        className={isActive ? 'text-white' : 'text-emerald-500'} 
+                        strokeWidth={2.5} 
+                      />
+                    )}
+                    <span>{label}</span>
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Main Content Area based on current label */}
+            {funpassActiveLabel && (
+              <div>
+                {!funpassImages[funpassActiveLabel] ? (
+                  <div className="mt-2">
+                    <input 
+                      type="file" 
+                      accept="image/*" 
+                      id={`funpass-file-${funpassActiveLabel}`}
+                      className="hidden" 
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        if (file) handleFunpassImageUpload(funpassActiveLabel, file);
+                      }}
+                    />
+                    <label 
+                      htmlFor={`funpass-file-${funpassActiveLabel}`}
+                      className="flex flex-col items-center justify-center border-2 border-dashed border-morandi-primary/30 bg-white/40 hover:bg-white/60 transition-all rounded-[28px] p-8 cursor-pointer group text-center min-h-[180px]"
+                    >
+                      <div className="w-12 h-12 bg-morandi-primary/10 text-morandi-primary rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                        <Upload size={22} />
+                      </div>
+                      <p className="text-sm font-black text-morandi-text mb-1">
+                        📷 點此上傳 {funpassActiveLabel} 的 FunPass 截圖
+                      </p>
+                      <p className="text-[11px] text-morandi-text-muted max-w-[240px]">
+                        支援 JPG、PNG 圖片，將安全的離線暫存於此手機中
+                      </p>
+                    </label>
+                  </div>
+                ) : (
+                  <div className="mt-2 relative">
+                    <div className="bg-white/80 border border-morandi-primary/15 rounded-[28px] p-4 shadow-sm backdrop-blur-sm overflow-hidden flex flex-col items-center">
+                      <p className="text-xs text-morandi-text-muted/80 font-bold mb-3 flex items-center gap-1.5 self-start px-1">
+                        <Smartphone size={13} className="text-morandi-primary" />
+                        <span>{funpassActiveLabel} 的 FunPass 截圖 (點擊可全螢幕放大)</span>
+                      </p>
+                      <div 
+                        onClick={() => setLightboxFunpassLabel(funpassActiveLabel)}
+                        className="w-full max-h-[320px] rounded-2xl overflow-hidden cursor-zoom-in bg-morandi-bg flex items-center justify-center border border-morandi-primary/5 shadow-inner hover:opacity-95 transition-opacity"
+                      >
+                        <img 
+                          src={funpassImages[funpassActiveLabel]} 
+                          alt={`${funpassActiveLabel} FunPass`} 
+                          className="w-full h-full object-contain object-top"
+                        />
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => handleFunpassImageRemove(funpassActiveLabel)}
+                        className="absolute top-3 right-3 w-7 h-7 bg-red-500/10 hover:bg-red-500 text-red-500 hover:text-white rounded-full flex items-center justify-center transition-all shadow-sm"
+                        title="刪除此截圖"
+                      >
+                        <X size={14} strokeWidth={2.5} />
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        </CollapsibleSection>
+
         {/* 緊急聯絡資訊 */}
         <CollapsibleSection 
           id="emergency" 
@@ -3291,26 +3473,6 @@ function InfoTab() {
               <p>• 6歲以下兒童免票，6-12歲半價。</p>
               <p>• 飯店位於 <span className="font-bold text-morandi-primary">11 歌町站 (Omoromachi)</span>。</p>
             </div>
-          </div>
-        </CollapsibleSection>
-
-        {/* 沖繩 FUNPASS */}
-        <CollapsibleSection 
-          id="funpass" 
-          title="沖繩 FUNPASS" 
-          icon={<Ticket size={20} />} 
-          isOpen={openSection === 'funpass'} 
-          onToggle={() => toggleSection('funpass')}
-          color="morandi-primary"
-        >
-          <div className="flex items-center justify-between bg-white/40 p-5 rounded-2xl border border-white/60">
-            <div className="space-y-1">
-              <p className="text-[15px] font-bold text-morandi-text">一票玩遍沖繩熱門景點！</p>
-              <p className="text-[10px] text-morandi-text-muted font-bold uppercase tracking-widest">7 大景點通行證</p>
-            </div>
-            <a href="https://okinawa.funpass.app/" target="_blank" rel="noreferrer" className="w-10 h-10 bg-morandi-primary text-white rounded-xl flex items-center justify-center shadow-sm active:scale-90 transition-all">
-              <ExternalLink size={16} />
-            </a>
           </div>
         </CollapsibleSection>
 
@@ -3470,6 +3632,98 @@ function InfoTab() {
                     onClick={() => setLightboxMember(m)}
                     className={`h-1.5 rounded-full transition-all duration-300 ${
                       m === lightboxMember 
+                        ? 'w-6 bg-morandi-primary' 
+                        : 'w-1.5 bg-white/20 hover:bg-white/40'
+                    }`}
+                  />
+                ))}
+              </div>
+            </div>
+          </motion.div>
+        )}
+        {lightboxFunpassLabel && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/95 z-[100] flex flex-col justify-between p-4 select-none touch-pan-y"
+            onTouchStart={handleTouchStart}
+            onTouchEnd={(e) => handleFunpassTouchEnd(e, labelsWithImages.indexOf(lightboxFunpassLabel), labelsWithImages)}
+          >
+            {/* Header: Title and Close button */}
+            <div className="flex justify-between items-center w-full max-w-md mx-auto pt-4 px-2">
+              <div className="text-white text-left">
+                <p className="text-[10px] text-white/50 font-black tracking-widest uppercase">沖繩 FUNPASS 截圖</p>
+                <h4 className="text-xl font-bold flex items-center gap-2">
+                  <span className="bg-morandi-primary text-white text-[10px] px-2 py-0.5 rounded-full font-bold">✓ 景點通行證</span>
+                  {lightboxFunpassLabel}
+                </h4>
+              </div>
+              <button
+                type="button"
+                onClick={() => setLightboxFunpassLabel(null)}
+                className="w-10 h-10 bg-white/10 hover:bg-white/20 text-white rounded-full flex items-center justify-center active:scale-90 transition-all border border-white/10"
+              >
+                <X size={20} />
+              </button>
+            </div>
+
+            {/* Main Area: Image with arrow buttons on sides */}
+            <div className="flex-1 flex items-center justify-center relative w-full max-w-lg mx-auto py-4">
+              {/* Left Arrow */}
+              {labelsWithImages.length > 1 && (
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleFunpassLightboxPrev();
+                  }}
+                  className="absolute left-2 w-12 h-12 bg-black/40 hover:bg-black/60 border border-white/10 text-white rounded-full flex items-center justify-center active:scale-90 transition-all z-10"
+                >
+                  <ChevronLeft size={24} />
+                </button>
+              )}
+
+              {/* Image Container */}
+              <div className="w-full h-full max-h-[70vh] flex items-center justify-center p-2">
+                <img
+                  src={funpassImages[lightboxFunpassLabel]}
+                  alt={`${lightboxFunpassLabel} FunPass`}
+                  className="max-w-full max-h-full object-contain rounded-2xl shadow-2xl border border-white/5 bg-white"
+                  style={{ imageRendering: 'auto' }}
+                />
+              </div>
+
+              {/* Right Arrow */}
+              {labelsWithImages.length > 1 && (
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleFunpassLightboxNext();
+                  }}
+                  className="absolute right-2 w-12 h-12 bg-black/40 hover:bg-black/60 border border-white/10 text-white rounded-full flex items-center justify-center active:scale-90 transition-all z-10"
+                >
+                  <ChevronRightIcon size={24} />
+                </button>
+              )}
+            </div>
+
+            {/* Footer: Slide Indicators / Navigation Helper */}
+            <div className="w-full max-w-md mx-auto pb-6 text-center space-y-3">
+              <p className="text-xs text-white/40 font-mono tracking-widest">
+                左右滑動或點擊箭頭可切換憑證 • {labelsWithImages.indexOf(lightboxFunpassLabel) + 1} / {labelsWithImages.length}
+              </p>
+              
+              {/* Bottom Quick Select Dots */}
+              <div className="flex justify-center gap-1.5">
+                {labelsWithImages.map((lbl) => (
+                  <button
+                    key={lbl}
+                    type="button"
+                    onClick={() => setLightboxFunpassLabel(lbl)}
+                    className={`h-1.5 rounded-full transition-all duration-300 ${
+                      lbl === lightboxFunpassLabel 
                         ? 'w-6 bg-morandi-primary' 
                         : 'w-1.5 bg-white/20 hover:bg-white/40'
                     }`}
